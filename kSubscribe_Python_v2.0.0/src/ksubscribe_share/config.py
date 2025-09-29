@@ -5,8 +5,8 @@ API_PORT = 38000
 # MongoDB접속 정보 --------------------------------------------------------------------
 # MONGO_IP = "10.99.2.69"
 # MONGO_IP = "10.100.12.71"
-# MONGO_IP = "mongodb"
-MONGO_IP = "localhost"
+MONGO_IP = "mongodb"
+# MONGO_IP = "localhost"
 MONGO_PORT = 27017
 MONGO_DB_NAME = "mycontents"
 
