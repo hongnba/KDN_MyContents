@@ -100,3 +100,14 @@ backup/
 # Results and output directories
 results/
 output/
+
+# Machine Learning Models and saved models
+saved_model/
+*.safetensors
+*.bin
+*.h5
+*.pkl
+*.pth
+*.pt
+*.ckpt
+*.model
