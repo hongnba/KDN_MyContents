@@ -71,7 +71,7 @@ class ContentsOrgService():
     def find_all(self):
         try: 
             collection = self.mongoManager.getCollection(self.collectionName)
-            cursor = collection.find()
+            cursor = collection.find({"IS_USE": True})
             result_list = [ContentsOrgVO.from_mongo(item) for item in cursor] 
             #utc to kst 
             for contentsOrg in result_list:
