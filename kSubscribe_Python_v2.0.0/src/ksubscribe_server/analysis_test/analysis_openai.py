@@ -1,7 +1,8 @@
 from openai import OpenAI
 
 # 개발을 위해서 소스코드에 api 사용, 나중에 환경변수로 수정해야함
-OPENAI_API_KEY = "os.getenv("OPENAI_API_KEY", "")"
+import os
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 pred_keywords = (
     "데이터, 인공지능, 에너지, 전기, 전력, 플랫폼, 반도체, 교육, 의료, 항공, 우주"
 )

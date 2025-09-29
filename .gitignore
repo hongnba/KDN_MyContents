@@ -111,3 +111,10 @@ saved_model/
 *.pt
 *.ckpt
 *.model
+
+# Environment variables and secrets
+.env
+.env.local
+.env.development
+.env.production
+*.env

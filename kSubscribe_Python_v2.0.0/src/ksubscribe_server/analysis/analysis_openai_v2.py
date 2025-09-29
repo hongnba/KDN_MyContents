@@ -5,7 +5,8 @@ import logging
 import ksubscribe_share.config as Conf
 
 # 개발을 위해서 소스코드에 api 사용, 나중에 환경변수로 수정해야함
-#OPENAI_API_KEY = "os.getenv("OPENAI_API_KEY", "")"
+import os
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 class analysisV2:
   #여러기관이 나왔을 경우에는 리스트로 반환해",
