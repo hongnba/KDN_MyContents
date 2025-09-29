@@ -1,0 +1,78 @@
+from sentence_transformers import SentenceTransformer, util
+from typing import List
+import torch
+
+
+class SimularityChecker:
+        
+    def __init__(self):
+        # SentenceTransformer 모델 초기화
+        self.model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
+
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(SimularityChecker, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+ 
+            
+    def best_keyword_of_summary(self, title:str, predefineKeyword:List[str]): 
+ 
+        # 문장과 키워드를 벡터화
+        title_embedding = self.model.encode(title, convert_to_tensor=True)
+        keyword_embeddings = self.model.encode(predefineKeyword, convert_to_tensor=True)
+
+        # 각 키워드와의 유사도 계산
+        cosine_scores = util.cos_sim(title_embedding, keyword_embeddings)
+
+        dic = {}
+        # 가장 높은 유사도를 가지는 키워드의 인덱스와 값 추출
+        # top3_indices = torch.topk(cosine_scores[0], k=3).indices  
+        top3_indices = torch.topk(cosine_scores[0], k=min(3, len(predefineKeyword))).indices    # 키워드 3개이하인 경우 보완 20250429 mcst
+        tensor = cosine_scores[0].sort()
+                
+        for index in top3_indices:
+            keyword = predefineKeyword[index]
+            dic[keyword] = cosine_scores[0][index].item()
+        print(f"유사도 결과: '{dic}'")
+                    
+        return dic 
+        
+    def best_keyword_of_title(self, title:str, predefineKeyword:List[str], threshold: float = 0.5): 
+
+        """
+        title: 입력 문장
+        predefineKeyword: 키워드 리스트
+        threshold: 유사도 기준값 (default: 0.7)
+        
+        반환값: 유사도가 threshold 이상인 가장 유사한 키워드의 인덱스. 없으면 None 반환.
+        """
+        # 문장과 키워드를 벡터화
+        title_embedding = self.model.encode(title, convert_to_tensor=True)
+        keyword_embeddings = self.model.encode(predefineKeyword, convert_to_tensor=True)
+
+        # 각 키워드와의 유사도 계산
+        cosine_scores = util.cos_sim(title_embedding, keyword_embeddings)
+
+        # 가장 높은 유사도를 가지는 키워드의 인덱스와 값 추출
+        best_index = cosine_scores[0].argmax().item()
+        best_score = cosine_scores[0][best_index].item()
+
+        best_keyword = []
+        # 유사도가 기준(threshold) 이상인 경우만 반환
+        if best_score >= threshold:
+            print(f"'{title}'와 가장 유사한 키워드: '{predefineKeyword[best_index]}' (유사도: {best_score:.4f})")
+            best_keyword.append(predefineKeyword[best_index])
+
+        return best_keyword               
+        
+
+if __name__ == "__main__":
+    simularityChecker = SimularityChecker()
+    
+    # 문장과 키워드 정의
+    title = "효율적인 데이터 분석 방법"
+    keywords = ["데이터", "분석", "효율성", "우리집", "안녕"]    
+    simularityChecker.best_keyword_of_title(title,keywords )
+    #simularityChecker.list_keyword_of_title(title,keywords )
+    

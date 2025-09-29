@@ -1,0 +1,121 @@
+FROM python:3.9-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    libmariadb-dev \
+    libmariadb-dev-compat \
+    pkg-config \
+    curl \
+    cron \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy all source code
+COPY ./ksubscribe_share /app/ksubscribe_share      
+COPY ./ksubscribe_server /app/ksubscribe_server   
+COPY ./docker_collect /app/docker_collect
+COPY ./docker_scraping /app/docker_scraping
+COPY ./docker_talk_send /app/docker_talk_send
+COPY ./docker_shell /app/docker_shell
+
+# Create __init__.py files
+RUN touch /app/ksubscribe_server/__init__.py
+RUN touch /app/docker_collect/__init__.py
+RUN touch /app/docker_scraping/__init__.py
+RUN touch /app/docker_talk_send/__init__.py
+
+# Install shared library first
+RUN pip install --no-cache-dir /app/ksubscribe_share
+
+# Upgrade pip
+RUN pip install --no-cache-dir --upgrade pip
+
+# Install all requirements
+RUN pip install --no-cache-dir \
+    fastapi \
+    uvicorn[standard] \
+    python-multipart \
+    python-jose[cryptography] \
+    passlib[bcrypt] \
+    aiofiles \
+    schedule \
+    pymongo \
+    mariadb \
+    redis \
+    requests \
+    beautifulsoup4 \
+    selenium \
+    trafilatura \
+    langchain \
+    sentence-transformers \
+    faiss-cpu \
+    numpy \
+    pandas \
+    scikit-learn
+
+# Install specific requirements from each service
+COPY ./ksubscribe_server/requirements.txt /app/ksubscribe_server_requirements.txt
+RUN pip install --no-cache-dir -r /app/ksubscribe_server_requirements.txt
+
+COPY ./docker_collect/requirements.txt /app/docker_collect_requirements.txt
+RUN pip install --no-cache-dir -r /app/docker_collect_requirements.txt
+
+COPY ./docker_scraping/requirements.txt /app/docker_scraping_requirements.txt
+RUN pip install --no-cache-dir -r /app/docker_scraping_requirements.txt
+
+COPY ./docker_talk_send/requirements.txt /app/docker_talk_send_requirements.txt
+RUN pip install --no-cache-dir -r /app/docker_talk_send_requirements.txt
+
+# Set Python path
+ENV PYTHONPATH=/app
+
+# Create startup script
+RUN echo '#!/bin/bash' > /app/startup.sh && \
+    echo '' >> /app/startup.sh && \
+    echo '# Start FastAPI server in background' >> /app/startup.sh && \
+    echo 'echo "🚀 Starting FastAPI server..."' >> /app/startup.sh && \
+    echo 'python -m uvicorn ksubscribe_server.fastApi.fastApi:app --host 0.0.0.0 --port 8000 &' >> /app/startup.sh && \
+    echo 'FASTAPI_PID=$!' >> /app/startup.sh && \
+    echo '' >> /app/startup.sh && \
+    echo '# Wait for FastAPI to start' >> /app/startup.sh && \
+    echo 'sleep 10' >> /app/startup.sh && \
+    echo '' >> /app/startup.sh && \
+    echo '# Start the main collection and scraping process' >> /app/startup.sh && \
+    echo 'echo "🔄 Starting collection and scraping process..."' >> /app/startup.sh && \
+    echo 'python docker_shell/main_collect_and_scrapping.py &' >> /app/startup.sh && \
+    echo 'MAIN_PID=$!' >> /app/startup.sh && \
+    echo '' >> /app/startup.sh && \
+    echo '# Start the scheduler' >> /app/startup.sh && \
+    echo 'echo "⏰ Starting scheduler..."' >> /app/startup.sh && \
+    echo 'python ksubscribe_server/schedule/gatherScheduller.py &' >> /app/startup.sh && \
+    echo 'SCHEDULER_PID=$!' >> /app/startup.sh && \
+    echo '' >> /app/startup.sh && \
+    echo '# Function to handle shutdown' >> /app/startup.sh && \
+    echo 'cleanup() {' >> /app/startup.sh && \
+    echo '    echo "🛑 Shutting down services..."' >> /app/startup.sh && \
+    echo '    kill $FASTAPI_PID $MAIN_PID $SCHEDULER_PID 2>/dev/null' >> /app/startup.sh && \
+    echo '    wait' >> /app/startup.sh && \
+    echo '    exit 0' >> /app/startup.sh && \
+    echo '}' >> /app/startup.sh && \
+    echo '' >> /app/startup.sh && \
+    echo '# Set up signal handlers' >> /app/startup.sh && \
+    echo 'trap cleanup SIGTERM SIGINT' >> /app/startup.sh && \
+    echo '' >> /app/startup.sh && \
+    echo '# Wait for any process to exit' >> /app/startup.sh && \
+    echo 'wait' >> /app/startup.sh
+
+RUN chmod +x /app/startup.sh
+
+# Expose FastAPI port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Run the startup script
+CMD ["/app/startup.sh"]
