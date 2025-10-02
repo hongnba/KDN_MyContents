@@ -107,8 +107,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                                     format="json")
             _, result_verify_json = self.json_load(result_verify, mycontents_logger)  
             related = result_verify_json['related']  # True : 관련성 있음, False : 관련성 없음
-            keywords_verify = result_verify_json['reason']  # db_keyword_list 중 관련 키워드 최대 3개
-            
+                        
             verify_end = time.time()
             mycontents_logger.info(f"분석대상 사전검증 소요시간 : {verify_end-verify_start} 초 소요")
                         
@@ -127,7 +126,12 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             # pred_keywords = SimularityChecker().best_keyword_of_summary(result_summary_json["short_summary"],self.keywords)
             # db키워드와 관련성이 없으면 키워드 추출하지 않음
             if related:
-                pred_keywords = SimularityChecker().best_keyword_of_summary(result_summary_json["short_summary"],keywords_verify) # 전체 키워드가 아닌 검증된 키워들 통해 유사도 검증 20250429 mcst
+                keywords_verify = result_verify_json['reason']  # db_keyword_list 중 관련 키워드 최대 3개
+                if isinstance(keywords_verify, list) and len(keywords_verify) > 0:
+                    pred_keywords = SimularityChecker().best_keyword_of_summary(result_summary_json["short_summary"],keywords_verify) # 전체 키워드가 아닌 검증된 키워들 통해 유사도 검증 20250429 mcst
+                else :
+                    pred_keywords = None
+                    mycontents_logger.info(f"키워드 추출대상 아님")        
             else:
                 pred_keywords = None
                 mycontents_logger.info(f"키워드 추출대상 아님")
@@ -515,11 +519,3 @@ if __name__ =="__main__":
     analysisOllamaGenerateCall.analysis_main()
     
     pass 
-
-
-
-
-
-
-
-

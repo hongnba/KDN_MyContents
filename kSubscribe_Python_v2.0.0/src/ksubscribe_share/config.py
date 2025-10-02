@@ -17,7 +17,7 @@ import os
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 # LOG 경로 ---------------------------------------------------------------------------
-LOG_DIR = "C://Appl_logs/python"
+LOG_DIR = "/Appl_logs/python"
 
 # pdf 다운로드 경로 --------------------------------------------------------------------
 SCRAPING_DOWNLOAD_FOLDER = "/Appl_logs/python/scraping_download"
@@ -54,8 +54,3 @@ KDN_KAKAO_SERVICE_URL = "http://10.100.21.128:17878/sendKakao"
 OLLAMA_MODEL = "llama-3-Korean-Bllossom-8B-Q4_K_M:latest"
 # OLLAMA_URL = "http://10.99.2.71:11434"
 OLLAMA_URL = "http://ollama:11434"
-
-# Redis 접속 정보 --------------------------------------------------------------------
-REDIS_HOST = "redis"
-REDIS_PORT = 6379
-REDIS_PASSWORD = "3waysoft"

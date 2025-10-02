@@ -273,7 +273,6 @@ def get_naver_news(providerOrgId:str, contentsOrg : ContentsOrgVO, category : Co
             docker_collect_logger.debug(f'n :, {n}')
 
             # 코사인 함수 구하기 tfidf_matrix와 tfidf_matrix를  곱하여 코사인 함수를 구함
-            #!!!!!!!!!!!!!!!ISSUE.
             cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
             cosine_sim2 = linear_kernel(tfidf_matrix2, tfidf_matrix2)
             # print('cosine_sim : ')
@@ -334,20 +333,31 @@ def get_naver_news(providerOrgId:str, contentsOrg : ContentsOrgVO, category : Co
 
         #네이버에 한해서 필요없어 보임 
         sucYN = True
+        today = datetime.utcnow().replace(tzinfo=pytz.utc)
+        
         contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, sucYN, lastSucYMD,logger=docker_collect_logger)
         
         # 트랜잭션 커밋
         #session.commit_transaction()
         #docker_collect_logger.debug("트랜잭션 커밋 성공!")
-        docker_collect_logger.info(f'get_naver_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt})')
-        today = datetime.utcnow().replace(tzinfo=pytz.utc)
-        result = {"success" : True ,"datetime" : today}
-        
+        if collect_cnt > 0:
+            docker_collect_logger.info(f'get_naver_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt})')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD, logger=docker_collect_logger)
+            result = {"success" : True ,"datetime" : today}
+        else :
+            docker_collect_logger.info(f'get_naver_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 실패(0건) -> lastSucYMD 미갱신')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, False, None, logger=docker_collect_logger)
+            result = {"success" : True ,"datetime" : today}
     except Exception as e:
-        docker_collect_logger.info(f'get_naver_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 오류 (건수 : {collect_cnt})')
-        docker_collect_logger.error(traceback.format_exc())
-        today = datetime.utcnow().replace(tzinfo=pytz.utc)
-        result = {"success" : False , "error" : e,"datetime" : today}
+        
+        if collect_cnt > 0:
+            docker_collect_logger.info(f'get_naver_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 부분 수집 완료 (건수 : {collect_cnt})')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD, logger=docker_collect_logger)
+            result = {"success" : True ,"datetime" : today}
+        else:
+            docker_collect_logger.info(f'get_naver_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 오류')
+            docker_collect_logger.error(traceback.format_exc())
+            result = {"success" : False , "error" : e,"datetime" : today}
         # 예외 발생 시 트랜잭션 롤백
         #session.abort_transaction()
         #docker_collect_logger.debug(f'트랜잭션 롤백: {e}')   

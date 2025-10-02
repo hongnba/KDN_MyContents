@@ -256,18 +256,19 @@ class ContentsOrgService():
         :param category_id: 업데이트할 카테고리의 ID
         :param success_flag: 업데이트할 성공 여부 (True/False)
         """
-        lastSucYMD = datetime.utcnow().replace(tzinfo=pytz.utc)
-        try: 
+        # lastSucYMD = datetime.utcnow().replace(tzinfo=pytz.utc)
+        try:
             collection = self.mongoManager.getCollection(self.collectionName)
-            # MongoDB 업데이트 쿼리
+            update_fields = {
+                "categoryList.$.sucYN": "Y" if sucYN else "N"
+            }
+            
+            if sucYN:
+                update_fields["categoryList.$.lastSucYMD"] = lastSucYMD
+                
             result = collection.update_one(
                 {"orgId": org_id, "categoryList.cateId": category_id},  # 조건: orgId와 cateId 매칭
-                {
-                    "$set": {
-                        "categoryList.$.sucYN": "Y" if sucYN else "N",        # categoryList 배열의 특정 카테고리 SUC_YN 수정
-                        "categoryList.$.lastSucYMD": lastSucYMD               # 해당 카테고리의 LAST_SUC_YMD 수정, 마지막 수직일을 기록 
-                    }
-                },
+                {"$set": update_fields},
                 session=session
             )
 

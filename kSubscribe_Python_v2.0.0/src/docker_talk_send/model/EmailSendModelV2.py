@@ -625,8 +625,8 @@ class EmailSendModel:
             
             # 컨텐츠를 볼 수 있는 url 넣기.
             reordered_list = [content] + [item for item in contents if item is not content]
-            # content_url = self.make_url_from_contents_list(reordered_list) # 우선 Login 화면으로 이동하기로 해서 필요 없음.
-            content_url = self.base_url
+            content_url = self.make_url_from_contents_list(reordered_list) # 우선 Login 화면으로 이동하기로 해서 필요 없음. # 0829 KDN측에서 다시 링크 이동 요청
+            # content_url = self.base_url
             
             
             long_summary = "요약 정보 없음"

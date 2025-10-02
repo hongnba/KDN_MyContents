@@ -64,6 +64,13 @@ for index, member in enumerate(member_list):
     # send_history.kakaoSendResponse = {}
     send_history.emailSendResponse = {}
     send_history.sendDt = datetime.utcnow(timezone.utc)
+    
+    if not contents:
+        print(f'멤버 : [{member.mberId}] 추천 컨텐츠 없음 → 컨텐츠 전송 스킵')
+        send_history.emailSendResponse = "Skipped: No recommended contents"
+        send_history.regDt = datetime.now(timezone.utc)
+        BaseQueryService.insert_one(send_history)
+        continue        
         
     if member.emailReceiveYN == "Y" and send_mail_manager.initialized:
         print(f'멤버 : [{member.mberId}] 메일 전송 여부 : O, 전송 시작')
@@ -71,7 +78,7 @@ for index, member in enumerate(member_list):
         print(f'멤버 : [{member.mberId}] 메일 전송 결과 : {send_mail_result.isSuccess} 전송 종료')
         send_history = send_history_update(send_history=send_history, send_result=send_mail_result)
     else:
-        if (not send_mail_manager.initialized):
+        if not send_mail_manager.initialized:
             send_history.emailSendResponse = "Email 초기화 실패"
         print(f'멤버 : [{member.mberId}] 메일 전송 여부 : X')
         send_history.emailSendYN = False

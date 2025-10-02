@@ -164,8 +164,16 @@ class ContentsCollectHistoryService():
             return None
          
         mongoManager = MongoManager()
-        # Disable transactions for standalone MongoDB
-        session = None 
+        session = mongoManager.client.start_session()
+        session.start_transaction() 
+        
+        ##### 250520 #####
+        if isinstance(collectDt, str):
+            try:
+                collectDt = datetime.strptime(collectDt, "%Y%m%d")
+            except ValueError:
+                collectDt = datetime.strptime(collectDt, "%Y-%m-%d")
+        ##################
         
         try:  
             #collectDt = datetime.now(timezone.utc)
@@ -185,7 +193,7 @@ class ContentsCollectHistoryService():
                 "collectDt":collectYMD,
             }
             
-            document = collection.find_one(filter_query1)
+            document = collection.find_one(filter_query1, session=session)
             if document:
                 content_collect_list = document.get("contentCollectList", [])
                 
@@ -219,7 +227,7 @@ class ContentsCollectHistoryService():
                                 "elem.categoryId": category.cateId
                             }
                         ],
-                        # Session disabled for standalone MongoDB
+                        session=session  # 세션 포함 (선택 사항)
                     )
                     #print("collectionDetailList에 새 항목을 추가했습니다.")
                 else:
@@ -243,7 +251,7 @@ class ContentsCollectHistoryService():
                                     ]
                                 }
                             }
-                        }  # Session disabled for standalone MongoDB
+                        }, session=session
                     )
                     #print("새 contentCollectList를 추가했습니다.")
                 
@@ -269,26 +277,29 @@ class ContentsCollectHistoryService():
                         }
                     ]
                 }
-                collection.insert_one(insert_data)  # Session disabled for standalone MongoDB 
+                collection.insert_one(insert_data, session=session ) 
                 
             logger and logger.info(f"( {collectDetail.url} ) : ContentsCollectDailyHistory 반영완료 ")
                 
             #STEP 2 ) ContentsQueueVO에 값을 넣는다.         
             if collectDetail.sucYN:
-                ContentsCollectDailyHistoryService().inc_daily_collect_cnt()  # Session disabled
+                ContentsCollectDailyHistoryService().inc_daily_collect_cnt(session)
                 contentsQueueService = ContentsQueueService()
-                result = contentsQueueService.insertQueue(contentsOrg.orgId, category.cateId, collectDetail, collectDt, keyword=keyword)  # Session disabled
+                result = contentsQueueService.insertQueue(contentsOrg.orgId, category.cateId, collectDetail, collectDt, keyword=keyword,session=session)
             else:
                 ContentsCollectDailyHistoryService().inc_daily_fail_cnt(session)
                 
             
-            # Transaction disabled for standalone MongoDB
-            pass
+            session.commit_transaction()
             
         except Exception as e:
+            session.abort_transaction()
             traceback.print_exc()
+            session.end_session()
             print(f"An error occurred: {e}")
             raise e
+
+        session.end_session()
         return True
 
 

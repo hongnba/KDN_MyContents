@@ -30,7 +30,8 @@ def get_contents_by_rss(contentsOrg : ContentsOrgVO, category : ContentsOrgCateg
     today = datetime.now(pytz.timezone('Asia/Seoul'))    #today.
     date_list = [(next_day + timedelta(days=x)).strftime("%Y%m%d") for x in range((today - next_day).days + 1)]
     todayYMD = today.strftime("%Y%m%d")
-    lastSucYMD = todayYMD 
+    # lastSucYMD = todayYMD 
+    lastSucYMD = today 
     
     if(contentsOrg.orgId == "A0024"):
         print(f"{contentsOrg.orgId}")
@@ -60,7 +61,7 @@ def get_contents_by_rss(contentsOrg : ContentsOrgVO, category : ContentsOrgCateg
                 colDt = re.sub(r'[^0-9]', '', article.updated)
             else:
                 colDt = re.sub(r'[^0-9]', '', article.published)[:8] # 250430 mafra
-            docker_collect_logger.debug(article.published)
+            docker_collect_logger.info(colDt)
             #docker_collect_logger.debug(re.sub(r'[^0-9]', '', article.published))
             if len(date_list) == 0:
                 sucYN = True
@@ -82,19 +83,29 @@ def get_contents_by_rss(contentsOrg : ContentsOrgVO, category : ContentsOrgCateg
                 if collectDetail.sucYN: 
                     if contentsCollectHistoryService.insertCategoryCollectHistory(today, contentsOrg, category, collectDetail,logger=docker_collect_logger):
                         collect_cnt +=1
-        contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, sucYN, lastSucYMD,logger=docker_collect_logger)
+        # contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, sucYN, lastSucYMD,logger=docker_collect_logger)
+        today = datetime.utcnow().replace(tzinfo=pytz.utc)
         
         # 트랜잭션 커밋
         #session.commit_transaction()
         #docker_collect_logger.debug("트랜잭션 커밋 성공!")
-        docker_collect_logger.info(f'get_contents_by_rss : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt})')
-        today = datetime.utcnow().replace(tzinfo=pytz.utc)
-        result = {"success" : True ,"datetime" : today}        
+        if(collect_cnt > 0):
+            docker_collect_logger.info(f'get_contents_by_rss : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt}), lastSucYMD 갱신: {lastSucYMD}')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD, logger=docker_collect_logger)
+            result = {"success" : True ,"datetime" : today}
+        else:
+            docker_collect_logger.info(f'get_contents_by_rss : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료(0건) -> lastSucYMD 미갱신')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, False, lastSucYMD, logger=docker_collect_logger)
+            result = {"success" : True ,"datetime" : today}
     except Exception as e:
-        docker_collect_logger.info(f'get_contents_by_rss : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 오류 (건수 : {collect_cnt})')
-        docker_collect_logger.error(traceback.format_exc())
-        today = datetime.utcnow().replace(tzinfo=pytz.utc)
-        result = {"success" : False , "error" : e,"datetime" : today}
+        if(collect_cnt > 0):
+            docker_collect_logger.info(f'get_contents_by_rss : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 부분 수집 완료 (건수 : {collect_cnt}), lastSucYMD 갱신: {lastSucYMD}')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD, logger=docker_collect_logger)
+            result = {"success" : True ,"datetime" : today}
+        else:
+            docker_collect_logger.info(f'get_contents_by_rss : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 실패')
+            docker_collect_logger.error(traceback.format_exc())
+            result = {"success" : False , "error" : e,"datetime" : today}
         # 예외 발생 시 트랜잭션 롤백
         #session.abort_transaction()
         #docker_collect_logger.debug(f'트랜잭션 롤백: {e} ')        

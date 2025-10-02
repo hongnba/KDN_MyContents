@@ -71,6 +71,8 @@ def get_contents_by_selenium_main(driver, contentsOrg : ContentsOrgVO, category 
         time.sleep(2)
         
     except Exception as e:
+        
+        docker_collect_logger.error(f"초기 접속 실패: {e}")
         pass 
         traceback.print_exc()
         result = {"success" : False , "error" : e,"datetime" : today}
@@ -80,7 +82,8 @@ def get_contents_by_selenium_main(driver, contentsOrg : ContentsOrgVO, category 
     #mongoManager = MongoManager()
     #session = mongoManager.client.start_session()  
         
-    collect_cnt = 0     
+    collect_cnt = 0
+    
     try:
         
         # 트랜잭션 시작
@@ -88,32 +91,51 @@ def get_contents_by_selenium_main(driver, contentsOrg : ContentsOrgVO, category 
         result, collect_sub_cnt = get_contents_by_selenium(driver, contentsOrg, category, date_list, today)
         collect_cnt += collect_sub_cnt        
         if result["success"] == False : 
-            raise Exception("collect fail")  # 예외 발생
+            docker_collect_logger.error(f'get_contents_by_selenium_main : 첫 페이지 처리에서  오류 발생')
+            # raise Exception("collect fail")  # 예외 발생
 
         while(result["next_page"] is not None) : 
-            time.sleep(2)         
-            result["next_page"].click()
+            time.sleep(2)
+            try: 
+                result["next_page"].click()
+            except Exception as e_click:
+                docker_collect_logger.error(f'get_contents_by_selenium_main : 페이지 네비게이션 클릭 실패: {e_click}')
+                break
+            
             result, collect_sub_cnt = get_contents_by_selenium(driver, contentsOrg, category, date_list, today)
             collect_cnt += collect_sub_cnt
             
             if result["success"] == False : 
-                raise Exception("collect fail")  # 예외 발생
-       
-        contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD,logger=docker_collect_logger)
-
+                docker_collect_logger.error(f'get_contents_by_selenium_main : 중간 페이지 처리 실패')
+                # raise Exception("collect fail")  # 예외 발생
+            
+        if collect_cnt > 0:
+            # lastSucYMD = datetime.utcnow().replace(tzinfo=pytz.utc)
+            docker_collect_logger.info(f'get_contents_by_selenium_main : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt}), lastSucYMD 갱신: {lastSucYMD}')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD, logger=docker_collect_logger)
+            result = {"success" : True ,"datetime" : today}
+        else:
+            docker_collect_logger.info(f'get_contents_by_selenium_main : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료(0건) -> lastSucYMD 미갱신')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, False, lastSucYMD, logger=docker_collect_logger)
+            result = {"success" : True , "datetime" : today}
+            
         # 트랜잭션 커밋
         #session.commit_transaction()
         #docker_collect_logger.debug("트랜잭션 커밋 성공!")
-        docker_collect_logger.info(f'get_contents_by_selenium : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt})')
-        result = {"success" : True ,"datetime" : today}
 
     except Exception as e:
-        docker_collect_logger.info(f'get_contents_by_selenium : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 오류 (건수 : {collect_cnt})')
-        docker_collect_logger.debug(e) 
-        # 예외 발생 시 트랜잭션 롤백
-        #session.abort_transaction()
-        #docker_collect_logger.debug(f'트랜잭션 롤백: {e} ')        
-        result = {"success" : False , "error" : e,"datetime" : today}
+        # 부분 성공
+        if collect_cnt > 0:
+            # lastSucYMD = datetime.utcnow().replace(tzinfo=pytz.utc)
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD, logger=docker_collect_logger)
+            docker_collect_logger.info(f'get_contents_by_selenium_main 부분 성공 처리: {contentsOrg.orgName}({contentsOrg.orgId}) ' f'{category.cateName}({category.cateId}) 부분 수십 완료 (건수 : {collect_cnt}), lastSucYMD 갱신: {lastSucYMD}')
+            # docker_collect_logger.debug(e) 
+            result = {"success": True, "datetime": today}
+        else :
+            docker_collect_logger.info(f'get_contents_by_selenium_main : {contentsOrg.orgName}({contentsOrg.orgId}) ' f'{category.cateName}({category.cateId}) 수집 실패')
+            # docker_collect_logger.debug(e)
+            docker_collect_logger.error(traceback.format_exc())
+            result = {"success": False, "error": e, "datetime": today}
     
     # 세션 종료
     #session.end_session()        
@@ -126,8 +148,6 @@ def get_contents_by_selenium(driver, contentsOrg : ContentsOrgVO, category : Con
     result = {}
     next_page = None
     try:
-
-        
         # Xpath로 tbody or ul... 잡기
         try:
             tbody = driver.find_element(By.XPATH, category.COL_HTML_TBODY_TAG)
@@ -169,6 +189,8 @@ def get_contents_by_selenium(driver, contentsOrg : ContentsOrgVO, category : Con
                 title = tr.find_element(By.CLASS_NAME, category.COL_HTML_TITLE_TAG).text
             elif contentsOrg.orgName == '부산항만공사': # 250403 추가. 부산항만공사.
                 title = tr.find_element(By.CLASS_NAME, category.COL_HTML_TITLE_TAG).find_element(By.TAG_NAME, 'span').text
+            elif contentsOrg.orgName == '한국콘텐츠진흥원': # 250521 추가
+                title = tr.find_element(By.TAG_NAME, 'a').text
             else:
                 # class_name으로 tit, subject 등 new 이런 span or em태그 떼어내야
                 title = tr.find_element(By.CLASS_NAME, category.COL_HTML_TITLE_TAG)
@@ -233,12 +255,13 @@ def get_contents_by_selenium(driver, contentsOrg : ContentsOrgVO, category : Con
                     url += '/detailView.do'
                 if contentsOrg.orgId == 'A0001':
                     url += '/view'
+                if contentsOrg.orgId == 'A0036':
+                    url += '&lev=0'
+                    #print(url)
                 # URL 가져오기 끝
-
 
             # 오늘 날짜인 것만 체크.
             if date in date_list:
-                
                 #docker_collect_logger.debug('오늘 날짜임!')
                 unique_value = generate_random_string(5)
 
@@ -257,8 +280,10 @@ def get_contents_by_selenium(driver, contentsOrg : ContentsOrgVO, category : Con
                 # break # 키워드 for문 돌릴 때 break임
                 # 오늘 날짜이고 이 페이지의 끝 row이면. 다음 페이지로.
                 if idx == len(trs) - 1:
-                    try:
-                        page_bar = driver.find_element(By.CLASS_NAME, category.COL_HTML_PAGEBAR_TAG)
+                    try: # 250806 김현지: 교육부의 경우 페이지네이션 잡아오는 방식이 class 등이 아닌 Xpath
+                        if contentsOrg.orgId == 'A0036':
+                            page_bar=driver.find_element(By.XPATH, category.COL_HTML_PAGEBAR_TAG)
+                        else: page_bar = driver.find_element(By.CLASS_NAME, category.COL_HTML_PAGEBAR_TAG)
                     except:
                         page_bar = driver.find_element(By.ID, category.COL_HTML_PAGEBAR_TAG)
                     if category.COL_HTML_NOW_PAGE_INFO1 == 'tag':
@@ -274,6 +299,19 @@ def get_contents_by_selenium(driver, contentsOrg : ContentsOrgVO, category : Con
                             next_page = page_bar.find_element(By.XPATH, f'// *[ @ id = "ctl00_ContentPlaceHolder1_PagingHelper1"] / li[{int(now_page)+3}] / a')
                         elif contentsOrg.orgId == 'A0012' and category.cateId == 'B0001':
                             next_page = page_bar.find_element(By.XPATH, f'//*[@id="contents_body"]/div/div[3]/span/a[{int(now_page)+1}]')
+                        elif contentsOrg.orgId == 'A0036':
+                            n = int(now_page)%5
+                            if n != 0:
+                                n += 3
+                                next_page = page_bar.find_element(By.XPATH, f'//*[@id="txt"]/section/div[3]/div/a[{n}]')
+                            else:
+                                next_page_formoe = page_bar.find_element(By.XPATH, f'//*[@id="txt"]/section/div[3]/div/a[8]')
+                                next_page_formoe.click()
+                                time.sleep(3)
+                                # 한번 클릭했으므로 잠깐 쉬었다가 다시 DOM 불러와야 함
+                                page_bar=driver.find_element(By.XPATH, category.COL_HTML_PAGEBAR_TAG)
+                                # 가장 첫 페이지네이션으로 변경
+                                next_page = page_bar.find_element(By.XPATH, f'//*[@id="txt"]/section/div[3]/div/a[3]')                           
                         else:
                             next_page = page_bar.find_element(By.XPATH, f'//*[ text() = {int(now_page) + 1} ]')
                     except:
@@ -306,7 +344,7 @@ def get_kepco_news(driver, contentsOrg : ContentsOrgVO, category : ContentsOrgCa
     last_suc = category.lastSucYMD #datetime.strptime(last_suc_str, "%Y%m%d")
 
     # last_suc 다음 날짜부터 오늘까지의 날짜 리스트 생성
-    next_day = last_suc# + timedelta(days=1)
+    next_day = last_suc   # + timedelta(days=1)
     today = datetime.now(pytz.timezone('Asia/Seoul'))    #today.
     date_list = [(next_day + timedelta(days=x)).strftime("%Y%m%d") for x in range((today - next_day).days + 1)]
 
@@ -376,15 +414,22 @@ def get_kepco_news(driver, contentsOrg : ContentsOrgVO, category : ContentsOrgCa
             else:
                 break
 
-        contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD,logger= docker_collect_logger)
+        # contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD,logger= docker_collect_logger)
         #contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD, session)
         
         # 트랜잭션 커밋
         #session.commit_transaction()
         #docker_collect_logger.debug("트랜잭션 커밋 성공!")
-        docker_collect_logger.info(f'get_kepco_news: {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt})')
-        today = datetime.utcnow().replace(tzinfo=pytz.utc)
-        result = {"success" : True , "datetime": today}
+        if(collect_cnt > 0):
+            docker_collect_logger.info(f'get_kepco_news: {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt}), lastSucYMD 갱신: {lastSucYMD}')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD,logger= docker_collect_logger)
+            today = datetime.utcnow().replace(tzinfo=pytz.utc)
+            result = {"success" : True , "datetime": today}            
+        else:
+            docker_collect_logger.info(f'get_kepco_news: {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료(0건) -> lastSucYMD 미갱신')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, False, lastSucYMD, logger=docker_collect_logger)
+            today = datetime.utcnow().replace(tzinfo=pytz.utc)
+            result = {"success" : True , "datetime": today}
     except Exception as e:
         
         docker_collect_logger.info(f'get_kepco_news: {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 오류 (건수 : {collect_cnt})')
@@ -490,13 +535,20 @@ def get_koen_news(driver, contentsOrg : ContentsOrgVO, category : ContentsOrgCat
             else:
                 break; 
             
-        contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD,logger= docker_collect_logger)
+        if(collect_cnt > 0):
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD,logger= docker_collect_logger)
+            docker_collect_logger.info(f'get_koen_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt}), lastSucYMD 갱신: {lastSucYMD}')
+            result = {"success" : True ,"datetime" : today}        
+        else:
+            docker_collect_logger.info(f'get_koen_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수: 0건)')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, False, lastSucYMD, logger=docker_collect_logger)
+            result = {"success" : True ,"datetime" : today}
             
         # 트랜잭션 커밋
         #session.commit_transaction()
         #docker_collect_logger.debug("트랜잭션 커밋 성공!")
-        docker_collect_logger.info(f'get_koen_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt})')
-        result = {"success" : True ,"datetime" : today}    
+        # docker_collect_logger.info(f'get_koen_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt}), lastSucYMD 갱신: {lastSucYMD}')
+        # result = {"success" : True ,"datetime" : today}    
     except Exception as e:
         docker_collect_logger.info(f'get_koen_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 오류 (건수 : {collect_cnt})')
         docker_collect_logger.error(traceback.format_exc())
@@ -584,14 +636,24 @@ def get_kps_news(driver, contentsOrg : ContentsOrgVO, category : ContentsOrgCate
             else:
                 break
             
-        contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD,logger=docker_collect_logger)
+        if(collect_cnt > 0):
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, True, lastSucYMD, logger=docker_collect_logger)    
+            docker_collect_logger.info(f'get_kps_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt}), lastSucYMD 갱신: {lastSucYMD}')
+            today = datetime.utcnow().replace(tzinfo=pytz.utc)
+            result = {"success" : True ,"datetime" : today} 
+        else:
+            docker_collect_logger.info(f'get_kps_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : 0건)')
+            contentsOrgService.updateCategorySucYMD(contentsOrg.orgId, category.cateId, False, lastSucYMD, logger=docker_collect_logger)
+            today = datetime.utcnow().replace(tzinfo=pytz.utc)
+            result = {"success" : True ,"datetime" : today} 
+        
         
         # 트랜잭션 커밋
         #session.commit_transaction()
         #docker_collect_logger.debug("트랜잭션 커밋 성공!")
-        docker_collect_logger.info(f'get_kps_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 완료 (건수 : {collect_cnt})')
-        today = datetime.utcnow().replace(tzinfo=pytz.utc)
-        result = {"success" : True ,"datetime" : today}  
+        
+        # today = datetime.utcnow().replace(tzinfo=pytz.utc)
+        # result = {"success" : True ,"datetime" : today}  
     except Exception as e:
         
         docker_collect_logger.info(f'get_kps_news : {contentsOrg.orgName}({contentsOrg.orgId}) {category.cateName}({category.cateId}) 수집 오류 (건수 : {collect_cnt})')

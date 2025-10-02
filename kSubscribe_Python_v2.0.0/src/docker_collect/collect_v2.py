@@ -101,7 +101,7 @@ class DockerCollectMain:
 
                 # RSS
                 elif category.COL_METHOD == "C0001": 
-                    reulst = get_contents_by_rss(contentsOrg, category)
+                    result = get_contents_by_rss(contentsOrg, category)         # 윤택선: 오탈자 수정
                     
                 # OPEN API
                 else: 
@@ -148,4 +148,3 @@ class DockerCollectMain:
 if __name__ == "__main__":
     main = DockerCollectMain()
     main.distribute()
- 
