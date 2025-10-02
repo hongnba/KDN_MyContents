@@ -91,7 +91,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             return False, None, None, None, error_ollamaMetaResult
 
 
-    def analysis_main(self, content, pred_keyword_list, org_name_list, mycontents_logger:logging.Logger): #-> tuple[bool, ContentsMetaResult]:
+    def analysis_main(self, content, pred_keyword_list, org_name_list, mycontents_logger:logging.Logger, queueContent:ContentsQueueVO): #-> tuple[bool, ContentsMetaResult]:
         """Ollama 연계하여 분석 ( 요약분석, 평판분석 )
         """        
         try: 
@@ -105,7 +105,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                                     model=CONF.OLLAMA_MODEL,
                                     prompt=pre_question_verify,
                                     format="json")
-            _, result_verify_json = self.json_load(result_verify, mycontents_logger)  
+            is_success_keywords, result_verify_json = self.json_load(result_verify, mycontents_logger)  
             related = result_verify_json['related']  # True : 관련성 있음, False : 관련성 없음
                         
             verify_end = time.time()
@@ -136,6 +136,21 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                 pred_keywords = None
                 mycontents_logger.info(f"키워드 추출대상 아님")
                 
+            #LIZA: add article keywords (25.10.02)
+            article_keywords = result_verify_json["ai_keyword"]
+            
+            article = ArticleKeywordsVO(
+                orgId=queueContent.contentOrgId,
+                keywords=pred_keywords,
+                ai_keywords=article_keywords,
+                success=is_success_keywords,
+                url=queueContent.url
+            )
+
+            inserted_id = ArticleKeywordsService.insert_one(article)
+            mycontents_logger.info(f"Inserted row id: {inserted_id}")
+        
+            
             summary_success = self.summary_to_ollamaModel_v2(result_summary, result_summary_json, contentsMetaResult, pred_keywords, mycontents_logger) 
             contentsMetaResult.summarySucYN = "Y" if summary_success else "N"
             mycontents_logger.info(f"요약분석 소요시간 : {summary_end-summary_start} 초 소요")

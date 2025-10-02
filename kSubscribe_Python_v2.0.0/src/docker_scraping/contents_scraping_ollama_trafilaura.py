@@ -302,7 +302,7 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
                 
                 # #요약, 키워드 추출, 평판분석 ##########################################################            
                 contentsVO.metaAnalyzeDt = datetime.now() 
-                isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger)            
+                isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger, queueContent=queueContent)            
                 if isSuccess:
                     contentsVO = self.generateContentsMeta_ollama( contentsVO, contentsMetaResult)
                 else:
