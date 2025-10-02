@@ -42,8 +42,8 @@ import ksubscribe_share.config as CONF
 from pydantic import BaseModel, PrivateAttr, model_validator
 from ksubscribe_share.db.service.articleKeywordsService import ArticleKeywordsService
 from ksubscribe_share.db.service.articleSummaryService import ArticlesSummaryService
-from ksubscribe_share.db.dbmodelV2.articleKeywordsVO import ArticleKeywordsVO
-from ksubscribe_share.db.dbmodelV2.articleSummaryVO import ArticlesSummaryVO
+from ksubscribe_share.db.mariadb_model.articleKeywordsVO import ArticleKeywordsVO
+from ksubscribe_share.db.mariadb_model.articleSummaryVO import ArticlesSummaryVO
 
 def count_tokens(text: str, model: str = "llama3"):
     enc = tiktoken.encoding_for_model(model)
@@ -142,7 +142,12 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                 mycontents_logger.info(f"키워드 추출대상 아님")
                 
             #LIZA: add article keywords (25.10.02)
-            article_keywords = result_verify_json["ai_keyword"]
+            try:
+                article_keywords = result_verify_json["ai_keyword"]
+            except Exception as e:
+                article_keywords = None
+                mycontents_logger.info(f"ai_keyword 없음")
+            
             
             article = ArticleKeywordsVO(
                 orgId=queueContent.contentOrgId,
