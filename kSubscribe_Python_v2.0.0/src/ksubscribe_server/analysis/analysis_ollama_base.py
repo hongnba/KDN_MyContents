@@ -168,7 +168,7 @@ class AnalysisOllamaBase:
         "ai_keyword": 기사(contents)에서 주요 이슈나 주제를 추출하여 핵심 키워드를 리스트로 작성합니다. 문맥을 고려한 표현을 사용하세요.
         "db_keyword_list": 제공한 db_keyword_list를 그대로 넣습니다.
         "related": ai_keyword와 db_keyword_list를 비교하여, 1개 이상 관련이 있으면 true, 전혀 관련이 없으면 false로 합니다.
-        "reason": related가 true일 경우, 반드시 db_keyword_list 안에서 최대 3개를 선택하여 관련 키워드를 작성합니다.
+        "reason": related가 true일 경우, 반드시 db_keyword_list 안에서 최대 10개를 선택하여 관련 키워드를 작성합니다.
     }}
 
     [특별한 규칙]
