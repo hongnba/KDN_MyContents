@@ -32,6 +32,7 @@ from ksubscribe_share.db.dbmodelV2.predefineKeywordVO import PredefineKeywordVO
 from ksubscribe_share.db.service.commCodeService import CommCodeService
 from ksubscribe_share.db.service.contentsOrgService import ContentsOrgService
 from ksubscribe_share.db.service.predefineKeywordService import PredefineKeywordService
+from ksubscribe_share.db.service.statsService import StatsService
 from ksubscribe_share.db.service.contentsQueueService import ContentsQueueService
 from ksubscribe_share.db.service.baseQueryService import BaseQueryService
 from ksubscribe_share.db.service.contentsImageService import ContentsImageService
@@ -50,6 +51,7 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
     contentsOrgService = ContentsOrgService()
     contentsQueueService = ContentsQueueService()    
     contentsService = ContentsService()    
+    statsService = StatsService()
     trafilauraScraper = TrafilauraScraper()
     docker_scraping_logger = Logger().setup_logger(Logger.docker_scraping_logger_name)    
     docker_scraping_result_logger = Logger().setup_logger(Logger.docker_scraping_result_logger_name)    
@@ -118,6 +120,10 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         self.docker_scraping_result_logger.info(f"스크랩 성공 개수 : {self.scrapping_cnt_for_once}")
         self.docker_scraping_result_logger.info(f"요약 및 분석 성공 개수 : {self.analysis_cnt_for_once}")
         self.docker_scraping_result_logger.info("--------------Docker_Scraping 완료 --------------")         
+        
+        # Calculate statistics for all organizations after processing
+        self._calculate_organization_stats()
+        
         pass 
     
     #25.03.13 분석용 함수.당분간 _test함수 유지     
@@ -516,6 +522,62 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         except Exception as e:   
             tb_str = ''.join(traceback.format_exception(None, e, e.__traceback__))
             self.docker_scraping_logger.error(f'error :  {tb_str}')            
+    
+    def _calculate_organization_stats(self):
+        """Calculate statistics for all organizations after content processing"""
+        try:
+            self.docker_scraping_logger.info("Starting statistics calculation for all organizations...")
+            
+            # Get all organizations
+            all_orgs = self.contentsOrgService.find_all()
+            
+            for org in all_orgs:
+                if not org.orgId:
+                    continue
+                    
+                try:
+                    self.docker_scraping_logger.info(f"Processing stats for organization: {org.orgName} ({org.orgId})")
+                    
+                    # Always recalculate daily stats
+                    self.docker_scraping_logger.info(f"  - Calculating daily stats for {org.orgName}")
+                    self.statsService.count_for_period(org.orgId, 'day')
+                    
+                    # Check if weekly stats need recalculation
+                    existing_weekly = self.statsService.get_for_period(org.orgId, 'week')
+                    should_recalculate_weekly = True
+                    
+                    if existing_weekly and existing_weekly.last_calculate_date:
+                        time_since_last_weekly = datetime.utcnow() - existing_weekly.last_calculate_date
+                        if time_since_last_weekly < timedelta(days=7):
+                            should_recalculate_weekly = False
+                            self.docker_scraping_logger.info(f"  - Weekly stats for {org.orgName} are up to date (last calculated: {existing_weekly.last_calculate_date})")
+                    
+                    if should_recalculate_weekly:
+                        self.docker_scraping_logger.info(f"  - Calculating weekly stats for {org.orgName}")
+                        self.statsService.count_for_period(org.orgId, 'week')
+                    
+                    # Check if monthly stats need recalculation
+                    existing_monthly = self.statsService.get_for_period(org.orgId, 'month')
+                    should_recalculate_monthly = True
+                    
+                    if existing_monthly and existing_monthly.last_calculate_date:
+                        time_since_last_monthly = datetime.utcnow() - existing_monthly.last_calculate_date
+                        if time_since_last_monthly < timedelta(days=30):
+                            should_recalculate_monthly = False
+                            self.docker_scraping_logger.info(f"  - Monthly stats for {org.orgName} are up to date (last calculated: {existing_monthly.last_calculate_date})")
+                    
+                    if should_recalculate_monthly:
+                        self.docker_scraping_logger.info(f"  - Calculating monthly stats for {org.orgName}")
+                        self.statsService.count_for_period(org.orgId, 'month')
+                        
+                except Exception as e:
+                    self.docker_scraping_logger.error(f"Error calculating stats for organization {org.orgName} ({org.orgId}): {e}")
+                    continue
+            
+            self.docker_scraping_logger.info("Statistics calculation completed for all organizations.")
+            
+        except Exception as e:
+            self.docker_scraping_logger.error(f"Error in statistics calculation process: {e}")
         
         
 if __name__ == "__main__":
