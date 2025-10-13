@@ -241,29 +241,28 @@ class AnalysisOllamaBase:
     
 
     # question_summary 이전에 db_keyword_list와 비교하여 검증 20250429 mcst
-    question_verify = f"""
-    [Step 1] 다음 기사(contents)와 db_keyword_list를 제공합니다.
-    - contents: [contents]
-    - db_keyword_list: [pred_keywords_from_db]
+   question_verify = f"""
+[Step 1] 다음 기사(contents)와 db_keyword_list를 제공합니다.
+- contents: [contents]
+- db_keyword_list: [pred_keywords_from_db]
 
-    [Step 2] 분석하고 다음과 같은 JSON 객체로만 답변해 주세요. 반드시 (\n, \r\n, \t 제거) 등 특수문자는 제거합니다.
+[Step 2] 아래 요구사항에 따라 JSON 객체로만 답변해 주세요. 출력 시 (\n, \r\n, \t 등) 특수문자는 모두 제거합니다.
 
-    JSON 형식:
-    {{
-        "ai_keyword": 기사(contents)에서 주요 이슈나 주제를 추출하여 핵심 키워드를 리스트로 작성합니다. 문맥을 고려한 표현을 사용하세요.
-        "db_keyword_list": 제공한 db_keyword_list를 그대로 넣습니다.
-        "related": ai_keyword와 db_keyword_list를 비교하여, 1개 이상 관련이 있으면 true, 전혀 관련이 없으면 false로 합니다.
-        "reason": related가 true일 경우, 반드시 db_keyword_list 안에서 최대 10개를 선택하여 관련 키워드를 작성합니다.
-    }}
+JSON 형식:
+{{
+    "ai_keyword": 기사(contents)에서 주요 이슈나 주제를 추출하여 핵심 키워드를 리스트로 작성합니다. 문맥을 반영한 표현을 사용하세요.
+    "db_keyword_list": 제공한 db_keyword_list를 그대로 넣습니다.
+    "related": ai_keyword와 db_keyword_list를 비교하여, 1개 이상 의미적으로 관련이 있으면 true, 전혀 관련이 없으면 false로 설정하세요.
+    "reason": related가 true일 경우, db_keyword_list 안에서 관련된 최대 10개의 키워드를 선택하여 리스트로 작성하세요.
+}}
 
-    [특별한 규칙]
-    - reason은 오직 db_keyword_list에서만 선택해야 합니다. (ai_keyword에서 선택하면 절대 안 됩니다)
-    - 선택할 db_keyword_list가 하나도 없으면, related는 반드시 false로 설정하세요.
-    - 절대 ai_keyword 항목에서 reason을 뽑지 마세요. db_keyword_list만 사용하세요.
+[특별한 규칙]
+- reason은 반드시 db_keyword_list 안에서만 선택해야 합니다. (ai_keyword에서 추출하면 절대 안 됩니다)
+- 관련된 db_keyword_list 항목이 하나도 없으면, related는 반드시 false로 설정하세요.
+- 절대 ai_keyword 항목에서 reason을 뽑지 마세요. db_keyword_list만 사용하세요.
 
-    [최종 조건]
-    - 출력은 반드시 위 JSON 구조를 지켜야 합니다.
-    - 설명문 없이 JSON만 출력하세요.
-    """
-    
+[최종 조건]
+- 출력은 반드시 위 JSON 구조를 정확히 따라야 합니다.
+- 설명이나 추가 문장 없이 JSON만 출력하세요.
+"""
     
