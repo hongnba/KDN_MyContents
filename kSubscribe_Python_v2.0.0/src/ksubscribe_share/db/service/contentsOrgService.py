@@ -200,6 +200,53 @@ class ContentsOrgService():
 
         except Exception as e:
             print(f"An error occurred: {e}")                
+            return None, None
+
+    def getOrgNameAndKeywords(self, orgId: str):
+        """
+        Get organization name and combined keywords/synonyms by orgId.
+        
+        Args:
+            orgId (str): Organization ID to search for
+            
+        Returns:
+            tuple: (orgName: str, combined_keywords: list) or (None, None) if not found
+        """
+        try:
+            collection = self.mongoManager.getCollection(self.collectionName)
+            query = {
+                "orgId": orgId,
+            }
+
+            # 쿼리 실행
+            result = collection.find_one(query)
+            
+            if not result:
+                return None, None
+                
+            # Extract orgName
+            orgName = result.get("orgName")
+            
+            # Combine orgNameSynonymList and orgKeywordList
+            combined_keywords = []
+            
+            # Add orgNameSynonymList if present
+            orgNameSynonymList = result.get("orgNameSynonymList", [])
+            if orgNameSynonymList:
+                combined_keywords.extend(orgNameSynonymList)
+            
+            # Add orgKeywordList if present
+            orgKeywordList = result.get("orgKeywordList", [])
+            if orgKeywordList:
+                combined_keywords.extend(orgKeywordList)
+            
+            # Remove duplicates and return as set converted to list
+            combined_keywords = list(set(combined_keywords))
+            
+            return orgName, combined_keywords
+
+        except Exception as e:
+            print(f"An error occurred: {e}")
             return None, None    
           
   
