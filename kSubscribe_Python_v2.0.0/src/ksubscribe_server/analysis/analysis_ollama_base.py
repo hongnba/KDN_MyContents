@@ -117,13 +117,15 @@ class AnalysisOllamaBase:
     #     "long_summary": "5줄 이상으로 기사 요약, long_summary는 자세한 정보까지 요약에 포함되어야 해."
     # }}
     # """ 
+    
+    # 20251013 리자: 프롬프트 수정: 기관 입장에서 ..? 
     question_summary = f"""
     contents : [contents]
+    organization : [organization]
     위의 기사를 분석하여 아래 형식에 맞춰 JSON 객체로 응답해줘 (\n, \r\n, \t 제거). JSON 객체의 구조는 다음과 같아:
     {{
-        "keyword": 주요 이슈, 기사를 대표할 만한 키워드로 핵심키워드를 추출해서 리스트 형식으로 넣어줘. 문맥있는 표현이면 좋겠어. 
         "short_summary": "한줄 기사 요약",
-        "long_summary": "5줄 이상으로 기사 요약, long_summary는 자세한 정보까지 요약에 포함되어야 해."
+        "long_summary": "5줄 이상으로 기사 요약, long_summary는 자세한 정보까지 요약에 포함되어야 해. organization을 중심으로 요약해줘."
     }}
     """ 
     ###"short_summary": "한줄 기사 요약",
@@ -154,6 +156,89 @@ class AnalysisOllamaBase:
         }}]
     }} 
     """    
+    
+    # 20251013 리자: 프롬프트 3)분리
+    question_sentiment_ratio = f"""
+    기사 : [contents]
+    기관 : [organization] (이 기관은 [synonyms]로도 불립니다.)
+    위 기사에서 해당 기관 또는 그 별칭([synonyms])이 언급된 부분을 중심으로 감성 분석을 수행해 줘.
+    기관에 대한 언급 중 긍정 / 부정 / 중립의 비율을 추정해서 아래 JSON 형식으로만 답변해.
+
+        {{
+            "positiveRatio": "기관 언급 중 긍정적 내용의 비율 (0~100, float, % 기호 없이)",
+            "neutralRatio": "기관 언급 중 중립적 내용의 비율 (0~100, float, % 기호 없이)",
+            "negativeRatio": "기관 언급 중 부정적 내용의 비율 (0~100, float, % 기호 없이)"
+        }}
+
+        세 비율의 합은 100이 되어야 해. 주석이나 설명은 넣지 마.
+    """
+    
+    # question_negative_ratio = f"""
+    # contents : [contents]
+    # organization : [organization]
+   
+    
+    # """
+    
+    # question_neutral_ratio = f"""
+    # contents : [contents]
+    # organization : [organization]
+   
+    
+    # """
+    
+    #all three reasons using predictions as input;
+    # question_sentiment_ratio => question_reason
+    
+    sentiment_reason = f"""
+    기사 : [contents]
+    기관 : [organization] (이 기관은 [synonyms]로도 불립니다.)
+    
+    해당 기관을 대상으로 기사를 분석된 감성 비율은 다음과 같아:
+        - 긍정: [positiveRatio]
+        - 부정: [negativeRatio]
+
+        이 비율을 판단한 이유와 주요 키워드를 작성해줘.
+        출력은 아래 JSON 형식으로 해.
+
+        {{
+            "reason": "긍정과 부정 비율을 종합적으로 판단한 근거 (한 문단)",
+            "positiveReason": "긍정 비율 판단 근거 (문장 형식)",
+            "negativeReason": "부정 비율 판단 근거 (문장 형식)",
+        
+        }}
+
+        키워드는 단어 하나가 아니라 문맥 있는 표현이면 좋겠어 (예: '기술 혁신', '성과 향상' 등).
+        JSON만 출력해. 설명이나 주석은 넣지 마.
+   
+    
+    """
+    
+    sentiment_keywords = f"""
+    기사 : [contents]
+    기관 : [organization] (이 기관은 [synonyms]로도 불립니다.)
+    
+    이 기사는 여러 주제를 다룰 수 있지만, 
+        **오직 해당 기관([organization])의 이미지, 평판, 또는 대중 인식에 영향을 미치는 내용만** 분석해 줘.
+
+        기관과 직접적으로 관련된 **긍정적인 요인**과 **부정적인 요인**을 찾아 아래 JSON 형식으로 정리해 줘.
+        단순한 단어나 기사 전반의 키워드가 아니라, 
+        기관의 평판(이미지)에 영향을 주는 문맥 있는 표현을 뽑아야 해. 
+        (예: "기술 혁신", "성과 향상", "비리 의혹", "경영 악화" 등)
+
+        {{
+            "positiveKeywords": ["긍정 키워드1", "긍정 키워드2", "긍정 키워드3"],
+            "negativeKeywords": ["부정 키워드1", "부정 키워드2", "부정 키워드3"]
+        }}
+
+        출력 시:
+        - JSON만 출력해. 
+        - 주석, 설명, 문장형 해석은 절대 넣지 마.
+
+    """
+    
+    
+    
 
     # question_summary 이전에 db_keyword_list와 비교하여 검증 20250429 mcst
     question_verify = f"""
