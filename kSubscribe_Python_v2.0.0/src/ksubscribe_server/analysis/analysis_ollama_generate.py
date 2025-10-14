@@ -34,6 +34,7 @@ from ksubscribe_share.db.service.contentsOrgService import ContentsOrgService
 from ksubscribe_share.db.service.contentsQueueService import ContentsQueueService
 from ksubscribe_share.db.service.articleKeywordsService import ArticleKeywordsService
 from ksubscribe_share.db.mariadb_model.articleKeywordsVO import ArticleKeywordsVO
+from ksubscribe_share.db.dbmodelV2.contentsQueueVO import ContentsQueueVO
 
 from ksubscribe_share.db.service.commCodeService import CommCodeService
 from ksubscribe_share.db.service.predefineKeywordService import PredefineKeywordService

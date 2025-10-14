@@ -297,7 +297,7 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
             
             #LIZA: add original contents (25.10.02)
             
-            logg
+            # logger
         
             originalContentsVO = OriginalContentsVO(
                 contentOrgId=queueContent.contentOrgId,

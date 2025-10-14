@@ -241,7 +241,7 @@ class AnalysisOllamaBase:
     
 
     # question_summary 이전에 db_keyword_list와 비교하여 검증 20250429 mcst
-   question_verify = f"""
+    question_verify = f"""
 [Step 1] 다음 기사(contents)와 db_keyword_list를 제공합니다.
 - contents: [contents]
 - db_keyword_list: [pred_keywords_from_db]

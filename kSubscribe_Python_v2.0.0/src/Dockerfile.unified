@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     curl \
     cron \
+    chromium \
+    chromium-driver \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -55,7 +57,8 @@ RUN pip install --no-cache-dir \
     faiss-cpu \
     numpy \
     pandas \
-    scikit-learn
+    scikit-learn \
+    protobuf
 
 # Install specific requirements from each service
 COPY ./ksubscribe_server/requirements.txt /app/ksubscribe_server_requirements.txt

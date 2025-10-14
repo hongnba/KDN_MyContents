@@ -39,7 +39,7 @@ class OriginalContentsVO(BaseMongoDocument):
         self.collectDt = collectDt
         self.succeeded = succeeded
 
-      def to_mongo(self):
+    def to_mongo(self):
         """Convert object to dict for MongoDB insertion."""
         return {
             "_id": self._id or ObjectId(),

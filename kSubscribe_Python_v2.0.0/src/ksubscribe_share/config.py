@@ -5,7 +5,7 @@ API_PORT = 38000
 # MongoDB접속 정보 --------------------------------------------------------------------
 # MONGO_IP = "10.99.2.69"
 # MONGO_IP = "10.100.12.71"
-MONGO_IP = "mongodb"
+MONGO_IP = "localhost"
 # MONGO_IP = "localhost"
 MONGO_PORT = 27017
 MONGO_DB_NAME = "mycontents"
@@ -53,4 +53,4 @@ KDN_KAKAO_SERVICE_URL = "http://10.100.21.128:17878/sendKakao"
 # Ollam 모델 정보 --------------------------------------------------------------------
 OLLAMA_MODEL = "llama-3-Korean-Bllossom-8B-Q4_K_M:latest"
 # OLLAMA_URL = "http://10.99.2.71:11434"
-OLLAMA_URL = "http://ollama:11434"
+OLLAMA_URL = "http://localhost:11434"

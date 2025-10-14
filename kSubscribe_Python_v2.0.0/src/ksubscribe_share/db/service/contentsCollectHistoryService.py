@@ -164,8 +164,10 @@ class ContentsCollectHistoryService():
             return None
          
         mongoManager = MongoManager()
-        session = mongoManager.client.start_session()
-        session.start_transaction() 
+        # For standalone MongoDB, we don't use transactions
+        # session = mongoManager.client.start_session()
+        # session.start_transaction()
+        session = None 
         
         ##### 250520 #####
         if isinstance(collectDt, str):
@@ -193,7 +195,7 @@ class ContentsCollectHistoryService():
                 "collectDt":collectYMD,
             }
             
-            document = collection.find_one(filter_query1, session=session)
+            document = collection.find_one(filter_query1)
             if document:
                 content_collect_list = document.get("contentCollectList", [])
                 
@@ -227,7 +229,7 @@ class ContentsCollectHistoryService():
                                 "elem.categoryId": category.cateId
                             }
                         ],
-                        session=session  # 세션 포함 (선택 사항)
+                        # session=session  # 세션 포함 (선택 사항) - disabled for standalone MongoDB
                     )
                     #print("collectionDetailList에 새 항목을 추가했습니다.")
                 else:
@@ -251,7 +253,7 @@ class ContentsCollectHistoryService():
                                     ]
                                 }
                             }
-                        }, session=session
+                        }  # session=session - disabled for standalone MongoDB
                     )
                     #print("새 contentCollectList를 추가했습니다.")
                 
@@ -277,7 +279,7 @@ class ContentsCollectHistoryService():
                         }
                     ]
                 }
-                collection.insert_one(insert_data, session=session ) 
+                collection.insert_one(insert_data)  # session=session - disabled for standalone MongoDB 
                 
             logger and logger.info(f"( {collectDetail.url} ) : ContentsCollectDailyHistory 반영완료 ")
                 
@@ -290,16 +292,16 @@ class ContentsCollectHistoryService():
                 ContentsCollectDailyHistoryService().inc_daily_fail_cnt(session)
                 
             
-            session.commit_transaction()
+            # session.commit_transaction() - disabled for standalone MongoDB
             
         except Exception as e:
-            session.abort_transaction()
+            # session.abort_transaction() - disabled for standalone MongoDB
             traceback.print_exc()
-            session.end_session()
+            # session.end_session() - disabled for standalone MongoDB
             print(f"An error occurred: {e}")
             raise e
 
-        session.end_session()
+        # session.end_session() - disabled for standalone MongoDB
         return True
 
 
