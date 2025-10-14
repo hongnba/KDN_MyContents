@@ -32,6 +32,8 @@ from ksubscribe_share.db.dbmodelV2.contentsVO import ContentsMeta
 from ksubscribe_share.db.service.commCodeService import CommCodeService
 from ksubscribe_share.db.service.contentsOrgService import ContentsOrgService
 from ksubscribe_share.db.service.contentsQueueService import ContentsQueueService
+from ksubscribe_share.db.service.articleKeywordsService import ArticleKeywordsService
+from ksubscribe_share.db.mariadb_model.articleKeywordsVO import ArticleKeywordsVO
 
 from ksubscribe_share.db.service.commCodeService import CommCodeService
 from ksubscribe_share.db.service.predefineKeywordService import PredefineKeywordService
@@ -40,6 +42,11 @@ from ksubscribe_server.similarity.simularity_check import SimularityChecker
 from ksubscribe_server.analysis.analysis_ollama_base import AnalysisOllamaBase
 import ksubscribe_share.config as CONF
 from pydantic import BaseModel, PrivateAttr, model_validator
+from ksubscribe_share.db.service.articleKeywordsService import ArticleKeywordsService
+from ksubscribe_share.db.service.articleSummaryService import ArticlesSummaryService
+from ksubscribe_share.db.mariadb_model.articleKeywordsVO import ArticleKeywordsVO
+from ksubscribe_share.db.mariadb_model.articleSummaryVO import ArticlesSummaryVO
+
 def count_tokens(text: str, model: str = "llama3"):
     enc = tiktoken.encoding_for_model(model)
     return len(enc.encode(text))
@@ -56,6 +63,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
         # 202504101 임형준 : ollama client timeout 조건 추가
         self.chat_ollama.client_kwargs["timeout"] = 20
         self.chat_ollama._set_clients()
+        self.contentsQueueService = ContentsQueueService()
         
     #25.03.13 당문간 _test함수 유지     
     def analysis_main_test(self, title,content, pred_keyword_list, org_name_list, mycontents_logger:logging.Logger): #-> tuple[bool, ContentsMetaResult]:
@@ -91,7 +99,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             return False, None, None, None, error_ollamaMetaResult
 
 
-    def analysis_main(self, content, pred_keyword_list, org_name_list, mycontents_logger:logging.Logger): #-> tuple[bool, ContentsMetaResult]:
+    def analysis_main(self, content, pred_keyword_list, org_name_list, mycontents_logger:logging.Logger, queueContent:ContentsQueueVO): #-> tuple[bool, ContentsMetaResult]:
         """Ollama 연계하여 분석 ( 요약분석, 평판분석 )
         """        
         try: 
@@ -105,8 +113,11 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                                     model=CONF.OLLAMA_MODEL,
                                     prompt=pre_question_verify,
                                     format="json")
-            _, result_verify_json = self.json_load(result_verify, mycontents_logger)  
+            is_success_keywords, result_verify_json = self.json_load(result_verify, mycontents_logger)  
             related = result_verify_json['related']  # True : 관련성 있음, False : 관련성 없음
+            
+            #20251013 리자: 프롬프트 2)에서 키워드 삭제에 따른 변경:
+            ai_keywords = result_verify_json["ai_keyword"]
                         
             verify_end = time.time()
             mycontents_logger.info(f"분석대상 사전검증 소요시간 : {verify_end-verify_start} 초 소요")
@@ -136,22 +147,120 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                 pred_keywords = None
                 mycontents_logger.info(f"키워드 추출대상 아님")
                 
-            summary_success = self.summary_to_ollamaModel_v2(result_summary, result_summary_json, contentsMetaResult, pred_keywords, mycontents_logger) 
+            #LIZA: add article keywords (25.10.02)
+            try:
+                article_keywords = result_verify_json["ai_keyword"]
+            except Exception as e:
+                article_keywords = None
+                mycontents_logger.info(f"ai_keyword 없음")
+            
+            
+            article = ArticleKeywordsVO(
+                orgId=queueContent.contentOrgId,
+                keywords=pred_keywords,
+                ai_keywords=article_keywords,
+                success=is_success_keywords,
+                url=queueContent.url
+            )
+
+            inserted_id = ArticleKeywordsService.insert_one(article)
+            mycontents_logger.info(f"Inserted row id: {inserted_id}")
+        
+            
+            summary_success = self.summary_to_ollamaModel_v2(result_summary, result_summary_json, contentsMetaResult, pred_keywords, ai_keywords, mycontents_logger) 
             contentsMetaResult.summarySucYN = "Y" if summary_success else "N"
             mycontents_logger.info(f"요약분석 소요시간 : {summary_end-summary_start} 초 소요")
+            
+            article_sum = ArticlesSummaryVO(
+                orgId=queueContent.contentOrgId,
+                long_summary=result_summary_json["long_summary"],
+                short_summary=result_summary_json["short_summary"],
+                success=summary_success,
+                url=queueContent.url
+            )
+            
+            inserted_id = ArticlesSummaryService.insert_one(article_sum)
+            mycontents_logger.info(f"Inserted row id: {inserted_id}")
 
-            new_question_sentiment = self.question_sentiment.replace("org_name_list_from_db", org_name_list).replace("[contents]",content)
+            ### sentiment part!
+            # 20251013 리자: 프롬프트 3)분리 --> 반복 x 3
+            # orgId로 기관 이름 + 약어 등 조회
+            orgId = queueContent.contentOrgId    
+            orgName, combined_keywords = ContentsOrgService().getOrgNameAndKeywords(queueContent.contentOrgId)
+            new_question_sentiment_ratio = self.question_sentiment_ratio.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
+            if combined_keywords and isinstance(combined_keywords, list):
+                synonyms_str = ", ".join(str(item) for item in combined_keywords)
+                new_question_sentiment_ratio = new_question_sentiment_ratio.replace("[synonyms]", synonyms_str)
+            else:
+                new_question_sentiment_ratio = new_question_sentiment_ratio.replace("[synonyms]", str(orgName) if orgName else "") #if synonyms is empty, use orgName
+            
+            ### Log each time separately???
             sentiment_start = time.time()
-            result_sentiment = self.chat_ollama._client.generate(
+            #3-1) ratio 추출
+            result_sentiment_ratio = self.chat_ollama._client.generate(
                                     model=CONF.OLLAMA_MODEL,
-                                    prompt=new_question_sentiment,
+                                    prompt=new_question_sentiment_ratio,
                                     format="json")
+            # sentiment_end = time.time()
+            is_success, result_sentiment_ratio_json = self.json_load(result_sentiment_ratio, mycontents_logger) 
+            positiveRatio = self.str_to_double(result_sentiment_ratio_json.get("positiveRatio", "0"))
+            negativeRatio = self.str_to_double(result_sentiment_ratio_json.get("negativeRatio", "0"))
+            
+            #3-2) reason 추출
+            new_question_sentiment_reason = self.question_sentiment_reason.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
+            if combined_keywords and isinstance(combined_keywords, list):
+                synonyms_str = ", ".join(str(item) for item in combined_keywords)
+                new_question_sentiment_reason = new_question_sentiment_reason.replace("[synonyms]", synonyms_str)
+            else:
+                new_question_sentiment_reason = new_question_sentiment_reason.replace("[synonyms]", str(orgName) if orgName else "") #if synonyms is empty, use orgName
+            new_question_sentiment_reason = new_question_sentiment_reason.replace("[positiveRatio]", str(positiveRatio)).replace("[negativeRatio]", str(negativeRatio))
+            
+            result_sentiment_reason = self.chat_ollama._client.generate(
+                                    model=CONF.OLLAMA_MODEL,
+                                    prompt=new_question_sentiment_reason,
+                                    format="json")
+            is_success, result_sentiment_reason_json = self.json_load(result_sentiment_reason, mycontents_logger) 
+            
+            #3-3) keywords 추출
+            new_question_sentiment_keywords = self.question_sentiment_keywords.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
+            if combined_keywords and isinstance(combined_keywords, list):
+                synonyms_str = ", ".join(str(item) for item in combined_keywords)
+                new_question_sentiment_keywords = new_question_sentiment_keywords.replace("[synonyms]", synonyms_str)
+            else:
+                new_question_sentiment_keywords = new_question_sentiment_keywords.replace("[synonyms]", str(orgName) if orgName else "") #if synonyms is empty, use orgName
+            new_question_sentiment_keywords = new_question_sentiment_keywords.replace("[positiveRatio]", str(positiveRatio)).replace("[negativeRatio]", str(negativeRatio))
+            
+            result_sentiment_keywords = self.chat_ollama._client.generate(
+                                    model=CONF.OLLAMA_MODEL,
+                                    prompt=new_question_sentiment_keywords,
+                                    format="json")
+            is_success, result_sentiment_keywords_json = self.json_load(result_sentiment_keywords, mycontents_logger) 
+            
+            
+            #sentiment_success = self.sentiment_to_ollamaModel_v2(result_sentiment_ratio, result_sentiment_ratio_json, contentsMetaResult,  mycontents_logger) 
+            
+            #20251013 리자: assemble from separate prompts
+            sentiment_separated_success = self.assemble_sentiment_to_ollamaModel_v2(queueContent, orgName, result_sentiment_ratio, result_sentiment_ratio_json, result_sentiment_reason, result_sentiment_reason_json, result_sentiment_keywords, result_sentiment_keywords_json, contentsMetaResult,  mycontents_logger) 
+            contentsMetaResult.sentimentSucYN = "Y" if sentiment_separated_success else "N"
             sentiment_end = time.time()
-            is_success, result_sentiment_json = self.json_load(result_sentiment,mycontents_logger) 
-            sentiment_success = self.sentiment_to_ollamaModel_v2(result_sentiment, result_sentiment_json, contentsMetaResult,  mycontents_logger) 
-            contentsMetaResult.sentimentSucYN = "Y" if sentiment_success else "N"
             mycontents_logger.info(f"평판분석 소요시간 : {sentiment_end-sentiment_start} 초 소요")
             
+            article_sentiment = ArticleSentimentVO(
+                orgId=queueContent.contentOrgId,
+                url=queueContent.url,
+                positive_ratio=result_sentiment_json["positive_ratio"],
+                positive_reason=result_sentiment_json["positive_reason"],
+                negative_ratio=result_sentiment_json["negative_ratio"],
+                negative_reason=result_sentiment_json["negative_reason"],
+                neutral_ratio=result_sentiment_json["neutral_ratio"],
+                positive_keywords=result_sentiment_json["positive_keywords"],
+                negative_keywords=result_sentiment_json["negative_keywords"],
+                success=is_success,
+            )
+            inserted_id = ArticleSentimentService.insert_one(article_sentiment)
+            mycontents_logger.info(f"Inserted row id: {inserted_id}")
+            
+
             #요약만 성공해도 성공으로 처리                        
             contentsMetaResult.metaSucYN = "Y" if summary_success else "N"
             contentsMetaResult.metaAnalyzeDt = datetime.now(timezone.utc)  
@@ -183,16 +292,20 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             return False, None
 
 
-    def summary_to_ollamaModel_v2(self,result_summary:GenerateResponse, result_summary_json, contentsMetaResult:ContentsMetaResult, pred_kewords:dict,mycontents_logger:logging.Logger) -> bool:
+    def summary_to_ollamaModel_v2(self,result_summary:GenerateResponse, result_summary_json, contentsMetaResult:ContentsMetaResult, pred_kewords:dict, ai_keywords:list, mycontents_logger:logging.Logger) -> bool:
         """Ollama 분석 결과의 json --> summary 모델 변환 
         """          
         try:
             
-            keyword = result_summary_json["keyword"]
+            #20251013 리자: 프롬프트 2)에서 키워드 삭제에 따른 변경:
+            # keyword = result_summary_json["keyword"]
+            # if keyword is not None and isinstance(keyword,list): 
+            #     contentsMetaResult.contentsMeta.keywords = keyword
+            keyword = ai_keywords
             if keyword is not None and isinstance(keyword,list): 
                 contentsMetaResult.contentsMeta.keywords = keyword
                     
-            predkeywords = pred_kewords
+            predkeywords = pred_kewords #pre-defined keywords
             if predkeywords is not None and isinstance(predkeywords,dict):
                 contentsMetaResult.contentsMeta.predKeywords = self.nomalize_keywords(predkeywords)
 
@@ -315,6 +428,33 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
         
         return  result_dict
 
+
+    def assemble_sentiment_to_ollamaModel_v2(self, queueContent:ContentsQueueVO, orgName:str, result_sentiment_ratio:GenerateResponse, result_sentiment_ratio_json, result_sentiment_reason:GenerateResponse, result_sentiment_reason_json, result_sentiment_keywords:GenerateResponse, result_sentiment_keywords_json, contentsMetaResult:ContentsMetaResult, mycontents_logger:logging.Logger) -> bool:
+        """Ollama 분석 3개의 결과의 json을 통합하여 --> sentiment 모델 변환"""           
+        try:
+            contentsMetaResult.contentsMeta.sentiments = []
+            singleSentimentInfo = SentimentInfo()
+            singleSentimentInfo.orgName = orgName
+            singleSentimentInfo.orgId = queueContent.contentOrgId
+            singleSentimentInfo.positiveRatio = self.str_to_double(result_sentiment_ratio_json.get("positiveRatio", "0"))
+            singleSentimentInfo.negativeRatio = self.str_to_double(result_sentiment_ratio_json.get("negativeRatio", "0"))
+            singleSentimentInfo.neutralRatio = self.str_to_double(result_sentiment_ratio_json.get("neutralRatio", "0"))
+            # Safe handling for list fields
+            positiveKeywords = result_sentiment_keywords_json.get("positiveKeywords", [])
+            singleSentimentInfo.positiveKeywords = positiveKeywords if isinstance(positiveKeywords, list) else []
+            
+            negativeKeywords = result_sentiment_keywords_json.get("negativeKeywords", [])
+            singleSentimentInfo.negativeKeywords = negativeKeywords if isinstance(negativeKeywords, list) else []
+            
+            # Safe handling for string fields
+            singleSentimentInfo.positiveReason = str(result_sentiment_reason_json.get("positiveReason", ""))
+            singleSentimentInfo.negativeReason = str(result_sentiment_reason_json.get("negativeReason", ""))
+            singleSentimentInfo.reason = str(result_sentiment_reason_json.get("reason", ""))
+            contentsMetaResult.contentsMeta.sentiments.append(singleSentimentInfo) 
+            return True
+        except Exception as e :
+            mycontents_logger.error(str(e))
+            return False 
 
     def sentiment_to_ollamaModel_v2(self,result_sentiment:GenerateResponse, result_sentiment_json, contentsMetaResult:ContentsMetaResult, mycontents_logger:logging.Logger) -> bool:
         """Ollama 분석 결과의 json --> sentiment 모델 변환"""           

@@ -7,6 +7,8 @@ from docker_scraping.contents_scraping_ollama_trafilaura import ContentsScraping
 from ksubscribe_server.analysis.ollama_alive import OllamaAlive
 from ksubscribe_share.db.service.contentsQueueService import ContentsQueueService
 from ksubscribe_share.db.service.contentsService import ContentsService
+from ksubscribe_share.db.service.statsService import StatsService
+from ksubscribe_share.db.service.contentsOrgService import ContentsOrgService
 from ksubscribe_share.logger import Logger
 #from ksubscribe_share import config as Conf
 import ksubscribe_share.config as Conf
