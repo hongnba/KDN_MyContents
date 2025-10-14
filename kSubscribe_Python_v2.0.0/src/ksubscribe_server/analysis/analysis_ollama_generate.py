@@ -245,6 +245,22 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             sentiment_end = time.time()
             mycontents_logger.info(f"평판분석 소요시간 : {sentiment_end-sentiment_start} 초 소요")
             
+            article_sentiment = ArticleSentimentVO(
+                orgId=queueContent.contentOrgId,
+                url=queueContent.url,
+                positive_ratio=result_sentiment_json["positive_ratio"],
+                positive_reason=result_sentiment_json["positive_reason"],
+                negative_ratio=result_sentiment_json["negative_ratio"],
+                negative_reason=result_sentiment_json["negative_reason"],
+                neutral_ratio=result_sentiment_json["neutral_ratio"],
+                positive_keywords=result_sentiment_json["positive_keywords"],
+                negative_keywords=result_sentiment_json["negative_keywords"],
+                success=is_success,
+            )
+            inserted_id = ArticleSentimentService.insert_one(article_sentiment)
+            mycontents_logger.info(f"Inserted row id: {inserted_id}")
+            
+
             #요약만 성공해도 성공으로 처리                        
             contentsMetaResult.metaSucYN = "Y" if summary_success else "N"
             contentsMetaResult.metaAnalyzeDt = datetime.now(timezone.utc)  
