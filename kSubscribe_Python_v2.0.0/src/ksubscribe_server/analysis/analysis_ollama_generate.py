@@ -42,6 +42,11 @@ from ksubscribe_server.similarity.simularity_check import SimularityChecker
 from ksubscribe_server.analysis.analysis_ollama_base import AnalysisOllamaBase
 import ksubscribe_share.config as CONF
 from pydantic import BaseModel, PrivateAttr, model_validator
+from ksubscribe_share.db.service.articleKeywordsService import ArticleKeywordsService
+from ksubscribe_share.db.service.articleSummaryService import ArticlesSummaryService
+from ksubscribe_share.db.mariadb_model.articleKeywordsVO import ArticleKeywordsVO
+from ksubscribe_share.db.mariadb_model.articleSummaryVO import ArticlesSummaryVO
+
 def count_tokens(text: str, model: str = "llama3"):
     enc = tiktoken.encoding_for_model(model)
     return len(enc.encode(text))
@@ -143,7 +148,12 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                 mycontents_logger.info(f"키워드 추출대상 아님")
                 
             #LIZA: add article keywords (25.10.02)
-            article_keywords = result_verify_json["ai_keyword"]
+            try:
+                article_keywords = result_verify_json["ai_keyword"]
+            except Exception as e:
+                article_keywords = None
+                mycontents_logger.info(f"ai_keyword 없음")
+            
             
             article = ArticleKeywordsVO(
                 orgId=queueContent.contentOrgId,
@@ -160,6 +170,17 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             summary_success = self.summary_to_ollamaModel_v2(result_summary, result_summary_json, contentsMetaResult, pred_keywords, ai_keywords, mycontents_logger) 
             contentsMetaResult.summarySucYN = "Y" if summary_success else "N"
             mycontents_logger.info(f"요약분석 소요시간 : {summary_end-summary_start} 초 소요")
+            
+            article_sum = ArticlesSummaryVO(
+                orgId=queueContent.contentOrgId,
+                long_summary=result_summary_json["long_summary"],
+                short_summary=result_summary_json["short_summary"],
+                success=summary_success,
+                url=queueContent.url
+            )
+            
+            inserted_id = ArticlesSummaryService.insert_one(article_sum)
+            mycontents_logger.info(f"Inserted row id: {inserted_id}")
 
             ### sentiment part!
             # 20251013 리자: 프롬프트 3)분리 --> 반복 x 3
