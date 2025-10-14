@@ -40,7 +40,8 @@ from ksubscribe_share.db.data_migration.data_validator import data_validator
 from docker_scraping.web_loader import WebLoaderV3
 from docker_scraping.contents_scraping_base import ContentsScrapingBase, CustomScrapException, time_now
 from docker_scraping.ai_scraping.trafilaura import TrafilauraScraper
-
+from ksubscribe_share.db.service.originalContentsService import OriginalContentsService
+from ksubscribe_share.db.dbmodelV2.originalContentsVO import OriginalContentsVO
 
 class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
     '''        
@@ -50,8 +51,9 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
     commCodeService = CommCodeService()
     contentsOrgService = ContentsOrgService()
     contentsQueueService = ContentsQueueService()    
-    contentsService = ContentsService()    
+    contentsService = ContentsService()
     statsService = StatsService()
+    originalContentsService = OriginalContentsService()
     trafilauraScraper = TrafilauraScraper()
     docker_scraping_logger = Logger().setup_logger(Logger.docker_scraping_logger_name)    
     docker_scraping_result_logger = Logger().setup_logger(Logger.docker_scraping_result_logger_name)    
@@ -289,7 +291,27 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
                 self.docker_scraping_logger.info(f"Web 컨텐츠 수집 실패 정보 저장({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
                 return 
             # Raw 데이터 수집 성공 시 
+            
+            
             self.scrapping_cnt_for_once +=1
+            
+            #LIZA: add original contents (25.10.02)
+            
+            logg
+        
+            originalContentsVO = OriginalContentsVO(
+                contentOrgId=queueContent.contentOrgId,
+                cateId=queueContent.cateId,
+                title=contentsVO.title,
+                contents=text,
+                url=queueContent.url,
+                pubDt=contentsVO.pubDt,
+                collectDt=contentsVO.rawCollectDt,
+                succeeded=isSuccess
+            )
+            self.originalContentsService.insertOne(originalContentsVO)
+            self.docker_scraping_logger.info(f"Original Contents 저장 완료({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
+            
             contentsVO.rawCollectSucYN = 'Y'
             contentsVO.contentsRaw = self.generateContentsRaw(contentsVO.title, 
                                                               contents=text, 
