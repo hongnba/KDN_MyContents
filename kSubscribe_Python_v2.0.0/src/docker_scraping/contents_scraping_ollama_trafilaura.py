@@ -199,18 +199,18 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
                 # title 추가 
                 isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(title=queueContent.title,content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger)            
                 #isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger)            
-        #         if isSuccess:
-        #             contentsVO = self.generateContentsMeta_ollama( contentsVO, contentsMetaResult)
-        #         else:
-        #             contentsVO = self.generateContentsMeta_ollama( contentsVO, error_ollamaMetaResult)
-        #         if contentsVO.metaSucYN == "Y":
-        #             ContentsCollectDailyHistoryService().inc_daily_scrapping_cnt()
-        #             self.analysis_cnt_for_once += 1
-        #             self.docker_scraping_logger.info(f"Contents 요약 및 분석 성공({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
-        #         else:
-        #             self.docker_scraping_logger.info(f"컨텐츠 요약 실패 원문 : sumary : {summary} \n sentiments: {sentiment}")
-        #             self.docker_scraping_logger.info(f"Contents 요약 및 분석 실패({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
-        #         #여기서 ollama 또는 nlp 연결하여 본다. 
+                if isSuccess:
+                    contentsVO = self.generateContentsMeta_ollama( contentsVO, contentsMetaResult)
+                else:
+                    contentsVO = self.generateContentsMeta_ollama( contentsVO, error_ollamaMetaResult)
+                if contentsVO.metaSucYN == "Y":
+                    ContentsCollectDailyHistoryService().inc_daily_scrapping_cnt()
+                    self.analysis_cnt_for_once += 1
+                    self.docker_scraping_logger.info(f"Contents 요약 및 분석 성공({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
+                else:
+                    self.docker_scraping_logger.info(f"컨텐츠 요약 실패 원문 : sumary : {summary} \n sentiments: {sentiment}")
+                    self.docker_scraping_logger.info(f"Contents 요약 및 분석 실패({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
+                #여기서 ollama 또는 nlp 연결하여 본다. 
                 
         except Exception as e:   
             pass 
