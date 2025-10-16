@@ -14,20 +14,20 @@ import ksubscribe_share.config as Conf
         
 if __name__ == "__main__":
 
-    try:
-        # 1. docker collect
-        dockerCollectMain = DockerCollectMain()
-        print("dockerCollectMain.distribute()")
-        dockerCollectMain.distribute()
-        
-    except Exception as e:
-        pass 
+    # try:
+    #     # 1. docker collect
+    #     dockerCollectMain = DockerCollectMain()
+    #     print("dockerCollectMain.distribute()")
+    #     dockerCollectMain.distribute()
+    #     
+    # except Exception as e:
+    #     pass 
 
-    try:
-        #Queue의 중복성 검사   
-        ContentsQueueService().removeDuplicateUrl() 
-    except Exception as e:
-        pass 
+    # try:
+    #     #Queue의 중복성 검사   
+    #     ContentsQueueService().removeDuplicateUrl() 
+    # except Exception as e:
+    #     pass 
 
     try:
         # 2. start ollama alive thread

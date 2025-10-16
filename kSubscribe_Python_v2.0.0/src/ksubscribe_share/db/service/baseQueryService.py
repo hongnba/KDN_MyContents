@@ -61,6 +61,24 @@ class BaseQueryService:
         else:
             result = collection.insert_one(mongoModel.to_mongo(), session=session)
         mongoModel._id = result.inserted_id  # 삽입된 문서의 _id를 설정
+        # Archive a copy of contents into old_contents when finalized
+        try:
+            if getattr(mongoModel, "collectionName", "") == "contents":
+                archive_collection = cls.mongoManager.getCollection("old_contents")
+                archive_doc = mongoModel.to_mongo().copy()
+                original_id = archive_doc.get("_id")
+                if original_id is not None:
+                    archive_doc["original_id"] = original_id
+                # Let MongoDB generate a new _id for the archive document
+                archive_doc.pop("_id", None)
+                archive_doc["archivedAt"] = datetime.datetime.utcnow()
+                if session is None:
+                    archive_collection.insert_one(archive_doc)
+                else:
+                    archive_collection.insert_one(archive_doc, session=session)
+        except Exception:
+            # Do not block primary insert on archival errors
+            pass
         return result
 
     @classmethod

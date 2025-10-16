@@ -54,6 +54,8 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
     docker_scraping_logger = Logger().setup_logger(Logger.docker_scraping_logger_name)    
     docker_scraping_result_logger = Logger().setup_logger(Logger.docker_scraping_result_logger_name)    
     def __init__(self):
+        # Control whether to remove items from contents_queue after processing
+        self.delete_queue_after_processing = False
         self.orgCodeList = self.commCodeService.get_org_code_list()
         self.cateCodeList = self.commCodeService.get_cate_code_list() 
         
@@ -127,17 +129,15 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         if queueContent is None:
             self.docker_scraping_logger.info(f"queueContent is None")
             return  
-        if ContentsService().isExistContents(queueContent.url):
-            self.docker_scraping_logger and self.docker_scraping_logger.info(f"이미 ContentsDB에 존재하는 contents입니다. {queueContent.url}")
-            return None
+        # if ContentsService().isExistContents(queueContent.url):
+        #     self.docker_scraping_logger and self.docker_scraping_logger.info(f"이미 ContentsDB에 존재하는 contents입니다. {queueContent.url}")
+        #     return None
             
         if not any(item["code"] == queueContent.contentOrgId for item in self.orgCodeList):
-            print(f"orgId : {queueContent.contentOrgId} not exist")                
-            return False
+            self.docker_scraping_logger.warning(f"Unknown orgId in common_code (processing anyway): {queueContent.contentOrgId}")
         
         if not any(queueContent.cateId == item["code"] for item in self.cateCodeList):
-            print(f"cateId : {queueContent.cateId} not exist")                
-            return False        
+            self.docker_scraping_logger.warning(f"Unknown cateId in common_code (processing anyway): {queueContent.cateId}")        
         
         contentsOrgVO, contentsOrgCategory = self.contentsOrgService.findOrgAndCategory(queueContent.contentOrgId, queueContent.cateId)
         contentsVO = self.generateContentVO(queueContent)
@@ -172,7 +172,8 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
                 #이미지 아이디는 무조건 생성한다.      
                 contentsVO = self.generate_imageId(contentsVO)
                 BaseQueryService.insert_one(contentsVO)  #디버깅 코드 : ContentsService().insert_contents_todebugcollection(contentsVO)           
-                ContentsQueueService().deleteQueue(queueContent._id) 
+                if self.delete_queue_after_processing:
+                    ContentsQueueService().deleteQueue(queueContent._id) 
                 self.docker_scraping_logger.info(f"Web 컨텐츠 수집 실패 정보 저장({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
                 return 
             # Raw 데이터 수집 성공 시 
@@ -234,17 +235,15 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         """
         if queueContent is None:
             return  
-        if ContentsService().isExistContents(queueContent.url):
-            self.docker_scraping_logger and self.docker_scraping_logger.info(f"이미 ContentsDB에 존재하는 contents입니다. {queueContent.url}")
-            return None
+        # if ContentsService().isExistContents(queueContent.url):
+        #     self.docker_scraping_logger and self.docker_scraping_logger.info(f"이미 ContentsDB에 존재하는 contents입니다. {queueContent.url}")
+        #     return None
             
         if not any(item["code"] == queueContent.contentOrgId for item in self.orgCodeList):
-            print(f"orgId : {queueContent.contentOrgId} not exist")                
-            return False
+            self.docker_scraping_logger.warning(f"Unknown orgId in common_code (processing anyway): {queueContent.contentOrgId}")
         
         if not any(queueContent.cateId == item["code"] for item in self.cateCodeList):
-            print(f"cateId : {queueContent.cateId} not exist")                
-            return False        
+            self.docker_scraping_logger.warning(f"Unknown cateId in common_code (processing anyway): {queueContent.cateId}")        
         
         contentsOrgVO, contentsOrgCategory = self.contentsOrgService.findOrgAndCategory(queueContent.contentOrgId, queueContent.cateId)
         contentsVO = self.generateContentVO(queueContent)
@@ -328,7 +327,8 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
                 contentsVO.contentsRaw.contents = ""            
             
             BaseQueryService.insert_one(contentsVO)
-            ContentsQueueService().deleteQueue(queueContent._id) 
+            if self.delete_queue_after_processing:
+                ContentsQueueService().deleteQueue(queueContent._id) 
             self.docker_scraping_logger.info(f"Web 컨텐츠 수집/요약 정보 저장({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
         except Exception as e : 
             tb_str = ''.join(traceback.format_exception(None, e, e.__traceback__))
