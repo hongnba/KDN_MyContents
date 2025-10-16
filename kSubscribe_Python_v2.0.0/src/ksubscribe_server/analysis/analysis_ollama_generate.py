@@ -164,8 +164,12 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                 url=queueContent.url
             )
 
-            inserted_id = ArticleKeywordsService.insert_one(article)
-            mycontents_logger.info(f"Inserted row id: {inserted_id}")
+            try:
+                inserted_id = ArticleKeywordsService.insert_one(article)
+                mycontents_logger.info(f"ArticleKeywords inserted successfully - row id: {inserted_id}")
+            except Exception as e:
+                mycontents_logger.error(f"Failed to insert ArticleKeywords to MariaDB: {e}")
+                mycontents_logger.info("Continuing analysis despite MariaDB error...")
         
             
             summary_success = self.summary_to_ollamaModel_v2(result_summary, result_summary_json, contentsMetaResult, pred_keywords, ai_keywords, mycontents_logger) 
@@ -180,8 +184,12 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                 url=queueContent.url
             )
             
-            inserted_id = ArticlesSummaryService.insert_one(article_sum)
-            mycontents_logger.info(f"Inserted row id: {inserted_id}")
+            try:
+                inserted_id = ArticlesSummaryService.insert_one(article_sum)
+                mycontents_logger.info(f"ArticlesSummary inserted successfully - row id: {inserted_id}")
+            except Exception as e:
+                mycontents_logger.error(f"Failed to insert ArticlesSummary to MariaDB: {e}")
+                mycontents_logger.info("Continuing analysis despite MariaDB error...")
 
             ### sentiment part!
             # 20251013 리자: 프롬프트 3)분리 --> 반복 x 3
@@ -208,7 +216,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             negativeRatio = self.str_to_double(result_sentiment_ratio_json.get("negativeRatio", "0"))
             
             #3-2) reason 추출
-            new_question_sentiment_reason = self.question_sentiment_reason.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
+            new_question_sentiment_reason = self.sentiment_reason.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
             if combined_keywords and isinstance(combined_keywords, list):
                 synonyms_str = ", ".join(str(item) for item in combined_keywords)
                 new_question_sentiment_reason = new_question_sentiment_reason.replace("[synonyms]", synonyms_str)
@@ -223,7 +231,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             is_success, result_sentiment_reason_json = self.json_load(result_sentiment_reason, mycontents_logger) 
             
             #3-3) keywords 추출
-            new_question_sentiment_keywords = self.question_sentiment_keywords.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
+            new_question_sentiment_keywords = self.sentiment_keywords.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
             if combined_keywords and isinstance(combined_keywords, list):
                 synonyms_str = ", ".join(str(item) for item in combined_keywords)
                 new_question_sentiment_keywords = new_question_sentiment_keywords.replace("[synonyms]", synonyms_str)
@@ -246,27 +254,14 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             sentiment_end = time.time()
             mycontents_logger.info(f"평판분석 소요시간 : {sentiment_end-sentiment_start} 초 소요")
             
-            article_sentiment = ArticleSentimentVO(
-                orgId=queueContent.contentOrgId,
-                url=queueContent.url,
-                positive_ratio=result_sentiment_json["positive_ratio"],
-                positive_reason=result_sentiment_json["positive_reason"],
-                negative_ratio=result_sentiment_json["negative_ratio"],
-                negative_reason=result_sentiment_json["negative_reason"],
-                neutral_ratio=result_sentiment_json["neutral_ratio"],
-                positive_keywords=result_sentiment_json["positive_keywords"],
-                negative_keywords=result_sentiment_json["negative_keywords"],
-                success=is_success,
-            )
-            inserted_id = ArticleSentimentService.insert_one(article_sentiment)
-            mycontents_logger.info(f"Inserted row id: {inserted_id}")
+            # Note: Sentiment persistence to RDBMS is temporarily disabled due to schema/API changes
             
 
             #요약만 성공해도 성공으로 처리                        
             contentsMetaResult.metaSucYN = "Y" if summary_success else "N"
             contentsMetaResult.metaAnalyzeDt = datetime.now(timezone.utc)  
             
-            return True, contentsMetaResult,result_summary,result_sentiment,None 
+            return True, contentsMetaResult, result_summary, None, None 
 
         except Exception as e: 
             #trackback logging

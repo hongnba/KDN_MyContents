@@ -7,6 +7,8 @@ from typing import List, Dict
 import time
 import asyncio
 import json
+import re
+import pytz
 
 
 #from docker_scraping
@@ -32,16 +34,15 @@ from ksubscribe_share.db.dbmodelV2.predefineKeywordVO import PredefineKeywordVO
 from ksubscribe_share.db.service.commCodeService import CommCodeService
 from ksubscribe_share.db.service.contentsOrgService import ContentsOrgService
 from ksubscribe_share.db.service.predefineKeywordService import PredefineKeywordService
-from ksubscribe_share.db.service.statsService import StatsService
 from ksubscribe_share.db.service.contentsQueueService import ContentsQueueService
 from ksubscribe_share.db.service.baseQueryService import BaseQueryService
 from ksubscribe_share.db.service.contentsImageService import ContentsImageService
 from ksubscribe_share.db.data_migration.data_validator import data_validator
+# from ksubscribe_share.db.json_backup_utils import JsonBackupUtils  # Commented out - file was deleted
 from docker_scraping.web_loader import WebLoaderV3
 from docker_scraping.contents_scraping_base import ContentsScrapingBase, CustomScrapException, time_now
 from docker_scraping.ai_scraping.trafilaura import TrafilauraScraper
-from ksubscribe_share.db.service.originalContentsService import OriginalContentsService
-from ksubscribe_share.db.dbmodelV2.originalContentsVO import OriginalContentsVO
+
 
 class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
     '''        
@@ -51,9 +52,7 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
     commCodeService = CommCodeService()
     contentsOrgService = ContentsOrgService()
     contentsQueueService = ContentsQueueService()    
-    contentsService = ContentsService()
-    statsService = StatsService()
-    originalContentsService = OriginalContentsService()
+    contentsService = ContentsService()    
     trafilauraScraper = TrafilauraScraper()
     docker_scraping_logger = Logger().setup_logger(Logger.docker_scraping_logger_name)    
     docker_scraping_result_logger = Logger().setup_logger(Logger.docker_scraping_result_logger_name)    
@@ -78,7 +77,12 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
             
         separator = ", "  # 구분자 정의
         self.org_name_list = separator.join(self.org_name_list)    
-        self.keyword_name_list = separator.join(self.keyword_name_list)   
+        self.keyword_name_list = separator.join(self.keyword_name_list)
+        
+        # MongoDB connection for backup collection
+        self.mongo_manager = MongoManager()
+        self.db = self.mongo_manager.dataBase
+        self.contents_backup_collection = self.db['contents_backup']   
     
     #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # Contents_queue 데이터에 대한 스크래핑 -> 요약, 키워드 추출, 평판, 
@@ -122,10 +126,6 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         self.docker_scraping_result_logger.info(f"스크랩 성공 개수 : {self.scrapping_cnt_for_once}")
         self.docker_scraping_result_logger.info(f"요약 및 분석 성공 개수 : {self.analysis_cnt_for_once}")
         self.docker_scraping_result_logger.info("--------------Docker_Scraping 완료 --------------")         
-        
-        # Calculate statistics for all organizations after processing
-        self._calculate_organization_stats()
-        
         pass 
     
     #25.03.13 분석용 함수.당분간 _test함수 유지     
@@ -137,6 +137,10 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
             return  
         if ContentsService().isExistContents(queueContent.url):
             self.docker_scraping_logger and self.docker_scraping_logger.info(f"이미 ContentsDB에 존재하는 contents입니다. {queueContent.url}")
+            
+            # JSON backup: Save queue content even if it already exists in DB
+            # JsonBackupUtils.save_to_json(queueContent, "contents_queue", "already_exists", self.docker_scraping_logger)  # Commented out - file was deleted
+            
             return None
             
         if not any(item["code"] == queueContent.contentOrgId for item in self.orgCodeList):
@@ -189,6 +193,10 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
             contentsVO.contentsRaw = self.generateContentsRaw(contentsVO.title, 
                                                               contents=text, 
                                                               errorInfo=None)
+            
+            # JSON backup: Save ContentsRaw data after scraping
+            # JsonBackupUtils.save_contents_raw(contentsVO.contentsRaw, self.docker_scraping_logger)  # Commented out - file was deleted
+            
             self.docker_scraping_logger.info(f"Web 컨텐츠 수집 성공({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
             
             ONLY_SCRAPPING = False 
@@ -291,31 +299,15 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
                 self.docker_scraping_logger.info(f"Web 컨텐츠 수집 실패 정보 저장({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
                 return 
             # Raw 데이터 수집 성공 시 
-            
-            
             self.scrapping_cnt_for_once +=1
-            
-            #LIZA: add original contents (25.10.02)
-            
-            # logger
-        
-            originalContentsVO = OriginalContentsVO(
-                contentOrgId=queueContent.contentOrgId,
-                cateId=queueContent.cateId,
-                title=contentsVO.title,
-                contents=text,
-                url=queueContent.url,
-                pubDt=contentsVO.pubDt,
-                collectDt=contentsVO.rawCollectDt,
-                succeeded=isSuccess
-            )
-            self.originalContentsService.insertOne(originalContentsVO)
-            self.docker_scraping_logger.info(f"Original Contents 저장 완료({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
-            
             contentsVO.rawCollectSucYN = 'Y'
             contentsVO.contentsRaw = self.generateContentsRaw(contentsVO.title, 
                                                               contents=text, 
                                                               errorInfo=None)
+            
+            # JSON backup: Save ContentsRaw data after scraping
+            # JsonBackupUtils.save_contents_raw(contentsVO.contentsRaw, self.docker_scraping_logger)  # Commented out - file was deleted
+            
             self.docker_scraping_logger.info(f"Web 컨텐츠 수집 성공({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
             
             ONLY_SCRAPPING = False 
@@ -330,7 +322,7 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
                 
                 # #요약, 키워드 추출, 평판분석 ##########################################################            
                 contentsVO.metaAnalyzeDt = datetime.now() 
-                isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger, queueContent=queueContent)            
+                isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger)            
                 if isSuccess:
                     contentsVO = self.generateContentsMeta_ollama( contentsVO, contentsMetaResult)
                 else:
@@ -354,6 +346,9 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
             #2025.03.18 콘텐츠 저장되지 않도록 수정 
             if contentsVO and contentsVO.contentsRaw:
                 contentsVO.contentsRaw.contents = ""            
+            
+            # JSON backup: Save final Contents data
+            # JsonBackupUtils.save_contents(contentsVO, self.docker_scraping_logger)  # Commented out - file was deleted
             
             BaseQueryService.insert_one(contentsVO)
             ContentsQueueService().deleteQueue(queueContent._id) 
@@ -545,67 +540,246 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
             tb_str = ''.join(traceback.format_exception(None, e, e.__traceback__))
             self.docker_scraping_logger.error(f'error :  {tb_str}')            
     
-    def _calculate_organization_stats(self):
-        """Calculate statistics for all organizations after content processing"""
+    #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # Process URLs from today.json and save to contents_backup collection
+    #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    def extract_urls_from_today_json(self, file_path: str = "/app/today.json") -> List[Dict]:
+        """
+        Extract URLs and metadata from today.json file
+        """
         try:
-            self.docker_scraping_logger.info("Starting statistics calculation for all organizations...")
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
             
-            # Get all organizations
-            all_orgs = self.contentsOrgService.find_all()
+            # Extract URLs using regex
+            url_pattern = r'"url"\s*:\s*"([^"]+)"'
+            urls = re.findall(url_pattern, content)
             
-            for org in all_orgs:
-                if not org.orgId:
-                    continue
-                    
-                try:
-                    self.docker_scraping_logger.info(f"Processing stats for organization: {org.orgName} ({org.orgId})")
-                    
-                    # Always recalculate daily stats
-                    self.docker_scraping_logger.info(f"  - Calculating daily stats for {org.orgName}")
-                    self.statsService.count_for_period(org.orgId, 'day')
-                    
-                    # Check if weekly stats need recalculation
-                    existing_weekly = self.statsService.get_for_period(org.orgId, 'week')
-                    should_recalculate_weekly = True
-                    
-                    if existing_weekly and existing_weekly.last_calculate_date:
-                        time_since_last_weekly = datetime.utcnow() - existing_weekly.last_calculate_date
-                        if time_since_last_weekly < timedelta(days=7):
-                            should_recalculate_weekly = False
-                            self.docker_scraping_logger.info(f"  - Weekly stats for {org.orgName} are up to date (last calculated: {existing_weekly.last_calculate_date})")
-                    
-                    if should_recalculate_weekly:
-                        self.docker_scraping_logger.info(f"  - Calculating weekly stats for {org.orgName}")
-                        self.statsService.count_for_period(org.orgId, 'week')
-                    
-                    # Check if monthly stats need recalculation
-                    existing_monthly = self.statsService.get_for_period(org.orgId, 'month')
-                    should_recalculate_monthly = True
-                    
-                    if existing_monthly and existing_monthly.last_calculate_date:
-                        time_since_last_monthly = datetime.utcnow() - existing_monthly.last_calculate_date
-                        if time_since_last_monthly < timedelta(days=30):
-                            should_recalculate_monthly = False
-                            self.docker_scraping_logger.info(f"  - Monthly stats for {org.orgName} are up to date (last calculated: {existing_monthly.last_calculate_date})")
-                    
-                    if should_recalculate_monthly:
-                        self.docker_scraping_logger.info(f"  - Calculating monthly stats for {org.orgName}")
-                        self.statsService.count_for_period(org.orgId, 'month')
-                        
-                except Exception as e:
-                    self.docker_scraping_logger.error(f"Error calculating stats for organization {org.orgName} ({org.orgId}): {e}")
-                    continue
+            # Extract titles
+            title_pattern = r'"title"\s*:\s*"([^"]+)"'
+            titles = re.findall(title_pattern, content)
             
-            self.docker_scraping_logger.info("Statistics calculation completed for all organizations.")
+            # Extract organization info
+            org_id_pattern = r'"contentsOrgId"\s*:\s*"([^"]+)"'
+            org_ids = re.findall(org_id_pattern, content)
+            
+            org_name_pattern = r'"contentsOrgName"\s*:\s*"([^"]+)"'
+            org_names = re.findall(org_name_pattern, content)
+            
+            # Extract category info
+            category_id_pattern = r'"categoryId"\s*:\s*"([^"]+)"'
+            category_ids = re.findall(category_id_pattern, content)
+            
+            category_name_pattern = r'"categoryName"\s*:\s*"([^"]+)"'
+            category_names = re.findall(category_name_pattern, content)
+            
+            # Extract publication dates
+            pub_dt_pattern = r'"pubDt"\s*:\s*ISODate\("([^"]+)"\)'
+            pub_dates = re.findall(pub_dt_pattern, content)
+            
+            # Combine all data
+            articles = []
+            for i in range(len(urls)):
+                article = {
+                    'url': urls[i],
+                    'title': titles[i] if i < len(titles) else '',
+                    'contentsOrgId': org_ids[i] if i < len(org_ids) else 'A0010',
+                    'contentsOrgName': org_names[i] if i < len(org_names) else '한국전력공사(주)',
+                    'categoryId': category_ids[i] if i < len(category_ids) else 'B0010',
+                    'categoryName': category_names[i] if i < len(category_names) else '네이버 뉴스',
+                    'pubDt': pub_dates[i] if i < len(pub_dates) else datetime.now().isoformat()
+                }
+                articles.append(article)
+            
+            # Remove duplicates based on URL
+            unique_articles = []
+            seen_urls = set()
+            for article in articles:
+                if article['url'] not in seen_urls:
+                    unique_articles.append(article)
+                    seen_urls.add(article['url'])
+            
+            self.docker_scraping_logger.info(f"Extracted {len(unique_articles)} unique articles from today.json")
+            return unique_articles
             
         except Exception as e:
-            self.docker_scraping_logger.error(f"Error in statistics calculation process: {e}")
+            self.docker_scraping_logger.error(f"Error extracting URLs from today.json: {e}")
+            return []
+
+    def process_articles_from_today_json(self):
+        """
+        Main method to process all articles from today.json and save to contents_backup
+        """
+        self.docker_scraping_logger.info("Starting processing of articles from today.json")
+        
+        # Extract articles from today.json
+        articles = self.extract_urls_from_today_json()
+        
+        if not articles:
+            self.docker_scraping_logger.error("No articles found in today.json")
+            return
+        
+        # Initialize components
+        webLoader = WebLoaderV3()
+        driver = get_driver()
+        ollamaAnalysis = AnalysisOllamaGenerateCall()
+        
+        processed_count = 0
+        failed_count = 0
+        
+        for i, article in enumerate(articles):
+            try:
+                self.docker_scraping_logger.info(f"Processing article {i+1}/{len(articles)}: {article['title'][:50]}...")
+                
+                # Create ContentsQueueVO from article data
+                queue_content = self.create_queue_content_from_article(article)
+                
+                # Process the article
+                success = self.process_single_article_to_backup(queue_content, webLoader, driver, ollamaAnalysis)
+                
+                if success:
+                    processed_count += 1
+                    self.docker_scraping_logger.info(f"Successfully processed: {article['title'][:50]}...")
+                else:
+                    failed_count += 1
+                    self.docker_scraping_logger.error(f"Failed to process: {article['title'][:50]}...")
+                    
+            except Exception as e:
+                failed_count += 1
+                self.docker_scraping_logger.error(f"Error processing article {i+1}: {e}")
+                traceback.print_exc()
+        
+        self.docker_scraping_logger.info(f"Processing complete. Success: {processed_count}, Failed: {failed_count}")
+        
+        # Clean up
+        if driver:
+            driver.quit()
+
+    def create_queue_content_from_article(self, article: Dict) -> ContentsQueueVO:
+        """
+        Create ContentsQueueVO from article data
+        """
+        queue_content = ContentsQueueVO()
+        queue_content.url = article['url']
+        queue_content.title = article['title']
+        queue_content.contentOrgId = article['contentsOrgId']
+        queue_content.cateId = article['categoryId']
+        queue_content.pubDt = datetime.fromisoformat(article['pubDt'].replace('Z', '+00:00'))
+        queue_content.collectDt = datetime.now(pytz.UTC)
+        queue_content.collectKeyword = "today_json_processing"
+        
+        return queue_content
+
+    def process_single_article_to_backup(self, queue_content: ContentsQueueVO, webLoader: WebLoaderV3, driver, ollamaAnalysis: AnalysisOllamaGenerateCall) -> bool:
+        """
+        Process a single article and save to contents_backup collection
+        """
+        try:
+            # Get organization and category info
+            contentsOrgVO, contentsOrgCategory = self.contentsOrgService.findOrgAndCategory(queue_content.contentOrgId, queue_content.cateId)
+            
+            if not contentsOrgVO or not contentsOrgCategory:
+                self.docker_scraping_logger.error(f"Could not find org/category for {queue_content.contentOrgId}/{queue_content.cateId}")
+                return False
+            
+            # Create ContentsVO
+            contentsVO = self.generateContentVO(queue_content)
+            contentsVO.rawCollectDt = datetime.utcnow()
+            
+            # Scrape content using Trafilaura
+            self.docker_scraping_logger.info(f"Scraping content: {queue_content.url}")
+            isSuccess, title, raw_data = self.trafilauraScraper.get_newbody(queue_content.url)
+            
+            if not isSuccess or not raw_data:
+                self.docker_scraping_logger.error(f"Failed to scrape content: {queue_content.url}")
+                contentsVO.rawCollectSucYN = "N"
+                contentsVO.contentsRaw = self.generateContentsRaw(
+                    contentsVO.title, 
+                    contents=raw_data or "Scraping failed", 
+                    errorInfo=self.generateErrorInfo(errorYN="Y", date=contentsVO.rawCollectDt, type="trafilaura", reason="Scraping failed")
+                )
+            else:
+                contentsVO.rawCollectSucYN = "Y"
+                contentsVO.contentsRaw = self.generateContentsRaw(contentsVO.title, contents=raw_data)
+            
+            # Generate image ID
+            contentsVO = self.generate_imageId(contentsVO)
+            
+            # Perform analysis if scraping was successful
+            if contentsVO.rawCollectSucYN == "Y":
+                self.docker_scraping_logger.info(f"Performing analysis for: {queue_content.url}")
+                contentsVO.metaAnalyzeDt = datetime.utcnow()
+                
+                try:
+                    # Perform analysis
+                    is_success, analysis_result = ollamaAnalysis.analysis_main(
+                        contentsVO.contentsRaw.contents,
+                        self.keyword_name_list,
+                        self.org_name_list,
+                        self.docker_scraping_logger,
+                        queue_content
+                    )
+                    
+                    if is_success and analysis_result:
+                        contentsVO.metaSucYN = "Y"
+                        contentsVO.contentsMeta = self.generateContentsMeta_ollama(contentsVO, analysis_result)
+                    else:
+                        contentsVO.metaSucYN = "N"
+                        contentsVO.contentsMeta = self.generateContentsMeta(contentsVO, "N", None, self.generateErrorInfo(errorYN="Y", date=contentsVO.metaAnalyzeDt, type="ollama", reason="Analysis failed"))
+                        
+                except Exception as e:
+                    self.docker_scraping_logger.error(f"Analysis failed: {e}")
+                    contentsVO.metaSucYN = "N"
+                    contentsVO.contentsMeta = self.generateContentsMeta(contentsVO, "N", None, self.generateErrorInfo(errorYN="Y", date=contentsVO.metaAnalyzeDt, type="ollama", reason="Analysis failed"))
+            else:
+                contentsVO.metaSucYN = "N"
+                contentsVO.contentsMeta = self.generateContentsMeta(contentsVO, "N", None, self.generateErrorInfo(errorYN="Y", date=contentsVO.metaAnalyzeDt, type="scraping", reason="Scraping failed"))
+            
+            # Save to contents_backup collection
+            self.save_to_backup_collection(contentsVO)
+            
+            return True
+            
+        except Exception as e:
+            self.docker_scraping_logger.error(f"Error processing article: {e}")
+            traceback.print_exc()
+            return False
+
+    def save_to_backup_collection(self, contentsVO: ContentsVO):
+        """
+        Save ContentsVO to contents_backup collection
+        """
+        try:
+            # Convert ContentsVO to dictionary
+            contents_dict = contentsVO.to_mongo()
+            
+            # Add backup metadata
+            contents_dict['backup_created_at'] = datetime.utcnow()
+            contents_dict['backup_source'] = 'today_json_processing'
+            
+            # Insert into backup collection
+            result = self.contents_backup_collection.insert_one(contents_dict)
+            
+            self.docker_scraping_logger.info(f"Saved to contents_backup collection with ID: {result.inserted_id}")
+            
+        except Exception as e:
+            self.docker_scraping_logger.error(f"Error saving to backup collection: {e}")
+            raise
         
         
 if __name__ == "__main__":
     
     
     contentsScrapingOllamaTrafilaura = ContentsScrapingOllamaTrafilaura()
+    
+    # Regular scraping from contents_queue
+    # contentsScrapingOllamaTrafilaura.crawl_and_analyze_ollama()
+    
+    # Process URLs from today.json and save to contents_backup collection
+    # contentsScrapingOllamaTrafilaura.process_articles_from_today_json()
+    
+    # Other methods
     #contentsScrapingOllamaTrafilaura.scrapping_for_exist_contents()
     # contentsScrapingOllamaTrafilaura.analysis_for_exist_contents()
     contentsScrapingOllamaTrafilaura.crawl_and_analyze_ollama()

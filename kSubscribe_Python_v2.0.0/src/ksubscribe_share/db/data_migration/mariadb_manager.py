@@ -27,8 +27,13 @@ class MariaDBManager():
         pass
     
     def get_connection(self):
+        import ksubscribe_share.config as Conf
         conn = mariadb.connect(
-            user="cds", password="01WhDpsjwl3570%", host="10.100.12.59", port=54321, database="cds"
+            user=Conf.MARIADB_USER, 
+            password=Conf.MARIADB_PASSWORD, 
+            host=Conf.MARIADB_HOST, 
+            port=Conf.MARIADB_PORT, 
+            database=Conf.MARIADB_DATABASE
         )
         return conn        
     

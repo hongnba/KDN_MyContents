@@ -118,17 +118,44 @@ class ContentsScrapingBase:
     
     
     def generateContentsMeta_ollama(self,contentsVO:ContentsVO,contentsMetaResult: ContentsMetaResult):
-        if contentsMetaResult.metaSucYN == False:
-            contentsVO.metaSucYN = "N"
-            contentsVO.contentsMeta = ContentsMeta(
-                errorInfo =  self.generateErrorInfo(errorYN="Y",date=contentsVO.metaAnalyzeDt ,reason=contentsMetaResult["error_data"]) 
-            )   
-            return contentsVO
+        try:
+            # Normalize meta success flag (can be boolean or "Y"/"N" string)
+            meta_flag = None if contentsMetaResult is None else getattr(contentsMetaResult, "metaSucYN", None)
+            is_success = True if meta_flag in [True, "Y", "y"] else False
 
-        contentsVO.metaSucYN = contentsMetaResult.metaSucYN
-        contentsVO.metaAnalyzeDt = contentsMetaResult.metaAnalyzeDt
-        contentsVO.contentsMeta = contentsMetaResult.contentsMeta               
-        return contentsVO
+            if not is_success:
+                contentsVO.metaSucYN = "N"
+                # Ensure metaAnalyzeDt exists
+                if contentsVO.metaAnalyzeDt is None:
+                    contentsVO.metaAnalyzeDt = datetime.now()
+                contentsVO.contentsMeta = ContentsMeta(
+                    errorInfo=self.generateErrorInfo(
+                        errorYN="Y",
+                        date=contentsVO.metaAnalyzeDt,
+                        reason="analysis failed"
+                    )
+                )
+                return contentsVO
+
+            contentsVO.metaSucYN = "Y" if meta_flag in [True, "Y", "y"] else "N"
+            if contentsMetaResult is not None:
+                if getattr(contentsMetaResult, "metaAnalyzeDt", None) is not None:
+                    contentsVO.metaAnalyzeDt = contentsMetaResult.metaAnalyzeDt
+                contentsVO.contentsMeta = contentsMetaResult.contentsMeta
+            return contentsVO
+        except Exception:
+            # Fallback: mark as failed with error info
+            contentsVO.metaSucYN = "N"
+            if contentsVO.metaAnalyzeDt is None:
+                contentsVO.metaAnalyzeDt = datetime.now()
+            contentsVO.contentsMeta = ContentsMeta(
+                errorInfo=self.generateErrorInfo(
+                    errorYN="Y",
+                    date=contentsVO.metaAnalyzeDt,
+                    reason="analysis error"
+                )
+            )
+            return contentsVO
     
     
     def generateContentsMeta_version2(self, isSuccess:bool, contentsVO:ContentsVO, result_analysis)-> ContentsVO:
