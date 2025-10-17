@@ -9,6 +9,8 @@ import asyncio
 import json
 import re
 import pytz
+import os
+from pathlib import Path
 
 
 #from docker_scraping
@@ -82,7 +84,15 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         # MongoDB connection for backup collection
         self.mongo_manager = MongoManager()
         self.db = self.mongo_manager.dataBase
-        self.contents_backup_collection = self.db['contents_backup']   
+        self.contents_backup_collection = self.db['contents_backup']
+        
+        # JSON export settings
+        self.export_to_json = True
+        self.json_export_dir = "/app/exports"
+        Path(self.json_export_dir).mkdir(parents=True, exist_ok=True)
+        
+        # Control whether to remove items from contents_queue after processing
+        self.delete_queue_after_processing = False   
     
     #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # Contents_queue 데이터에 대한 스크래핑 -> 요약, 키워드 추출, 평판, 
@@ -212,37 +222,42 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
                 # #요약, 키워드 추출, 평판분석 ##########################################################            
                 contentsVO.metaAnalyzeDt = datetime.now() 
                 # title 추가 
-                isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(title=queueContent.title,content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger)            
+                isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(queueContent=queueContent, title=queueContent.title, content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger)            
                 #isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger)            
-        #         if isSuccess:
-        #             contentsVO = self.generateContentsMeta_ollama( contentsVO, contentsMetaResult)
-        #         else:
-        #             contentsVO = self.generateContentsMeta_ollama( contentsVO, error_ollamaMetaResult)
-        #         if contentsVO.metaSucYN == "Y":
-        #             ContentsCollectDailyHistoryService().inc_daily_scrapping_cnt()
-        #             self.analysis_cnt_for_once += 1
-        #             self.docker_scraping_logger.info(f"Contents 요약 및 분석 성공({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
-        #         else:
-        #             self.docker_scraping_logger.info(f"컨텐츠 요약 실패 원문 : sumary : {summary} \n sentiments: {sentiment}")
-        #             self.docker_scraping_logger.info(f"Contents 요약 및 분석 실패({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
-        #         #여기서 ollama 또는 nlp 연결하여 본다. 
+                if isSuccess:
+                    contentsVO = self.generateContentsMeta_ollama( contentsVO, contentsMetaResult)
+                else:
+                    contentsVO = self.generateContentsMeta_ollama( contentsVO, error_ollamaMetaResult)
+                if contentsVO.metaSucYN == "Y":
+                    ContentsCollectDailyHistoryService().inc_daily_scrapping_cnt()
+                    self.analysis_cnt_for_once += 1
+                    self.docker_scraping_logger.info(f"Contents 요약 및 분석 성공({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
+                else:
+                    self.docker_scraping_logger.info(f"컨텐츠 요약 실패 원문 : sumary : {summary} \n sentiments: {sentiment}")
+                    self.docker_scraping_logger.info(f"Contents 요약 및 분석 실패({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
+                #여기서 ollama 또는 nlp 연결하여 본다. 
                 
         except Exception as e:   
             pass 
             #tb_str = ''.join(traceback.format_exception(None, e, e.__traceback__))
             #self.docker_scraping_logger.error(f'error :  {tb_str}')
          
-        # #이미지 아이디는 무조건 생성한다.      
-        # contentsVO = self.generate_imageId(contentsVO)
-        # try:
-        #     BaseQueryService.insert_one(contentsVO)
-        #     ContentsQueueService().deleteQueue(queueContent._id) 
-        #     self.docker_scraping_logger.info(f"Web 컨텐츠 수집/요약 정보 저장({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
-        # except Exception as e : 
-        #     tb_str = ''.join(traceback.format_exception(None, e, e.__traceback__))
-        #     self.docker_scraping_logger.error(f'error :  {tb_str}')
-        #     self.docker_scraping_logger.info(f"Web 컨텐츠 수집/요약 정보 저장 실패({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
-        #     pass 
+        #이미지 아이디는 무조건 생성한다.      
+        contentsVO = self.generate_imageId(contentsVO)
+        try:
+            BaseQueryService.insert_one(contentsVO)
+            
+            # Export to JSON after successful insertion
+            self.export_content_to_json(contentsVO)
+            
+            if self.delete_queue_after_processing:
+                ContentsQueueService().deleteQueue(queueContent._id) 
+            self.docker_scraping_logger.info(f"Web 컨텐츠 수집/요약 정보 저장({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
+        except Exception as e : 
+            tb_str = ''.join(traceback.format_exception(None, e, e.__traceback__))
+            self.docker_scraping_logger.error(f'error :  {tb_str}')
+            self.docker_scraping_logger.info(f"Web 컨텐츠 수집/요약 정보 저장 실패({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
+            pass 
 
     
     def crawl_and_analyze_one_ollama(self, queueContent:ContentsQueueVO, webLoader:WebLoaderV3, driver, ollamaAnalysis:AnalysisOllamaGenerateCall):
@@ -250,9 +265,9 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         """
         if queueContent is None:
             return  
-        if ContentsService().isExistContents(queueContent.url):
-            self.docker_scraping_logger and self.docker_scraping_logger.info(f"이미 ContentsDB에 존재하는 contents입니다. {queueContent.url}")
-            return None
+        # if ContentsService().isExistContents(queueContent.url):
+        #     self.docker_scraping_logger and self.docker_scraping_logger.info(f"이미 ContentsDB에 존재하는 contents입니다. {queueContent.url}")
+        #     return None
             
         if not any(item["code"] == queueContent.contentOrgId for item in self.orgCodeList):
             print(f"orgId : {queueContent.contentOrgId} not exist")                
@@ -322,7 +337,7 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
                 
                 # #요약, 키워드 추출, 평판분석 ##########################################################            
                 contentsVO.metaAnalyzeDt = datetime.now() 
-                isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger)            
+                isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(queueContent=queueContent, content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger)            
                 if isSuccess:
                     contentsVO = self.generateContentsMeta_ollama( contentsVO, contentsMetaResult)
                 else:
@@ -351,7 +366,12 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
             # JsonBackupUtils.save_contents(contentsVO, self.docker_scraping_logger)  # Commented out - file was deleted
             
             BaseQueryService.insert_one(contentsVO)
-            ContentsQueueService().deleteQueue(queueContent._id) 
+            
+            # Export to JSON after successful insertion
+            self.export_content_to_json(contentsVO)
+            
+            if self.delete_queue_after_processing:
+                ContentsQueueService().deleteQueue(queueContent._id) 
             self.docker_scraping_logger.info(f"Web 컨텐츠 수집/요약 정보 저장({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
         except Exception as e : 
             tb_str = ''.join(traceback.format_exception(None, e, e.__traceback__))
@@ -767,6 +787,43 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
             self.docker_scraping_logger.error(f"Error saving to backup collection: {e}")
             raise
         
+    def export_content_to_json(self, contentsVO: ContentsVO):
+        """
+        Export a single processed content to JSON file with pretty formatting
+        """
+        try:
+            if not self.export_to_json:
+                return
+                
+            # Convert ContentsVO to dictionary
+            content_dict = contentsVO.to_mongo()
+            
+            # Convert ObjectId to string for JSON serialization
+            if '_id' in content_dict:
+                content_dict['_id'] = str(content_dict['_id'])
+            
+            # Convert datetime objects to ISO format strings
+            for field in ['collectDt', 'pubDt', 'rawCollectDt', 'metaAnalyzeDt']:
+                if field in content_dict and content_dict[field]:
+                    if hasattr(content_dict[field], 'isoformat'):
+                        content_dict[field] = content_dict[field].isoformat()
+                    else:
+                        content_dict[field] = str(content_dict[field])
+            
+            # Create filename with timestamp and URL hash
+            url_hash = str(hash(contentsVO.url))[-8:]  # Last 8 chars of hash
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            filename = f"content_{timestamp}_{url_hash}.json"
+            filepath = os.path.join(self.json_export_dir, filename)
+            
+            # Write to JSON file with pretty formatting
+            with open(filepath, 'w', encoding='utf-8') as f:
+                json.dump(content_dict, f, ensure_ascii=False, indent=2)
+            
+            self.docker_scraping_logger.info(f"Exported content to JSON: {filepath}")
+            
+        except Exception as e:
+            self.docker_scraping_logger.error(f"Failed to export content to JSON: {e}")
         
 if __name__ == "__main__":
     

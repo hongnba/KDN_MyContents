@@ -20,7 +20,32 @@ class DailyStatsVO(BaseMongoDocument):
         articles_no: int = 0,
         positive_rate: float = 0.0,
         negative_rate: float = 0.0,
+        neutral_rate: float = 0.0,
         last_calculate_date: datetime = None,
+        start_date: datetime = None,
+        end_date: datetime = None,
+        period: str = "오늘",
+        
+        # Article counts and percentages
+        total_positive_contents_count: int = 0,
+        total_positive_contents_percent: float = 0.0,
+        total_negative_contents_count: int = 0,
+        total_negative_contents_percent: float = 0.0,
+        total_neutral_contents_count: int = 0,
+        total_neutral_contents_percent: float = 0.0,
+        total_unknown_contents_count: int = 0,
+        total_unknown_contents_percent: float = 0.0,
+        
+        # Keyword lists (top keywords)
+        total_positive_keyword_list: List[str] = None,
+        total_negative_keyword_list: List[str] = None,
+        total_most_frequent_keyword_list: List[str] = None,
+        
+        # Summary lists (top article summaries)
+        total_positive_summary_list: List[str] = None,
+        total_negative_summary_list: List[str] = None,
+        total_neutral_summary_list: List[str] = None,
+        
         _id: ObjectId = None
     ):
         super().__init__(_id)
@@ -30,7 +55,31 @@ class DailyStatsVO(BaseMongoDocument):
         self.articles_no = articles_no
         self.positive_rate = positive_rate
         self.negative_rate = negative_rate
+        self.neutral_rate = neutral_rate
         self.last_calculate_date = last_calculate_date
+        self.start_date = start_date
+        self.end_date = end_date
+        self.period = period
+        
+        # Article counts and percentages
+        self.total_positive_contents_count = total_positive_contents_count
+        self.total_positive_contents_percent = total_positive_contents_percent
+        self.total_negative_contents_count = total_negative_contents_count
+        self.total_negative_contents_percent = total_negative_contents_percent
+        self.total_neutral_contents_count = total_neutral_contents_count
+        self.total_neutral_contents_percent = total_neutral_contents_percent
+        self.total_unknown_contents_count = total_unknown_contents_count
+        self.total_unknown_contents_percent = total_unknown_contents_percent
+        
+        # Keyword lists
+        self.total_positive_keyword_list = total_positive_keyword_list if total_positive_keyword_list is not None else []
+        self.total_negative_keyword_list = total_negative_keyword_list if total_negative_keyword_list is not None else []
+        self.total_most_frequent_keyword_list = total_most_frequent_keyword_list if total_most_frequent_keyword_list is not None else []
+        
+        # Summary lists
+        self.total_positive_summary_list = total_positive_summary_list if total_positive_summary_list is not None else []
+        self.total_negative_summary_list = total_negative_summary_list if total_negative_summary_list is not None else []
+        self.total_neutral_summary_list = total_neutral_summary_list if total_neutral_summary_list is not None else []
 
     def to_mongo(self):
         """클래스를 MongoDB 문서 형식으로 변환"""
