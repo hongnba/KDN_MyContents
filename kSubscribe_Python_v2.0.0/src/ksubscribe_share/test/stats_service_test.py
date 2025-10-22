@@ -58,6 +58,11 @@ def test_stats_service():
     monthly_summary = stats_service.get_stats_summary(org_id, 'month')
     print(f"월별 요약 정보 (주별 세부 데이터 포함): {monthly_summary}")
     
+    # 6. 향상된 통계 요약 정보 조회 (새로운 스키마 지원)
+    print("\n6. 향상된 통계 요약 정보 조회...")
+    enhanced_summary = stats_service.get_enhanced_stats_summary(org_id, 'day')
+   
+    
     # 6. 특정 날짜 범위로 통계 조회
     print("\n6. 특정 날짜 범위로 통계 조회...")
     kst = pytz.timezone('Asia/Seoul')
@@ -83,15 +88,32 @@ def example_usage():
         # 통계 계산 (필요시)
         stats_service.count_for_period(org_id, period)
         
-        # 통계 요약 정보 반환
-        summary = stats_service.get_stats_summary(org_id, period)
+        # 향상된 통계 요약 정보 반환 (새로운 스키마 지원)
+        enhanced_summary = stats_service.get_enhanced_stats_summary(org_id, period)
         
         return {
-            'averagePositiveRatio': summary['averagePositiveRatio'],
-            'averageNegativeRatio': summary['averageNegativeRatio'],
-            'totalContentsCounts': summary['totalContentsCounts'],
-            'positiveKeywords': summary['positiveKeywords'],
-            'negativeKeywords': summary['negativeKeywords']
+            'orgId': enhanced_summary['orgId'],
+            'startDate': enhanced_summary['startDate'],
+            'endDate': enhanced_summary['endDate'],
+            'totalContentsCounts': enhanced_summary['totalContentsCounts'],
+            'pastTotalContentsCounts': enhanced_summary['pastTotalContentsCounts'],
+            'averagePositiveRatio': enhanced_summary['averagePositiveRatio'],
+            'averageNegativeRatio': enhanced_summary['averageNegativeRatio'],
+            'averageNeutralRatio': enhanced_summary['averageNeutralRatio'],
+            'pastAveragePositiveRatio': enhanced_summary['pastAveragePositiveRatio'],
+            'totalPositiveContentsCount': enhanced_summary['totalPositiveContentsCount'],
+            'totalNegativeContentsCount': enhanced_summary['totalNegativeContentsCount'],
+            'totalNeutralContentsCount': enhanced_summary['totalNeutralContentsCount'],
+            'totalPositiveKeywordList': enhanced_summary['totalPositiveKeywordList'],
+            'totalNegativeKeywordList': enhanced_summary['totalNegativeKeywordList'],
+            'positiveSortedMap': enhanced_summary['positiveSortedMap'],
+            'negativeSortedMap': enhanced_summary['negativeSortedMap'],
+            'positiveKeywordMap': enhanced_summary['positiveKeywordMap'],
+            'negativeKeywordMap': enhanced_summary['negativeKeywordMap'],
+            'ollamaReputationChangeReason': enhanced_summary['ollamaReputationChangeReason'],
+            'positiveResult': enhanced_summary['positiveResult'],
+            'negativeResult': enhanced_summary['negativeResult'],
+            'neutralResult': enhanced_summary['neutralResult']
         }
     
     # 사용 예제

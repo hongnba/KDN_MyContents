@@ -10,6 +10,7 @@ from ksubscribe_share.db.service.contentsQueueService import ContentsQueueServic
 from ksubscribe_share.db.service.contentsService import ContentsService
 from ksubscribe_share.db.service.statsService import StatsService
 from ksubscribe_share.db.service.contentsOrgService import ContentsOrgService
+from ksubscribe_share.db.service.calendarService import CalendarService
 from ksubscribe_share.logger import Logger
 #from ksubscribe_share import config as Conf
 import ksubscribe_share.config as Conf
@@ -21,7 +22,8 @@ if __name__ == "__main__":
     process_today_json_only = len(sys.argv) > 1 and sys.argv[1] == "--today-json"
     
     if process_today_json_only:
-        print("=== Processing URLs from today.json only ===")
+        logger = Logger().setup_logger(Logger.docker_scraping_result_logger_name)
+        logger.info("=== Processing URLs from today.json only ===")
         try:
             # Start ollama alive thread
             checker = OllamaAlive(op_mode="docker_server",keep_alive=False)
@@ -29,22 +31,24 @@ if __name__ == "__main__":
             
             # Process articles from today.json and save to contents_backup
             contentsScrapingOllamaTrafilaura = ContentsScrapingOllamaTrafilaura()
-            print("contentsScrapingOllamaTrafilaura.process_articles_from_today_json()")
+            logger.info("contentsScrapingOllamaTrafilaura.process_articles_from_today_json()")
             contentsScrapingOllamaTrafilaura.process_articles_from_today_json()
             
             checker.stop_thread()
-            print("=== Processing complete ===")
+            logger.info("=== Processing complete ===")
             
         except Exception as e:
-            print(f"Error processing today.json: {e}")
+            logger.error(f"Error processing today.json: {e}")
             if 'checker' in locals():
                 checker.stop_thread()
     else:
-        print("=== Running full pipeline (collect + scrape) ===")
+        logger = Logger().setup_logger(Logger.docker_scraping_result_logger_name)
+        logger.info("=== Running full pipeline (collect + scrape) ===")
+
         # try:
         #     # 1. docker collect
         #     dockerCollectMain = DockerCollectMain()
-        #     print("dockerCollectMain.distribute()")
+        #     logger.info("dockerCollectMain.distribute()")
         #     dockerCollectMain.distribute()
         #     
         # except Exception as e:
@@ -62,10 +66,10 @@ if __name__ == "__main__":
             checker.start_thread()    
             # 3. docker scrapping
             contentsScrapingOllamaTrafilaura = ContentsScrapingOllamaTrafilaura()
-            print("contentsScrapingOllamaTrafilaura.crawl_and_analyze_ollama()")
+            logger.info("contentsScrapingOllamaTrafilaura.crawl_and_analyze_ollama()")
             contentsScrapingOllamaTrafilaura.crawl_and_analyze_ollama()
         except Exception as e:
-            print(f"error : {e}") #error : Message: Service /root/.wdm/drivers/chromedriver/linux64/114.0.5735.90/chromedriver unexpectedly exited. Status code was: 127
+            logger.error(f"error : {e}") #error : Message: Service /root/.wdm/drivers/chromedriver/linux64/114.0.5735.90/chromedriver unexpectedly exited. Status code was: 127
 
         # try:
         #     #contents의 중복성 검사 
@@ -76,7 +80,7 @@ if __name__ == "__main__":
         #     pass  
         try:
             #7시간전 ~ 지금 까지의 contents 중 ollama 요약 안된 데이터 다시 요약(collectDT 기준)
-            print("contentsScrapingOllamaTrafilaura.crawl_and_analyze_ollama() - second time....")
+            logger.info("contentsScrapingOllamaTrafilaura.crawl_and_analyze_ollama() - second time....")
             contentsScrapingOllamaTrafilaura = ContentsScrapingOllamaTrafilaura()
             end_date = datetime.utcnow()
             start_date = end_date - timedelta(hours=7)
@@ -84,7 +88,47 @@ if __name__ == "__main__":
             #코드 재개발 필요함 
             contentsScrapingOllamaTrafilaura.crawl_and_analyze_ollama()#(start_date=start_date,end_date=end_date,is_all=False)
         except Exception as e:
-            pass 
+            logger.error(f"Second scraping error: {str(e)}")
+
+        try:
+            # 4. Calculate statistics for all organizations
+            logger = Logger().setup_logger(Logger.docker_scraping_result_logger_name)
+            logger.info("=== Calculating statistics ===")
+            
+            stats_service = StatsService()
+            calendar_service = CalendarService()
+            contents_org_service = ContentsOrgService()
+            
+            # Get all organizations
+            orgs = contents_org_service.get_all()
+            logger.info(f"Found {len(orgs)} organizations")
+            
+            for org in orgs:
+                try:
+                    org_id = org.orgId
+                    logger.info(f"Processing statistics for {org_id}...")
+                    
+                    # Calculate statistics for each period
+                    for period in ['day', 'week', 'month']:
+                        try:
+                            # Calculate main statistics
+                            stats = stats_service.count_for_period(org_id, period)
+                            logger.info(f"  - {period}: {stats._id}")
+                            
+                            # Calculate calendar results
+                            calendar_results = calendar_service.get_calendar_results(org_id)
+                            logger.info(f"  - calendar: {len(calendar_results['positiveResult'])} days")
+                            
+                        except Exception as e:
+                            logger.error(f"  - {period}: Error - {str(e)}")
+                            
+                except Exception as e:
+                    logger.error(f"Error processing {org.orgId}: {str(e)}")
+            
+            logger.info("=== Statistics calculation complete ===")
+            
+        except Exception as e:
+            logger.error(f"Error in statistics calculation: {str(e)}")
 
         checker.stop_thread()
     
