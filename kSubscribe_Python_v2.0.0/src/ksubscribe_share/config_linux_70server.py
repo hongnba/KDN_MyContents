@@ -1,7 +1,7 @@
 API_SERVER = "10.100.12.70"
 API_PORT = 38000
 
-MONGO_IP = "mongodb"
+MONGO_IP = "10.100.12.71"
 MONGO_PORT = 27017
 MONGO_DB_NAME = "mycontents"
 

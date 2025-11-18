@@ -1,17 +1,16 @@
 # Fast API 정보 --------------------------------------------------------------------
-API_SERVER = "localhost"
-API_PORT = 8000
+API_SERVER = "10.100.12.70"
+API_PORT = 38000
 
 # MongoDB접속 정보 --------------------------------------------------------------------
-MONGO_IP = "192.168.1.41"
+MONGO_IP = "10.100.12.71"
 MONGO_PORT = 27017
 MONGO_DB_NAME = "mycontents"
 
 # MariaDB접속 정보 --------------------------------------------------------------------
 
 # OpenAI ChatGPT API Key (threewaysoft) --------------------------------------------------------------------
-import os
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_API_KEY = "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"
 
 # LOG 경로 ---------------------------------------------------------------------------
 LOG_DIR = "C://Appl_logs/python"
@@ -45,10 +44,10 @@ KAKAO_SEND_SENDER_NUMBER = "01011112222"
 CONTENTS_SEARCH_PAST_DAY = 1 
 
 # 뭐하는건가? --------------------------------------------------------------------
-CONTENTS_BASE_URL = "http://192.168.1.41:3000/kaiaas/login"
+CONTENTS_BASE_URL = "http://10.100.22.84:3000/kaiaas/login"
 # 뭐하는건가? --------------------------------------------------------------------
 KDN_KAKAO_SERVICE_URL = "http://10.100.21.128:17878/sendKakao"
 
 # Ollam 모델 정보 --------------------------------------------------------------------
 OLLAMA_MODEL = "hf.co/MLP-KTLim/llama-3-Korean-Bllossom-8B-gguf-Q4_K_M:latest"
-OLLAMA_URL = "http://192.168.1.191:11434"
+OLLAMA_URL = "http://10.100.12.67:11434"

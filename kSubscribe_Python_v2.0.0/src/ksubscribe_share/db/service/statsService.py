@@ -349,7 +349,7 @@ class StatsService(BaseQueryService):
         """Ollama를 호출하여 평판 분석 리포트 생성"""
         try:
             # Ollama API 설정
-            ollama_url = "http://192.168.1.191:11434/api/generate"
+            ollama_url = "http://10.99.2.71:11434/api/generate"
             
             # 프롬프트 생성
             prompt = f"""

@@ -14,6 +14,6 @@ class main:
 if __name__ == "__main__":
     main()
     # uvicorn.run("fastApi.fastApi:app", host="127.0.0.1", port=8000)
-    uvicorn.run("fastApi.fastApi:app", host="192.168.1.154", port=7000) 
+    uvicorn.run("fastApi.fastApi:app", host="10.100.12.70", port=7000) 
     
     

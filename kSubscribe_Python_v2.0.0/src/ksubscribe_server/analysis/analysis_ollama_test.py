@@ -126,7 +126,7 @@ class AnalysisOllamaTest:
 
     def __init__(self):
         #self.chat_ollama =  ChatOllama(model="eeve-korean",base_url="http://10.100.12.67:11434") 
-        self.chat_ollama =  ChatOllama(model="hf.co/MLP-KTLim/llama-3-Korean-Bllossom-8B-gguf-Q4_K_M:latest",base_url="http://192.168.1.191:11434") 
+        self.chat_ollama =  ChatOllama(model="hf.co/MLP-KTLim/llama-3-Korean-Bllossom-8B-gguf-Q4_K_M:latest",base_url="http://10.99.2.71:11434") 
          #/llama-3-Korean-Bllossom-8B-gguf-Q4_K_M:latest
 
     def analysis(self):#, contentsId:str

@@ -10,8 +10,7 @@ MONGO_DB_NAME = "mycontents"
 # MariaDB접속 정보 --------------------------------------------------------------------
 
 # OpenAI ChatGPT API Key (threewaysoft) --------------------------------------------------------------------
-import os
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_API_KEY = "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"
 
 # LOG 경로 ---------------------------------------------------------------------------
 LOG_DIR = "/Appl_logs/python"

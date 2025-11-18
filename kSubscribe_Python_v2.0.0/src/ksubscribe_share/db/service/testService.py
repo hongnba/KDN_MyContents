@@ -12,8 +12,8 @@ from ksubscribe_share.db.mongoManager import MongoManager
 from pymongo import MongoClient
 
 # MongoDB 서버 연결 설정
-source_client = MongoClient("mongodb://192.168.1.200:27017/?directConnection=true")
-target_client = MongoClient("mongodb://192.168.1.41:27017/")
+source_client = MongoClient("mongodb://10.100.12.71:27017/?directConnection=true")
+target_client = MongoClient("mongodb://10.100.12.71:27017/")
 
 # 소스 및 타겟 데이터베이스 및 컬렉션
 source_db = source_client["mycontents"]

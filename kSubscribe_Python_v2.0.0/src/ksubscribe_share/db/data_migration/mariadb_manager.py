@@ -39,7 +39,7 @@ class MariaDBManager():
     
     def get_3waysoft_connection(self):
         conn = mariadb.connect(
-            user="3way", password="3waysoft", host="192.168.1.200", port=3306, database="cds"
+            user="3way", password="3waysoft", host="10.100.12.71", port=3306, database="cds"
         )
         return conn            
     

@@ -68,7 +68,7 @@ async def read_item(content :ContentModel):
 
 async def main():
     # Uvicorn 서버 실행
-    config = uvicorn.Config("fastAPITest:app", host="127.0.0.1", port=8000)
+    config = uvicorn.Config("fastAPITest:app", host="10.100.12.70", port=8000)
     server = uvicorn.Server(config)
     await server.serve()
 
@@ -79,7 +79,7 @@ async def main():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React 클라이언트 도메인 또는 ["*"]로 모든 도메인 허용 가능
+    allow_origins=["http://10.100.22.84:3000"],  # React 클라이언트 도메인 또는 ["*"]로 모든 도메인 허용 가능
     allow_credentials=True,
     allow_methods=["*"],  # 모든 HTTP 메소드 허용 (GET, POST 등)
     allow_headers=["*"],  # 모든 헤더 허용
@@ -88,4 +88,4 @@ app.add_middleware(
 
 
 if __name__ == "__main__":
-    uvicorn.run("fastAPITest:app", host="127.0.0.1", port=8000)
+    uvicorn.run("fastAPITest:app", host="10.100.12.70", port=8000)

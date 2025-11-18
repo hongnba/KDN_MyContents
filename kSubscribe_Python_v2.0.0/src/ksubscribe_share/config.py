@@ -3,30 +3,20 @@ API_SERVER = "10.100.12.70"
 API_PORT = 38000
 
 # MongoDB접속 정보 --------------------------------------------------------------------
-# MONGO_IP = "10.99.2.69"
-# MONGO_IP = "10.100.12.71"
-# MONGO_IP = "localhost"  # Use this when running outside Docker
-MONGO_IP = "ksubscribe_mongodb"  # Use this when running inside Docker container
+MONGO_IP = "10.99.2.69"
 MONGO_PORT = 27017
 MONGO_DB_NAME = "mycontents"
 
 # MariaDB접속 정보 --------------------------------------------------------------------
-MARIADB_HOST = "localhost"
-MARIADB_PORT = 3306
-MARIADB_USER = "root"
-MARIADB_PASSWORD = "Kmycontents1!"  # Change this to your MariaDB password
-MARIADB_DATABASE = "cds"
 
 # OpenAI ChatGPT API Key (threewaysoft) --------------------------------------------------------------------
-import os
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_API_KEY = "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"
 
 # LOG 경로 ---------------------------------------------------------------------------
 LOG_DIR = "/Appl_logs/python"
 
 # pdf 다운로드 경로 --------------------------------------------------------------------
 SCRAPING_DOWNLOAD_FOLDER = "/Appl_logs/python/scraping_download"
-#SCRAPING_DOWNLOAD_FOLDER = "C://Appl_logs/python/scraping_download"
 
 
 # 암복호화 키 --------------------------------------------------------------------
@@ -57,6 +47,5 @@ KDN_KAKAO_SERVICE_URL = "http://10.100.21.128:17878/sendKakao"
 
 # Ollam 모델 정보 --------------------------------------------------------------------
 OLLAMA_MODEL = "llama-3-Korean-Bllossom-8B-Q4_K_M:latest"
-# OLLAMA_URL = "http://10.99.2.71:11434"
-# OLLAMA_URL = "http://localhost:11434"  # Use this when running outside Docker
-OLLAMA_URL = "http://ksubscribe_ollama:11434"  # Use this when running inside Docker container
+OLLAMA_URL = "http://10.99.2.71:11434"
+ 
