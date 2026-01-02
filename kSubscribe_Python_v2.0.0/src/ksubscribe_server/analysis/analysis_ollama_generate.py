@@ -62,7 +62,10 @@ def count_tokens(text: str, model: str = "llama3"):
  
 class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
 
-    def __init__(self):
+    def __init__(self, yaml_path: str = None):
+        # 부모 클래스에 YAML 경로 전달
+        super().__init__(yaml_path=yaml_path)
+        
         self.chat_ollama =  ChatOllama(model = CONF.OLLAMA_MODEL,
                                        base_url= CONF.OLLAMA_URL, 
                                        format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json")) 
@@ -407,9 +410,6 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             try:
                 mycontents_logger.info("🔧 워드클라우드용 키워드 정제 시작...")
                 
-                # 기사 제목 가져오기 (queueContent에서)
-                article_title = queueContent.title if hasattr(queueContent, 'title') and queueContent.title else ""
-                
                 # 각 감성별 키워드 정제
                 sentiment_types = ['positiveKeywords', 'negativeKeywords', 'neutralKeywords']
                 
@@ -425,7 +425,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                         original_keywords=original_keywords,
                         org_name=orgName,
                         combined_keywords=combined_keywords,
-                        article_title=article_title,
+                        article_content=content,
                         sentiment_type=sentiment_type,
                         mycontents_logger=mycontents_logger
                     )
@@ -669,23 +669,101 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             return False, self.to_error_ollamaModel(), None, None, None, {}
 
     def refine_keywords_for_wordcloud(self, original_keywords: list, org_name: str, 
-                                      combined_keywords: list, article_title: str, 
+                                      combined_keywords: list, article_content: str, 
                                       sentiment_type: str, mycontents_logger: logging.Logger) -> list:
         """
         워드클라우드용 키워드 정제 메서드
         문장형 키워드를 간결한 키워드로 정제하여 빈도수 통합 가능하도록 처리
+        
+        Context 길이 최적화:
+        - 기사 내용은 최대 1500자로 제한
+        - 키워드 리스트가 20개 이상이면 배치로 나누어 처리
         """
         try:
             if not original_keywords or len(original_keywords) == 0:
                 return []
             
+            # 기사 내용은 전체 사용 (잘리지 않음)
+            full_content = article_content if article_content else ""
+            
+            # 1. 키워드를 길이 순으로 정렬 (긴 것부터)
+            sorted_keywords = sorted(original_keywords, key=lambda x: len(str(x)), reverse=True)
+            
+            # 2. 모든 키워드를 정제 대상에 포함 (2단어 이하도 정제 대상)
+            # "한국전력" 같은 표현이 많이 들어가 있어서 2단어 이하도 정제 필요
+            keywords_to_refine = []
+            
+            for keyword in sorted_keywords:
+                keyword_str = str(keyword).strip()
+                if not keyword_str:
+                    continue
+                
+                keywords_to_refine.append(keyword_str)
+            
+            mycontents_logger.info(f"📊 {sentiment_type} 키워드 정제 대상: {len(keywords_to_refine)}개")
+            
+            # 3. 정제 대상 키워드가 없으면 빈 리스트 반환
+            if not keywords_to_refine:
+                return []
+            
+            # 4. 정제 대상 키워드 배치 처리: 5개 단위로 나누기
+            MAX_KEYWORDS_PER_BATCH = 5
+            refined_keywords = []
+            
+            if len(keywords_to_refine) > MAX_KEYWORDS_PER_BATCH:
+                mycontents_logger.info(f"📦 키워드 배치 처리: {len(keywords_to_refine)}개 → {MAX_KEYWORDS_PER_BATCH}개씩 배치")
+                
+                # 배치로 나누어 처리
+                for i in range(0, len(keywords_to_refine), MAX_KEYWORDS_PER_BATCH):
+                    batch_keywords = keywords_to_refine[i:i + MAX_KEYWORDS_PER_BATCH]
+                    batch_refined = self._refine_keywords_batch(
+                        batch_keywords=batch_keywords,
+                        org_name=org_name,
+                        combined_keywords=combined_keywords,
+                        article_content=full_content,
+                        sentiment_type=sentiment_type,
+                        batch_num=i // MAX_KEYWORDS_PER_BATCH + 1,
+                        mycontents_logger=mycontents_logger
+                    )
+                    if batch_refined:
+                        refined_keywords.extend(batch_refined)
+            else:
+                # 키워드가 적으면 한 번에 처리
+                refined_keywords = self._refine_keywords_batch(
+                    batch_keywords=keywords_to_refine,
+                    org_name=org_name,
+                    combined_keywords=combined_keywords,
+                    article_content=full_content,
+                    sentiment_type=sentiment_type,
+                    batch_num=1,
+                    mycontents_logger=mycontents_logger
+                )
+                if not refined_keywords:
+                    refined_keywords = []
+            
+            # 5. 정제된 키워드 반환
+            return refined_keywords
+                
+        except Exception as e:
+            mycontents_logger.error(f"❌ {sentiment_type} 키워드 정제 중 예외 발생: {e}")
+            mycontents_logger.error(traceback.format_exc())
+            return original_keywords  # 실패 시 원본 반환
+
+    def _refine_keywords_batch(self, batch_keywords: list, org_name: str, 
+                               combined_keywords: list, article_content: str,
+                               sentiment_type: str, batch_num: int,
+                               mycontents_logger: logging.Logger) -> list:
+        """
+        키워드 배치 정제 헬퍼 메서드
+        """
+        try:
             # 프롬프트 준비
             new_question_refine = self.question_refine_keywords_for_wordcloud.replace(
                 "[organization]", str(org_name) if org_name else ""
             ).replace(
-                "[article_title]", str(article_title) if article_title else ""
+                "[contents]", str(article_content) if article_content else ""
             ).replace(
-                "[keywords_list]", json.dumps(original_keywords, ensure_ascii=False)
+                "[keywords_list]", json.dumps(batch_keywords, ensure_ascii=False)
             )
             
             # 동의어 처리
@@ -721,16 +799,16 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                     
                     return unique_refined
                 else:
-                    mycontents_logger.warning(f"⚠️ {sentiment_type} 정제 결과가 리스트가 아님: {type(refined_keywords)}")
-                    return original_keywords
+                    mycontents_logger.warning(f"⚠️ {sentiment_type} 배치 {batch_num} 정제 결과가 리스트가 아님: {type(refined_keywords)}")
+                    return batch_keywords
             else:
-                mycontents_logger.warning(f"⚠️ {sentiment_type} 정제 실패, 원본 키워드 반환")
-                return original_keywords
+                mycontents_logger.warning(f"⚠️ {sentiment_type} 배치 {batch_num} 정제 실패, 원본 키워드 반환")
+                return batch_keywords
                 
         except Exception as e:
-            mycontents_logger.error(f"❌ {sentiment_type} 키워드 정제 중 예외 발생: {e}")
+            mycontents_logger.error(f"❌ {sentiment_type} 배치 {batch_num} 키워드 정제 중 예외 발생: {e}")
             mycontents_logger.error(traceback.format_exc())
-            return original_keywords  # 실패 시 원본 반환
+            return batch_keywords  # 실패 시 원본 반환
 
     def _validate_ratio_keyword_consistency(self, sentiment_info, mycontents_logger):
         """비율과 키워드 간 일관성 검증 (경고 로깅)"""

@@ -18,6 +18,8 @@ from langchain_core.messages import (
     message_chunk_to_message,
 ) 
 import json
+import yaml
+import os
 from typing import Tuple, Dict,List
 
 from ksubscribe_share.logger import Logger
@@ -33,6 +35,62 @@ from ksubscribe_share.db.service.predefineKeywordService import PredefineKeyword
 from ksubscribe_share.db.service.contentsService import ContentsService
 
 class AnalysisOllamaBase:
+
+    def __init__(self, yaml_path: str = None):
+        """
+        :param yaml_path: YAML 프롬프트 파일 경로 (선택적)
+                          제공되면 YAML에서 프롬프트 로드, 없으면 기존 하드코딩된 프롬프트 사용
+        """
+        if yaml_path and os.path.exists(yaml_path):
+            # YAML 파일에서 프롬프트 로드
+            self._load_prompts_from_yaml(yaml_path)
+        else:
+            # 기존 하드코딩된 프롬프트 사용 (기본값)
+            self._init_default_prompts()
+    
+    def _load_prompts_from_yaml(self, yaml_path: str):
+        """YAML 파일에서 프롬프트를 로드하여 인스턴스 변수로 설정"""
+        with open(yaml_path, 'r', encoding='utf-8') as f:
+            config = yaml.safe_load(f)
+        
+        prompts = config.get('prompts', {})
+        
+        # YAML의 각 프롬프트를 인스턴스 변수로 설정
+        self.question_verify = prompts.get('question_verify', '')
+        self.question_summary = prompts.get('question_summary', '')
+        self.question_sentiment_integrated = prompts.get('question_sentiment_integrated', '')
+        self.sentiment_keywords = prompts.get('sentiment_keywords', '')
+        self.question_refine_keywords_for_wordcloud = prompts.get('question_refine_keywords_for_wordcloud', '')
+        self.question_translate_to_korean = prompts.get('question_translate_to_korean', '')
+        
+        # Long Detail Summary Format 1~5 (모양만)
+        self.question_longdetail_summary_format1 = prompts.get('question_longdetail_summary_format1', '')
+        self.question_longdetail_summary_format2 = prompts.get('question_longdetail_summary_format2', '')
+        self.question_longdetail_summary_format3 = prompts.get('question_longdetail_summary_format3', '')
+        self.question_longdetail_summary_format4 = prompts.get('question_longdetail_summary_format4', '')
+        self.question_longdetail_summary_format5 = prompts.get('question_longdetail_summary_format5', '')
+    
+    def _init_default_prompts(self):
+        """기존 하드코딩된 프롬프트 초기화 (기본 동작)"""
+        # 기존 프롬프트 정의는 그대로 유지 (아래 코드에서 정의됨)
+        # Long Detail Summary Format 1~5는 빈 문자열로 초기화
+        self.question_longdetail_summary_format1 = ""
+        self.question_longdetail_summary_format2 = ""
+        self.question_longdetail_summary_format3 = ""
+        self.question_longdetail_summary_format4 = ""
+        self.question_longdetail_summary_format5 = ""
+        self.question_longdetail_summary_format4 = prompts.get('question_longdetail_summary_format4', '')
+        self.question_longdetail_summary_format5 = prompts.get('question_longdetail_summary_format5', '')
+    
+    def _init_default_prompts(self):
+        """기존 하드코딩된 프롬프트 초기화 (기본 동작)"""
+        # 기존 프롬프트 정의는 그대로 유지 (아래 코드에서 정의됨)
+        # Long Detail Summary Format 1~5는 빈 문자열로 초기화
+        self.question_longdetail_summary_format1 = ""
+        self.question_longdetail_summary_format2 = ""
+        self.question_longdetail_summary_format3 = ""
+        self.question_longdetail_summary_format4 = ""
+        self.question_longdetail_summary_format5 = ""
 
     def nanoseconds_to_seconds(self, nanoseconds):
         # 나노초를 초로 변환
@@ -269,11 +327,16 @@ class AnalysisOllamaBase:
     이름: [organization]
     (동의어: [synonyms])
 
-    ### [기사 제목]
-    [article_title]
+    ### [기사] (참고용, 키워드 정제 시 문맥 파악에 활용)
+    [contents]
 
     ### [원본 키워드 리스트]
     [keywords_list]
+    
+    **⚠️ 중요**: 
+    - 기사 내용은 키워드 정제 시 문맥 파악에만 활용해라.
+    - **절대로 새로운 키워드를 추가하지 마라.** 원본 키워드 리스트에 있는 키워드만 정제해라.
+    - 원본 키워드 리스트에 없는 키워드는 출력에 포함하지 마라.
 
     ### [정제 가이드라인]
     1. **문장 → 키워드 변환**:
@@ -289,7 +352,7 @@ class AnalysisOllamaBase:
        - 예: "2025년 12월 30일 계약" → "대규모 계약" 또는 "계약 체결"
     
     3. **길이 제한**:
-       - 각 키워드는 2~6단어 이내로 제한해라.
+       - 각 키워드는 4단어 이내로 제한해라.
        - 너무 짧으면 의미가 불명확하고, 너무 길면 문장이 된다.
     
     4. **중복 통합**:
@@ -301,14 +364,31 @@ class AnalysisOllamaBase:
        - 기관명, 구체적 대상, 시간 정보 등 부가 정보는 제거하고, 행위/상태/개념의 본질만 추출해라.
        - 예: "한국전력공사와 234억원 계약" → "대규모 계약"
        - 예: "한국전력 주가 하락 2.58%" → "주가 하락"
+       - ⚠️ **중요**: 기관명을 제거할 때 불완전한 표현이 남지 않도록 주의해라.
+         - 올바른 예: "한국전력의 주가 상승" → "주가 상승"
+         - 잘못된 예: "한국전력의 주가 상승" → "의 주가 상승" (X, 이런 불완전한 표현 금지)
+         - 올바른 예: "한국전력과의 협력" → "협력 강화"
+         - 잘못된 예: "한국전력과의 협력" → "과의 협력" (X, 이런 불완전한 표현 금지)
     
     6. **형태 유지**:
        - 완전한 문장이 아닌 명사구 또는 동사구 형태로 추출해라.
        - 서술어가 포함된 문장형 표현은 금지한다.
+    
+    7. **불필요한 키워드 삭제**:
+       - 워드클라우드에 적합하지 않거나 의미가 불명확한 키워드는 삭제해도 된다.
+       - 너무 길거나 문맥 없이 이해하기 어려운 키워드는 제외해라.
+       - 예: "한전 또한 발전, 송전, 변전 등 전력 사업에 목적을 둔 사업자이기 때문에..." 
+         → 정제 불가능한 경우 삭제 가능
+       - 단, 삭제할 때는 반드시 완전한 키워드만 남기고 불완전한 표현은 남기지 마라.
 
     ### [출력 형식]
     반드시 아래 JSON 포맷으로만 응답해라. 주석, 설명은 절대 포함하지 마라.
     정제된 키워드만 리스트에 포함하고, 원본 키워드의 순서는 유지할 필요 없다.
+    
+    **⚠️ 필수 규칙**:
+    - 출력되는 모든 키워드는 반드시 원본 키워드 리스트에 있던 키워드를 정제한 것이어야 한다.
+    - 원본 키워드 리스트에 없는 새로운 키워드를 절대 추가하지 마라.
+    - 기사 내용에서 새로운 키워드를 발견하더라도 출력에 포함하지 마라.
 
     {{
         "refinedKeywords": ["정제된 키워드1", "정제된 키워드2", ...]
@@ -338,6 +418,13 @@ class AnalysisOllamaBase:
     ### [출력 형식]
     반드시 입력된 JSON과 동일한 키를 가진 JSON 포맷으로만 응답해라. 주석, 설명은 절대 포함하지 마라.
     """
+
+    # 8. [Long Detail Summary Formats] 상세 요약 형식 1~5 (모양만)
+    question_longdetail_summary_format1 = ""
+    question_longdetail_summary_format2 = ""
+    question_longdetail_summary_format3 = ""
+    question_longdetail_summary_format4 = ""
+    question_longdetail_summary_format5 = ""
 
     # ==================================================================================
     # [Deprecated / Zombie Prompts] 사용하지 않는 구버전 프롬프트 (보관용)
