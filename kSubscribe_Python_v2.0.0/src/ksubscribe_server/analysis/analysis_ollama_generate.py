@@ -410,8 +410,10 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             try:
                 mycontents_logger.info("🔧 워드클라우드용 키워드 정제 시작...")
                 
-                # 각 감성별 키워드 정제
-                sentiment_types = ['positiveKeywords', 'negativeKeywords', 'neutralKeywords']
+                # sentiment_keywords 프롬프트 결과물에서 실제로 존재하는 키만 가져오기
+                # 하드코딩 대신 동적으로 처리
+                sentiment_types = [key for key in ['positiveKeywords', 'negativeKeywords', 'neutralKeywords'] 
+                                   if key in result_sentiment_keywords_json and result_sentiment_keywords_json.get(key)]
                 
                 for sentiment_type in sentiment_types:
                     original_keywords = result_sentiment_keywords_json.get(sentiment_type, [])

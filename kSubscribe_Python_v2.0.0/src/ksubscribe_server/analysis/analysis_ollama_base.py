@@ -79,18 +79,6 @@ class AnalysisOllamaBase:
         self.question_longdetail_summary_format3 = ""
         self.question_longdetail_summary_format4 = ""
         self.question_longdetail_summary_format5 = ""
-        self.question_longdetail_summary_format4 = prompts.get('question_longdetail_summary_format4', '')
-        self.question_longdetail_summary_format5 = prompts.get('question_longdetail_summary_format5', '')
-    
-    def _init_default_prompts(self):
-        """기존 하드코딩된 프롬프트 초기화 (기본 동작)"""
-        # 기존 프롬프트 정의는 그대로 유지 (아래 코드에서 정의됨)
-        # Long Detail Summary Format 1~5는 빈 문자열로 초기화
-        self.question_longdetail_summary_format1 = ""
-        self.question_longdetail_summary_format2 = ""
-        self.question_longdetail_summary_format3 = ""
-        self.question_longdetail_summary_format4 = ""
-        self.question_longdetail_summary_format5 = ""
 
     def nanoseconds_to_seconds(self, nanoseconds):
         # 나노초를 초로 변환
