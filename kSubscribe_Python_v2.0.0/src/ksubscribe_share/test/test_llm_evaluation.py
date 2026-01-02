@@ -436,6 +436,7 @@ def process_documents(
     verbose: bool = False,
     dump_config=None,
     prompt_overrides: Optional[Dict[str, str]] = None,
+    yaml_path: Optional[str] = None,
 ):
     """
     문서 스크래핑 및 LLM 분석 실행
@@ -462,7 +463,18 @@ def process_documents(
     
     webLoader = WebLoaderV3()
     driver = get_driver()
-    ollamaAnalysis = AnalysisOllamaGenerateCall()
+    
+    # YAML 프롬프트 파일 경로 처리
+    if yaml_path:
+        # 컨테이너 내부 경로로 변환 (필요한 경우)
+        if not os.path.exists(yaml_path):
+            # 상대 경로인 경우 컨테이너 내부 경로로 변환 시도
+            container_path = f"/app/ksubscribe_share/test/{os.path.basename(yaml_path)}"
+            if os.path.exists(container_path):
+                yaml_path = container_path
+        logger.info(f"📝 YAML 프롬프트 파일 사용: {yaml_path}")
+    
+    ollamaAnalysis = AnalysisOllamaGenerateCall(yaml_path=yaml_path)
     if prompt_overrides:
         applied = apply_prompt_overrides(ollamaAnalysis, prompt_overrides, logger)
         if applied:
@@ -985,6 +997,13 @@ def main():
         help='JSON 파일에서 특정 프롬프트 문자열을 덮어씁니다. 예시: {"question_summary": "..."}'
     )
     
+    parser.add_argument(
+        '--yaml-prompt',
+        type=str,
+        metavar='FILE',
+        help='YAML 프롬프트 파일 경로. 지정하면 해당 YAML 파일의 프롬프트를 사용합니다.'
+    )
+    
     args = parser.parse_args()
     
     # Logger 설정
@@ -999,6 +1018,7 @@ def main():
     logger.info(f"  - Queue 유지: {args.keep_queue}")
     logger.info(f"  - 상세 로그: {args.verbose}")
     logger.info(f"  - JSON 저장: {args.save_json or 'No'}")
+    logger.info(f"  - YAML 프롬프트: {getattr(args, 'yaml_prompt', 'No') or 'No'}")
     dump_mode_desc = "No"
     dump_config = resolve_dump_config(args.dump_raw)
     if dump_config:
@@ -1073,6 +1093,7 @@ def main():
             verbose=args.verbose,
             dump_config=dump_config,
             prompt_overrides=prompt_overrides,
+            yaml_path=getattr(args, 'yaml_prompt', None),
         )
         
         # 5. 결과 요약 출력
