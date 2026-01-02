@@ -1,0 +1,137 @@
+version: "1.0"
+description: "Custom YAML Pipeline for Base2 Experiment (Full 5 Steps)"
+
+pipeline:
+  # 1. 검증 단계
+  - step_id: "verify"
+    prompt_template: "verify_prompt"
+    output_key: "verification_result"
+    
+  # 2. 요약 단계
+  - step_id: "summary"
+    prompt_template: "summary_prompt"
+    output_key: "summary_result"
+
+  # 3. 감성 비율 분석 단계
+  - step_id: "sentiment_ratio"
+    prompt_template: "sentiment_ratio_prompt"
+    output_key: "sentiment_ratio_result"
+
+  # 4. 감성 이유 분석 단계 (비율 결과 필요)
+  - step_id: "sentiment_reason"
+    prompt_template: "sentiment_reason_prompt"
+    input_mapping:
+      positiveRatio: "sentiment_ratio_result.positiveRatio"
+      negativeRatio: "sentiment_ratio_result.negativeRatio"
+    output_key: "sentiment_reason_result"
+
+  # 5. 감성 키워드 분석 단계
+  - step_id: "sentiment_keywords"
+    prompt_template: "sentiment_keywords_prompt"
+    output_key: "sentiment_keywords_result"
+
+prompts:
+  # 1. 검증 프롬프트 (question_verify)
+  verify_prompt: |
+    [Step 1] 다음 기사(contents)와 db_keyword_list를 제공합니다.
+    - contents: {content}
+    - db_keyword_list: {pred_keyword_list}
+
+    [Step 2] 아래 요구사항에 따라 JSON 객체로만 답변해 주세요. 출력 시 (\n, \r\n, \t 등) 특수문자는 모두 제거합니다.
+
+    JSON 형식:
+    {{
+        "ai_keyword": 기사(contents)에서 주요 이슈나 주제를 추출하여 핵심 키워드를 리스트로 작성합니다. 문맥을 반영한 표현을 사용하세요.
+        "db_keyword_list": 제공한 db_keyword_list를 그대로 넣습니다.
+        "related": ai_keyword와 db_keyword_list를 비교하여, 1개 이상 의미적으로 관련이 있으면 true, 전혀 관련이 없으면 false로 설정하세요.
+        "reason": related가 true일 경우, db_keyword_list 안에서 관련된 최대 10개의 키워드를 선택하여 리스트로 작성하세요.
+    }}
+
+    [특별한 규칙]
+    - reason은 반드시 db_keyword_list 안에서만 선택해야 합니다. (ai_keyword에서 추출하면 절대 안 됩니다)
+    - 관련된 db_keyword_list 항목이 하나도 없으면, related는 반드시 false로 설정하세요.
+    - 절대 ai_keyword 항목에서 reason을 뽑지 마세요. db_keyword_list만 사용하세요.
+
+    [최종 조건]
+    - 출력은 반드시 위 JSON 구조를 정확히 따라야 합니다.
+    - 설명이나 추가 문장 없이 JSON만 출력하세요.
+
+  # 2. 요약 프롬프트 (question_summary)
+  summary_prompt: |
+    contents : {content}
+    organization : {org_name}
+    위의 기사를 분석하여 아래 형식에 맞춰 JSON 객체로 응답해줘 (\n, \r\n, \t 제거). JSON 객체의 구조는 다음과 같아:
+    
+    **중요: 모든 문장은 반드시 한국어로만 작성해. 영어 문장을 절대 사용하지 마.**
+    {{
+        "short_summary": "한줄 기사 요약",
+        "long_summary": "5줄 이상으로 기사 요약, long_summary는 자세한 정보까지 요약에 포함되어야 해. organization을 중심으로 요약해줘."
+    }}
+
+  # 3. 감성 비율 프롬프트 (question_sentiment_ratio)
+  sentiment_ratio_prompt: |
+    기사 : {content}
+    기관 : {org_name} (이 기관은 {org_name}로도 불립니다.)
+    위 기사에서 해당 기관 또는 그 별칭({org_name})이 언급된 부분을 중심으로 감성 분석을 수행해 줘.
+    기관에 대한 언급 중 긍정 / 부정 / 중립의 비율을 추정해서 아래 JSON 형식으로만 답변해.
+
+        {{
+            "positiveRatio": "기관 언급 중 긍정적 내용의 비율 (0~100, float, % 기호 없이)",
+            "neutralRatio": "기관 언급 중 중립적 내용의 비율 (0~100, float, % 기호 없이)",
+            "negativeRatio": "기관 언급 중 부정적 내용의 비율 (0~100, float, % 기호 없이)"
+        }}
+
+        세 비율의 합은 100이 되어야 해. 주석이나 설명은 넣지 마.
+
+  # 4. 감성 이유 프롬프트 (sentiment_reason)
+  sentiment_reason_prompt: |
+    기사 : {content}
+    기관 : {org_name} (이 기관은 {org_name}로도 불립니다.)
+    
+    해당 기관을 대상으로 기사를 분석된 감성 비율은 다음과 같아:
+        - 긍정: {positiveRatio}
+        - 부정: {negativeRatio}
+
+        이 비율을 판단한 이유와 주요 키워드를 작성해줘.
+        출력은 아래 JSON 형식으로 해.
+
+        **중요: 모든 문장은 반드시 한국어로만 작성해. 영어 문장을 절대 사용하지 마.**
+
+        {{
+            "reason": "긍정과 부정 비율을 종합적으로 판단한 근거 (한 문단)",
+            "positiveReason": "긍정 비율 판단 근거 (문장 형식)",
+            "negativeReason": "부정 비율 판단 근거 (문장 형식)",
+        
+        }}
+
+  # 5. 감성 키워드 프롬프트 (sentiment_keywords)
+  sentiment_keywords_prompt: |
+    기사 : {content}
+    기관 : {org_name} (이 기관은 {org_name}로도 불립니다.)
+    
+    이 기사에서 해당 기관과 관련된 내용을 3가지 유형으로 분류해 줘:
+
+        [분류 기준]
+        1. **긍정 키워드**: 기관의 평판/이미지를 '향상'시키는 내용
+        - 단순하게 키워드 자체가 긍정적인 느낌은 준다고 선택하면 안 돼
+        - 반드시 키워드가 기사 맥락에서 기관에게 유리하거나 호의적으로 서술된 표현인지 고려해야 돼
+        - 예: "혁신적 성과", "투명한 운영", "시민 만족도 증가"
+
+        2. **부정 키워드**: 기관의 평판/이미지를 '저하'시키는 내용
+        - 단순하게 키워드가 부정적인 단어라고 선택하면 안 돼
+        - 반드시 키워드가 기사 맥락에서 기관에게 불리하거나 비판적으로 서술된 표현인지 고려해야 돼
+        - 예: "부실한 관리", "예산 낭비", "민원 급증"
+
+        3. **중립 키워드**: 기관과 관련되지만 평판에 영향을 주지 않는 사실적 정보
+        - 단순 사실, 일정, 통계, 제도 설명 등
+        - 예: "10월 1일 시행", "총 3개 부서 운영"
+
+        {{
+            "positiveKeywords": ["긍정 키워드1", "긍정 키워드2", "긍정 키워드3"],
+            "negativeKeywords": ["부정 키워드1", "부정 키워드2", "부정 키워드3"],
+            "neutralKeywords": ["중립 키워드1", "중립 키워드2", "중립 키워드3"]
+        }}
+
+        출력 시:
+        - JSON만 출력해. 
+        - 주석, 설명, 문장형 해석은 절대 넣지 마.

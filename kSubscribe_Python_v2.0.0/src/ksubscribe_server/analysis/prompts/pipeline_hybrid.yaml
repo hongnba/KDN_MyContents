@@ -1,0 +1,36 @@
+version: "1.0"
+description: "Hybrid LangChain Pipeline Example"
+
+pipeline:
+  - step_id: "verify"
+    prompt_template: "verify_prompt"
+    output_key: "verification_result"
+    
+  - step_id: "summary"
+    prompt_template: "summary_prompt"
+    input_mapping: 
+      context: "verification_result"
+    output_key: "summary_result"
+
+prompts:
+  verify_prompt: |
+    [Step 1] 다음 기사(contents)와 db_keyword_list를 제공합니다.
+    - contents: {content}
+    - db_keyword_list: {pred_keyword_list}
+
+    [Step 2] 아래 요구사항에 따라 JSON 객체로만 답변해 주세요.
+    {{
+        "ai_keyword": [],
+        "db_keyword_list": [],
+        "related": true/false,
+        "reason": []
+    }}
+
+  summary_prompt: |
+    contents : {content}
+    organization : {org_name}
+    위의 기사를 분석하여 아래 형식에 맞춰 JSON 객체로 응답해줘.
+    {{
+        "short_summary": "한줄 기사 요약",
+        "long_summary": "5줄 이상으로 기사 요약"
+    }}

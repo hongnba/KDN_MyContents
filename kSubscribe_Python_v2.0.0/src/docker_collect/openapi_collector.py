@@ -164,12 +164,11 @@ def get_naver_news(providerOrgId:str, contentsOrg : ContentsOrgVO, category : Co
     # last_suc 다음 날짜부터 오늘까지의 날짜 리스트 생성
     # last_suc = datetime.strptime(last_suc,"%Y%m%d").replace(hour=0,minute=0,second=0,microsecond=0)
 
+    # last_suc 다음 날짜부터 오늘까지의 날짜 리스트 생성
     next_day = last_suc + timedelta(days=1)
-    
     #today = datetime.now()
     today = datetime.utcnow().replace(tzinfo=pytz.utc)    #today.
     lastSucYMD = today 
-
     date_list = [(next_day + timedelta(days=x)).strftime("%Y%m%d") for x in range((today - next_day).days + 1)]
     #today = today.strftime("%Y%m%d")
     #lastSucYMD = today 
@@ -204,59 +203,167 @@ def get_naver_news(providerOrgId:str, contentsOrg : ContentsOrgVO, category : Co
             # None이거나 ''이거나 '  ' 이거나 ALL이면 실행안함
             if key_word is None or key_word == '' or key_word.isspace() or key_word == 'ALL':
                 continue
-            query = urllib.parse.quote(key_word)
-            docker_collect_logger.debug('####### query : {query}')
-            # url = f'https://openapi.naver.com/v1/search/news.json?query={query}&display=100&start=1&sort=sim'
-            url = category.collectUrlInfo + query
-
-            request = urllib.request.Request(url)
-            request.add_header('X-Naver-Client-Id', category.APIKEY1)
-            request.add_header('X-Naver-Client-Secret', category.APIKEY2)
-            response = urllib.request.urlopen(request)
-            rescode = response.getcode()
-
-            if rescode == 200:
-                response_body = response.read()
-                response_dict = json.loads(response_body.decode('utf-8'))
-                items = response_dict['items']
-                for items_index in range(len(items)):
-                    remove_tag = re.compile('<.*?>')
-                    title = re.sub("&(.*?);", "", items[items_index]['title'].replace("<b>", "").replace("</b>", ""))
-                    description = re.sub("&(.*?);", "", items[items_index]['description'].replace("<b>", "").replace("</b>", ""))
-                    link = items[items_index]['originallink']
-                    naverlink = items[items_index]['link']
-                    date = items[items_index]['pubDate']
-                    #date = parse(date).strftime('%Y%m%d')
+            
+            # 네이버 API는 query를 UTF-8로 인코딩해야 함 (인코딩 안하면 이상한 날짜 데이터가 들어옴)
+            # Python 3의 urllib.parse는 기본적으로 UTF-8을 사용
+            query_original = key_word
+            docker_collect_logger.debug(f'####### query (원본): {query_original}')
+            
+            # ============================================================
+            # start를 100씩 늘려서 최대 1000개까지 수집
+            # ============================================================
+            max_start = 901  # 최대 1000개 (start=901, display=100)
+            max_collect_per_keyword = 1000  # 키워드당 최대 수집 개수
+            display = 100
+            sort = 'date'  # 최신순 (날짜 내림차순)
+            
+            for start in range(1, max_start + 1, 100):
+                # URL에 start 파라미터 추가 (urllib.parse 사용)
+                base_url = category.collectUrlInfo
+                # base_url이 query 파라미터를 포함하는지 확인
+                if 'query=' in base_url:
+                    # query 파라미터가 이미 있으면, query 값만 교체하고 start, display, sort 추가
+                    parsed_url = urllib.parse.urlparse(base_url)
+                    query_params = urllib.parse.parse_qs(parsed_url.query)
+                    query_params['start'] = [str(start)]
+                    query_params['display'] = [str(display)]
+                    query_params['sort'] = [sort]
+                    # 원본 query 사용 (urlencode가 자동으로 UTF-8 인코딩)
+                    query_params['query'] = [query_original]
+                    new_query = urllib.parse.urlencode(query_params, doseq=True)
+                    url = f"{parsed_url.scheme}://{parsed_url.netloc}{parsed_url.path}?{new_query}"
+                else:
+                    # query 파라미터가 없으면 기존 방식 사용
+                    if 'start=' in base_url:
+                        # 기존 start 파라미터가 있으면 교체
+                        base_url = re.sub(r'start=\d+', f'start={start}', base_url)
+                    else:
+                        # start 파라미터가 없으면 추가
+                        separator = '&' if '?' in base_url else '?'
+                        base_url = f"{base_url}{separator}start={start}"
                     
-                    date = parse(date).replace(tzinfo=pytz.timezone('Asia/Seoul'))#.strftime('%Y%m%d')
-                    last_suc_ymd = datetime(last_suc.year,last_suc.month,last_suc.day)
-                    pubDt_ymd = datetime(date.year,date.month,date.day)
-
-                    # pubDt_datetime = pytz.utc.localize(datetime.strptime(date,'%Y%m%d'))
-                    # pubDt_datetime
-                    #last_suc.replace(tz) 
-                    # 하루에 여러번 돌리므로 비교연산자 (<=)사용
-                    if last_suc_ymd <= pubDt_ymd:
-                        if key_word in title:
-                            new_data = {
-                                '기관명':'NAVER',
-                                '분류명':key_word,
-                                '제목':title,
-                                'content':description,
-                                '관련 URL':link,
-                                '네이버 URL':naverlink,
-                                '발행 날짜': pubDt_ymd.astimezone(pytz.utc)
-                            }
-                            # 24.11.28 주석
-                            # naver_df = naver_df.append(new_data, ignore_index=True)
-                            # 24.11.28 추가
-                            naver_df = pd.concat([naver_df, pd.DataFrame([new_data])], ignore_index=True)
-
+                    # display 파라미터 추가/교체
+                    if 'display=' in base_url:
+                        base_url = re.sub(r'display=\d+', f'display={display}', base_url)
+                    else:
+                        separator = '&' if '?' in base_url else '?'
+                        base_url = f"{base_url}{separator}display={display}"
+                    
+                    # sort 파라미터 추가/교체
+                    if 'sort=' in base_url:
+                        base_url = re.sub(r'sort=\w+', f'sort={sort}', base_url)
+                    else:
+                        separator = '&' if '?' in base_url else '?'
+                        base_url = f"{base_url}{separator}sort={sort}"
+                    
+                    # query 파라미터 추가 (UTF-8 인코딩 - Python 3는 기본적으로 UTF-8 사용)
+                    query_encoded = urllib.parse.quote(query_original, safe='')
+                    separator = '&' if '?' in base_url else '?'
+                    url = f"{base_url}{separator}query={query_encoded}"
+                
+                docker_collect_logger.debug(f'get_naver_news : start={start}, url={url[:100]}...')
+                
+                request = urllib.request.Request(url)
+                request.add_header('X-Naver-Client-Id', category.APIKEY1)
+                request.add_header('X-Naver-Client-Secret', category.APIKEY2)
+                
+                try:
+                    response = urllib.request.urlopen(request)
+                    rescode = response.getcode()
+                    
+                    if rescode == 200:
+                        response_body = response.read()
+                        response_dict = json.loads(response_body.decode('utf-8'))
+                        items = response_dict.get('items', [])
+                        total = response_dict.get('total', 0)  # 전체 기사 수
+                        
+                        docker_collect_logger.info(f'get_naver_news : start={start}, API 응답 - total={total}, items={len(items)}건')
+                        
+                        # 더 이상 기사가 없으면 중단
+                        if not items or len(items) == 0:
+                            docker_collect_logger.info(f'get_naver_news : start={start}에서 더 이상 기사 없음 (total={total}), 다음 키워드로 이동')
+                            break
+                        
+                        # 현재 페이지에서 수집된 기사 수
+                        page_collected = 0
+                        
+                        for items_index in range(len(items)):
+                            remove_tag = re.compile('<.*?>')
+                            title = re.sub("&(.*?);", "", items[items_index]['title'].replace("<b>", "").replace("</b>", ""))
+                            description = re.sub("&(.*?);", "", items[items_index]['description'].replace("<b>", "").replace("</b>", ""))
+                            link = items[items_index]['originallink']
+                            naverlink = items[items_index]['link']
+                            date = items[items_index]['pubDate']
+                            
+                            date = parse(date).replace(tzinfo=pytz.timezone('Asia/Seoul'))
+                            pubDt_ymd = datetime(date.year,date.month,date.day)
+                            
+                            # last_suc_ymd 필터링 주석처리 (sort=date로 최신순 정렬하므로 날짜 필터링 불필요)
+                            # last_suc_ymd = datetime(last_suc.year,last_suc.month,last_suc.day)
+                            date_only_for_compare = datetime(date.year, date.month, date.day)
+                            # 하루에 여러번 돌리므로 비교연산자 (<=)사용
+                            # 날짜 비교를 위해 날짜만 추출하여 비교
+                            # if last_suc_ymd <= date_only_for_compare:
+                            
+                            # 2025-12-29 이후 ~ 2025-12-30 자정 전 pubDt 필터링 (lastSucYMD 필터링 아이디어 활용)
+                            filter_start_date_ymd = datetime(2025, 12, 31, 0, 0, 0)  # timezone 없이 날짜만
+                            filter_end_date_ymd = datetime(2026, 1, 1, 0, 0, 0)  # timezone 없이 날짜만
+                            
+                            # 필터링 조건 확인 로그 (처음 5개만 출력)
+                            if items_index < 5:
+                                is_filtered = pubDt_ymd >= filter_start_date_ymd and pubDt_ymd < filter_end_date_ymd
+                                pub_dt_check = pubDt_ymd.strftime('%Y-%m-%d')
+                                filter_start_str = filter_start_date_ymd.strftime('%Y-%m-%d')
+                                filter_end_str = filter_end_date_ymd.strftime('%Y-%m-%d')
+                                docker_collect_logger.info(f'필터링 체크 [{items_index}]: pubDt_ymd={pub_dt_check}, 조건={is_filtered} (필터: {filter_start_str} <= pubDt < {filter_end_str})')
+                            
+                            if pubDt_ymd >= filter_start_date_ymd and pubDt_ymd < filter_end_date_ymd:
+                                # key_word in title 필터 제거 (API가 이미 키워드로 검색했으므로)
+                                # 네이버 API는 키워드로 검색한 결과를 반환하므로, 제목 필터링 불필요
+                                pub_dt_str = pubDt_ymd.strftime('%Y-%m-%d')
+                                new_data = {
+                                    '기관명':'NAVER',
+                                    '분류명':key_word,
+                                    '제목':title,
+                                    'content':description,
+                                    '관련 URL':link,
+                                    '네이버 URL':naverlink,
+                                    '발행 날짜': pubDt_ymd.astimezone(pytz.utc)
+                                }
+                                # 24.11.28 주석
+                                # naver_df = naver_df.append(new_data, ignore_index=True)
+                                # 24.11.28 추가
+                                naver_df = pd.concat([naver_df, pd.DataFrame([new_data])], ignore_index=True)
+                                page_collected += 1
+                                # 수집된 기사의 pubDt 날짜를 명확하게 로그에 출력
+                                docker_collect_logger.info(f'get_naver_news : [{page_collected}/{len(items)}] {pub_dt_str} 수집 - {title[:50]}...')
+                            else:
+                                # 필터링되지 않은 기사도 로그 출력 (처음 3개만)
+                                if items_index < 3:
+                                    pub_dt_str = pubDt_ymd.strftime('%Y-%m-%d')
+                                    docker_collect_logger.info(f'get_naver_news : [{items_index+1}/{len(items)}] {pub_dt_str} 필터링 제외 - {title[:50]}...')
+                            
                             docker_collect_logger.debug(f'{date}, {title}')
-            else: 
-                today = datetime.utcnow().replace(tzinfo=pytz.utc)
-                result = {"success" : False , "error" : rescode,"datetime" : today}
-                return result  
+                        
+                        docker_collect_logger.info(f'get_naver_news : start={start}에서 {page_collected}건 수집 (누적: {len(naver_df)}건, API total: {total})')
+                        
+                        # 키워드당 최대 수집 개수 체크
+                        if len(naver_df) >= max_collect_per_keyword:
+                            docker_collect_logger.info(f'get_naver_news : 키워드 "{key_word}" 최대 수집 개수({max_collect_per_keyword}개) 도달, 다음 키워드로 이동')
+                            break
+                        
+                        # API total이 현재 start+display보다 작으면 더 이상 기사 없음
+                        if total > 0 and start + len(items) > total:
+                            docker_collect_logger.info(f'get_naver_news : API total({total})에 도달, 다음 키워드로 이동')
+                            break
+                            
+                    else: 
+                        docker_collect_logger.warning(f'get_naver_news : start={start}에서 API 오류 (rescode={rescode}), 다음 페이지로 이동')
+                        continue
+                        
+                except Exception as e:
+                    docker_collect_logger.error(f'get_naver_news : start={start}에서 예외 발생: {e}')
+                    continue  
 
 
         # 트랜잭션 시작

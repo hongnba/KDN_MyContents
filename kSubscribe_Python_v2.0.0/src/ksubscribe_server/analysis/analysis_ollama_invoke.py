@@ -6,6 +6,7 @@ import pandas as pd
 from datetime import datetime, timezone
 import logging 
 from langchain_ollama import ChatOllama
+import ksubscribe_share.config as CONF
 from langchain_core.prompts import ChatPromptTemplate
 #from langchain_ollama.chat_models import ChatOllama 
 from langchain_core.messages import (
@@ -37,8 +38,12 @@ from ksubscribe_server.analysis.analysis_ollama_base import AnalysisOllamaBase
 class AnalysisOllamaInvokeCall(AnalysisOllamaBase):
 
     def __init__(self):
-        self.chat_ollama =  ChatOllama(model="EEVE-Korean-10.8B",base_url="http://192.168.1.191:11434") 
-         #/llama-3-Korean-Bllossom-8B-gguf-Q4_K_M:latest
+        # 하드코딩된 기존 설정 (보관용 주석):
+        # self.chat_ollama =  ChatOllama(model="EEVE-Korean-10.8B",base_url="http://192.168.1.191:11434")
+        # /llama-3-Korean-Bllossom-8B-gguf-Q4_K_M:latest
+
+        # 현재는 설정 파일의 값을 사용하도록 변경
+        self.chat_ollama = ChatOllama(model=CONF.OLLAMA_MODEL, base_url=CONF.OLLAMA_URL)
 
     def messages_to_prompt(self, messages):
         prompt = []

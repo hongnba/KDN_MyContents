@@ -3,6 +3,7 @@ from bson import ObjectId
 import datetime
 from typing import List
 import datetime
+import pytz
 
 from ksubscribe_share.db.dbmodelV2.baseDocument import BaseMongoDocument, BaseModel
 from ksubscribe_share.db.dbmodelV2.contentsOrgVO import ContentsOrgVO, ContentsOrgCategory
@@ -83,6 +84,58 @@ class ContentsQueueService():
         except Exception as e:
             print(f"An error occurred: {e}")
             return None     #
+    
+    def find_by_pub_dates(self, pub_dates: List[str]):
+        """
+        여러 pubDt 날짜의 데이터를 한 번에 조회
+        
+        Args:
+            pub_dates: pubDt 필터링할 날짜 리스트 (예: ["2025-11-22", "2025-11-26"])
+        
+        Returns:
+            ContentsQueueVO 리스트
+        """
+        try: 
+            collection = self.mongoManager.getCollection(self.collectionName)
+            
+            # 날짜 문자열을 datetime 객체로 변환
+            date_objects = []
+            for date_str in pub_dates:
+                try:
+                    # "2025-11-22" 형식을 datetime으로 변환
+                    dt = datetime.datetime.strptime(date_str, "%Y-%m-%d")
+                    # UTC timezone 추가 (MongoDB는 UTC 사용)
+                    dt_utc = pytz.utc.localize(dt)
+                    date_objects.append(dt_utc)
+                except ValueError:
+                    # 다른 형식 시도: "20251122" 형식
+                    try:
+                        dt = datetime.datetime.strptime(date_str, "%Y%m%d")
+                        dt_utc = pytz.utc.localize(dt)
+                        date_objects.append(dt_utc)
+                    except ValueError:
+                        print(f"Invalid date format: {date_str}, skipping...")
+                        continue
+            
+            if not date_objects:
+                print("No valid dates provided")
+                return []
+            
+            # $in 연산자로 여러 날짜 한 번에 조회
+            # pubDt가 datetime 객체인 경우와 문자열인 경우 모두 처리
+            filter_query = {
+                "$or": [
+                    {"pubDt": {"$in": date_objects}},  # datetime 객체인 경우
+                    {"pubDt": {"$in": pub_dates}}      # 문자열인 경우
+                ]
+            }
+            
+            cursor = collection.find(filter_query)
+            result_list = [ContentsQueueVO.from_mongo(item) for item in cursor] 
+            return result_list 
+        except Exception as e:
+            print(f"An error occurred in find_by_pub_dates: {e}")
+            return []
       
     
 if __name__=="__main__":

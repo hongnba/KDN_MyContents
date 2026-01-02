@@ -1,0 +1,28 @@
+services:
+  python_new:
+    build:
+      context: ./kSubscribe_Python_v2.0.0/src
+      dockerfile: ./ksubscribe_server/Dockerfile
+    image: python_new:latest
+    container_name: python_new
+    volumes:
+      # Mount the entire source code directory for live editing
+      - ./kSubscribe_Python_v2.0.0/src:/app:rw
+      # Mount specific directories for development
+      - ./kSubscribe_Python_v2.0.0/src/ksubscribe_share:/app/ksubscribe_share:rw
+      - ./kSubscribe_Python_v2.0.0/src/docker_shell:/app/docker_shell:rw
+      - ./kSubscribe_Python_v2.0.0/src/ksubscribe_server:/app/ksubscribe_server:rw
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "8001:8000"  # Different port to avoid conflicts
+    working_dir: /app
+    command: ["python", "-m", "uvicorn", "ksubscribe_server.fastApi.fastApi:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    restart: unless-stopped
+    networks:
+      - python_network
+
+networks:
+  python_network:
+    driver: bridge

@@ -72,6 +72,7 @@ class ContentsOrgService():
         try: 
             collection = self.mongoManager.getCollection(self.collectionName)
             cursor = collection.find({"IS_USE": True})
+            # cursor = collection.find()
             result_list = [ContentsOrgVO.from_mongo(item) for item in cursor] 
             #utc to kst 
             for contentsOrg in result_list:
@@ -118,7 +119,6 @@ class ContentsOrgService():
                 for category in result["categoryList"]:
                     if "keywords" in category:  # keywords가 존재하는 경우
                         orgKeyworkList.extend(category["keywords"])  # keywords 추가
-            
         except Exception as e:
             print(f"An error occurred: {e}")        
         

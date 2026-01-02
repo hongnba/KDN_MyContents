@@ -23,11 +23,14 @@ class SentimentInfo(BaseModel):
                  positiveRatio: float = None, 
                  negativeRatio: float = None, 
                  neutralRatio: float = None, 
-                 reason:str = None,
+                 reason:str = None, # 2025.12.15: 통합 프롬프트(CoT)의 '종합 판단 근거' 저장
                  positiveReason:str = None,
                  negativeReason: str = None, 
+                 neutralReason: str = None, # 20251209 추가: 중립 비율 판단 근거
                  positiveKeywords:List[str] = None, 
-                 negativeKeywords:List[str] = None):
+                 negativeKeywords:List[str] = None,
+                 neutralKeywords:List[str] = None
+                 ):  
         self.orgId = orgId                    
         self.orgName = orgName
         self.positiveRatio = self._convert_to_float(positiveRatio)
@@ -36,8 +39,10 @@ class SentimentInfo(BaseModel):
         self.reason = reason
         self.positiveReason = positiveReason
         self.negativeReason = negativeReason
-        self.positiveKeywords = positiveKeywords if positiveKeywords is not None else [],
-        self.negativeKeywords = negativeKeywords if negativeKeywords is not None else [],
+        self.neutralReason = neutralReason # 20251209 추가: 중립 비율 판단 근거
+        self.positiveKeywords = positiveKeywords if positiveKeywords is not None else []
+        self.negativeKeywords = negativeKeywords if negativeKeywords is not None else []
+        self.neutralKeywords = neutralKeywords if neutralKeywords is not None else []  # 20251203 추가: 중립 키워드 필드
 
         
     def _convert_to_float(self, value):
@@ -58,6 +63,11 @@ class ContentsMeta(BaseModel):
         predKeywords: Dict[str, float] = None,  # {키워드: 점수}
         shortSummary: str = None,
         longSummary: str = None,
+        longDetailSummaryFormat1: str = None,
+        longDetailSummaryFormat2: str = None,
+        longDetailSummaryFormat3: str = None,
+        longDetailSummaryFormat4: str = None,
+        longDetailSummaryFormat5: str = None,
         sentiments: List[SentimentInfo] = None,
         errorInfo: ErrorInfo = None,
         llmSummaryMeta : LLMAnalysisMeta = None,  
@@ -67,6 +77,11 @@ class ContentsMeta(BaseModel):
         self.keywords = keywords
         self.shortSummary = shortSummary
         self.longSummary = longSummary
+        self.longDetailSummaryFormat1 = longDetailSummaryFormat1
+        self.longDetailSummaryFormat2 = longDetailSummaryFormat2
+        self.longDetailSummaryFormat3 = longDetailSummaryFormat3
+        self.longDetailSummaryFormat4 = longDetailSummaryFormat4
+        self.longDetailSummaryFormat5 = longDetailSummaryFormat5
         self.predKeywords = predKeywords if predKeywords is not None else {}
         self.sentiments = sentiments if sentiments is not None else []
         self.errorInfo = errorInfo

@@ -111,6 +111,15 @@ class ContentsService():
         collection = self.mongoManager.getCollection(ContentsVO.collectionName)
         filter = {"url": url}
         return  collection.find_one(filter)
+
+    def find_by_url(self, url: str, as_vo: bool = True):
+        """Pythonic wrapper for ``findByURL`` with optional ``ContentsVO`` conversion."""
+        doc = self.findByURL(url)
+        if not doc:
+            return None
+        if as_vo:
+            return ContentsVO.from_mongo(doc)
+        return doc
     
     def findContentsByv1ContentsIdx(self, v1ContentsIdx:int) -> str:
         try: 

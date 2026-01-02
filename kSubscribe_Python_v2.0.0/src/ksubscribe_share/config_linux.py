@@ -47,7 +47,10 @@ CONTENTS_BASE_URL = "http://10.100.22.84:3000/kaiaas/login"
 KDN_KAKAO_SERVICE_URL = "http://10.100.21.128:17878/sendKakao"
 
 # Ollam 모델 정보 --------------------------------------------------------------------
-OLLAMA_MODEL = "llama-3-Korean-Bllossom-8B-Q4_K_M:latest"
+# 이전 기본값 (보관용 주석):
+# OLLAMA_MODEL = "llama-3-Korean-Bllossom-8B-Q4_K_M:latest"
+# 변경: gpt-oss:20b 모델을 사용하도록 설정
+OLLAMA_MODEL = "gpt-oss:20b"
 OLLAMA_URL = "http://ollama:11434"
 
 # Redis 접속 정보 --------------------------------------------------------------------

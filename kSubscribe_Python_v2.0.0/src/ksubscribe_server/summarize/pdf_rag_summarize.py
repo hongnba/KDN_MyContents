@@ -6,6 +6,7 @@ from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import PromptTemplate
 from langchain_community.llms.ollama import Ollama
+import ksubscribe_share.config as CONF
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
 class PdfRAGSummarize:
@@ -49,7 +50,11 @@ class PdfRAGSummarize:
         )
 
         # 6. Ollama LLM 및 체인 생성
-        llm = Ollama(model="EEVE-Korean-10.8B")  
+        # 하드코딩된 기존 설정 (보관용 주석):
+        # llm = Ollama(model="EEVE-Korean-10.8B")
+
+        # 설정 파일의 값을 사용하도록 변경
+        llm = Ollama(model=CONF.OLLAMA_MODEL, base_url=CONF.OLLAMA_URL)
         chain = (
             {"context": retriever, "question": lambda x: x}
             | prompt

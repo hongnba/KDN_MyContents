@@ -3,6 +3,25 @@ import os
 import ksubscribe_share.config as Config
 from logging.handlers import TimedRotatingFileHandler
 from datetime import datetime
+import pytz
+import time
+
+class KSTFormatter(logging.Formatter):
+    """한국 시간대(KST)를 사용하는 로그 포맷터"""
+    def __init__(self, fmt=None, datefmt=None):
+        super().__init__(fmt, datefmt)
+        self.kst = pytz.timezone('Asia/Seoul')
+    
+    def formatTime(self, record, datefmt=None):
+        """로그 레코드의 시간을 KST로 변환하여 포맷팅"""
+        ct = datetime.fromtimestamp(record.created, tz=self.kst)
+        if datefmt:
+            s = ct.strftime(datefmt)
+        else:
+            t = ct.strftime("%Y-%m-%d %H:%M:%S")
+            s = "%s,%03d" % (t, record.msecs)
+        return s
+
 
 class Logger():
     
@@ -78,13 +97,13 @@ class Logger():
                 file_handler.suffix = "%Y-%m-%d"  # 로그 파일에 날짜 추가
 
 
-                file_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+                file_formatter = KSTFormatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
                 file_handler.setFormatter(file_formatter)
                 logger.addHandler(file_handler)
 
                 # 콘솔 핸들러 설정
                 console_handler = logging.StreamHandler()
-                console_formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+                console_formatter = KSTFormatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
                 console_handler.setFormatter(console_formatter)
                 logger.addHandler(console_handler)
 

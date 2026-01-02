@@ -1,0 +1,8 @@
+﻿항목,contents에서 계산한 값,daily_stats 값,일치 여부
+totalContentsCounts,76.0,73.0,0
+totalPositiveContentsCount,23.0,35.0,0
+totalNegativeContentsCount,10.0,7.0,0
+totalNeutralContentsCount,43.0,31.0,0
+averagePositiveRatio,30.26,47.95,0
+averageNegativeRatio,13.16,9.59,0
+averageNeutralRatio,56.58,42.47,0

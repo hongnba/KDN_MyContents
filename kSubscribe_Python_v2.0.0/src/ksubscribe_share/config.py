@@ -10,6 +10,10 @@ MONGO_IP = "ksubscribe_mongodb"  # Use this when running inside Docker container
 MONGO_PORT = 27017
 MONGO_DB_NAME = "mycontents"
 
+# MongoDB URL 구성
+MONGODB_URL = f"mongodb://{MONGO_IP}:{MONGO_PORT}"
+MONGODB_DATABASE = MONGO_DB_NAME
+
 # MariaDB접속 정보 --------------------------------------------------------------------
 MARIADB_HOST = "localhost"
 MARIADB_PORT = 3306
@@ -56,7 +60,11 @@ CONTENTS_BASE_URL = "http://10.100.22.84:3000/kaiaas/login"
 KDN_KAKAO_SERVICE_URL = "http://10.100.21.128:17878/sendKakao"
 
 # Ollam 모델 정보 --------------------------------------------------------------------
-OLLAMA_MODEL = "llama-3-Korean-Bllossom-8B-Q4_K_M:latest"
+# 이전 기본값 (보관용 주석):
+# OLLAMA_MODEL = "llama-3-Korean-Bllossom-8B-Q4_K_M:latest"
+# 변경: gpt-oss:20b 모델을 사용하도록 설정
+OLLAMA_MODEL = "gpt-oss:20b"
+# OLLAMA_MODEL = "llama-3-Korean-Bllossom-8B-Q4_K_M:latest"
 # OLLAMA_URL = "http://10.99.2.71:11434"
 # OLLAMA_URL = "http://localhost:11434"  # Use this when running outside Docker
 OLLAMA_URL = "http://ksubscribe_ollama:11434"  # Use this when running inside Docker container

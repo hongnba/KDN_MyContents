@@ -28,6 +28,7 @@ from ksubscribe_share.db.service.contentsCollectDailyHistoryService import Conte
 from ksubscribe_share.db.service.contentsQueueService import ContentsQueueService
 from ksubscribe_share.db.dbmodelV2.contentsVO import ContentsVO, ContentsRaw, ContentsMeta, SentimentInfo
 from ksubscribe_share.db.dbmodelV2.commCodeVO import CommCodeVO
+import ksubscribe_share.config as CONF
 from ksubscribe_share.db.dbmodelV2.contentsOrgVO import ContentsOrgVO, ContentsOrgCategory
 from ksubscribe_share.db.mongoManager import MongoManager
 from ksubscribe_share.db.dbmodel.news import News
@@ -92,11 +93,58 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         Path(self.json_export_dir).mkdir(parents=True, exist_ok=True)
         
         # Control whether to remove items from contents_queue after processing
-        self.delete_queue_after_processing = False   
+        self.delete_queue_after_processing = True   
     
     #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # Contents_queue 데이터에 대한 스크래핑 -> 요약, 키워드 추출, 평판, 
     #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    def scrape_content(self, queueContent: ContentsQueueVO, webLoader: WebLoaderV3, driver):
+        """
+        스크래핑 로직만 분리 (테스트 및 재사용 목적)
+        Returns: (isSuccess, text, title, contentsVO)
+        """
+        if queueContent is None:
+            return False, None, None, None
+            
+        if not any(item["code"] == queueContent.contentOrgId for item in self.orgCodeList):
+            print(f"orgId : {queueContent.contentOrgId} not exist")                
+            return False, None, None, None
+        
+        if not any(queueContent.cateId == item["code"] for item in self.cateCodeList):
+            print(f"cateId : {queueContent.cateId} not exist")                
+            return False, None, None, None
+        
+        contentsOrgVO, contentsOrgCategory = self.contentsOrgService.findOrgAndCategory(queueContent.contentOrgId, queueContent.cateId)
+        contentsVO = self.generateContentVO(queueContent)
+        contentsVO.rawCollectDt = datetime.now()
+        
+        self.docker_scraping_logger.info(f"Web 컨텐츠 수집 시작({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}-----------------")
+        
+        text = ""
+        title = ""
+        isSuccess = False
+        
+        try:
+            if contentsOrgCategory.cateId == "B0010":
+                isSuccess, title, text = self.trafilauraScraper.get_newbody(contentsVO.url) 
+            else: 
+                collect_method = contentsOrgCategory.collectMethod.upper() if contentsOrgCategory.collectMethod else 'TEXTINBODY'
+                
+                if collect_method == 'ONLYPDF':
+                    isSuccess, text = webLoader.loadContents(contentsVO, contentsOrgVO, contentsOrgCategory,driver) 
+                elif collect_method == 'TEXTINTAG':
+                    isSuccess, title, text = self.trafilauraScraper.get_newbody(contentsVO.url) 
+                elif collect_method == 'TEXTINBODY': 
+                    isSuccess, text = webLoader.loadContents(contentsVO, contentsOrgVO, contentsOrgCategory,driver)
+                else:
+                    isSuccess, text = webLoader.loadContents(contentsVO, contentsOrgVO, contentsOrgCategory,driver)
+            
+            return isSuccess, text, title, contentsVO
+            
+        except Exception as e:
+            self.docker_scraping_logger.error(f"Scraping error: {e}")
+            return False, None, None, contentsVO
     
     def crawl_and_analyze_ollama(self):
         """ contents_queue 정보를 읽어서 스크래핑 및 분석하는 main 
@@ -110,6 +158,8 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         ollamaAnalysis = AnalysisOllamaGenerateCall()
         # 수집한 콘텐츠 가져오기
         queueContents: List[ContentsQueueVO] = self.contentsQueueService.find_all()
+        
+        # pubDt 필터링 제거: 수집 단계(openapi_collector.py)에서 이미 필터링되었으므로 스크래핑 단계에서는 모든 기사 처리
  
         print(f"queueContents : {len(queueContents)}")
         if(len(queueContents) == 0): 
@@ -279,6 +329,8 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         
         contentsOrgVO, contentsOrgCategory = self.contentsOrgService.findOrgAndCategory(queueContent.contentOrgId, queueContent.cateId)
         contentsVO = self.generateContentVO(queueContent)
+        
+        total_start = time.time()  # 전체 처리 시작 시간
          
         try:
             
@@ -286,6 +338,7 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
             contentsVO.rawCollectDt = datetime.now()
             self.docker_scraping_logger.info(f"Web 컨텐츠 수집 시작({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}-----------------")
             
+            scraping_start = time.time()
             #isSuccess, raw_data = webLoader.loadContents(contentsVO, contentsOrgVO, contentsOrgCategory,driver) 
             
             if contentsOrgCategory.cateId == "B0010":
@@ -297,6 +350,9 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
                     isSuccess, title, text = self.trafilauraScraper.get_newbody(contentsVO.url) 
                 elif contentsOrgCategory.collectMethod.upper() == 'textInBody'.upper(): 
                     isSuccess, text = webLoader.loadContents(contentsVO, contentsOrgVO, contentsOrgCategory,driver) 
+            
+            scraping_end = time.time()
+            scraping_duration = scraping_end - scraping_start 
             
             
             # Raw 데이터 수집 실패 시 
@@ -337,11 +393,18 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
                 
                 # #요약, 키워드 추출, 평판분석 ##########################################################            
                 contentsVO.metaAnalyzeDt = datetime.now() 
-                isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult = ollamaAnalysis.analysis_main(queueContent=queueContent, content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger)            
+                analysis_start = time.time()
+                isSuccess, contentsMetaResult,summary,sentiment,error_ollamaMetaResult, durations = ollamaAnalysis.analysis_main(queueContent=queueContent, content=text, pred_keyword_list=self.keyword_name_list, org_name_list=self.org_name_list, mycontents_logger=self.docker_scraping_logger)            
+                analysis_end = time.time()
+                analysis_duration = analysis_end - analysis_start
                 if isSuccess:
                     contentsVO = self.generateContentsMeta_ollama( contentsVO, contentsMetaResult)
                 else:
                     contentsVO = self.generateContentsMeta_ollama( contentsVO, error_ollamaMetaResult)
+                # Set durations
+                if contentsVO.contentsMeta:
+                    contentsVO.contentsMeta.scrapingDuration = scraping_duration
+                    contentsVO.contentsMeta.analysisDuration = analysis_duration
                 if contentsVO.metaSucYN == "Y":
                     ContentsCollectDailyHistoryService().inc_daily_scrapping_cnt()
                     self.analysis_cnt_for_once += 1
@@ -357,6 +420,10 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
          
         #이미지 아이디는 무조건 생성한다.      
         contentsVO = self.generate_imageId(contentsVO)
+        total_end = time.time()
+        total_duration = total_end - total_start
+        if contentsVO.contentsMeta:
+            contentsVO.contentsMeta.totalProcessingDuration = total_duration
         try:
             #2025.03.18 콘텐츠 저장되지 않도록 수정 
             if contentsVO and contentsVO.contentsRaw:
@@ -370,8 +437,11 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
             # Export to JSON after successful insertion
             self.export_content_to_json(contentsVO)
             
+            # 2025-12-30 분석 성공한 기사는 분석 대상에서 제외
             if self.delete_queue_after_processing:
-                ContentsQueueService().deleteQueue(queueContent._id) 
+                # 분석이 성공한 경우만 제거
+                if contentsVO.rawCollectSucYN == "Y" and contentsVO.metaSucYN == "Y":
+                    ContentsQueueService().deleteQueue(queueContent._id) 
             self.docker_scraping_logger.info(f"Web 컨텐츠 수집/요약 정보 저장({queueContent.contentOrgId},{queueContent.cateId}) : {queueContent.url}")
         except Exception as e : 
             tb_str = ''.join(traceback.format_exception(None, e, e.__traceback__))
@@ -791,6 +861,19 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         """
         Export a single processed content to JSON file with pretty formatting
         """
+        def serialize_for_json(obj):
+            """재귀적으로 datetime과 ObjectId를 JSON 직렬화 가능한 형태로 변환"""
+            if isinstance(obj, datetime):
+                return obj.isoformat()
+            elif isinstance(obj, ObjectId):
+                return str(obj)
+            elif isinstance(obj, dict):
+                return {k: serialize_for_json(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [serialize_for_json(item) for item in obj]
+            else:
+                return obj
+        
         try:
             if not self.export_to_json:
                 return
@@ -798,22 +881,15 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
             # Convert ContentsVO to dictionary
             content_dict = contentsVO.to_mongo()
             
-            # Convert ObjectId to string for JSON serialization
-            if '_id' in content_dict:
-                content_dict['_id'] = str(content_dict['_id'])
-            
-            # Convert datetime objects to ISO format strings
-            for field in ['collectDt', 'pubDt', 'rawCollectDt', 'metaAnalyzeDt']:
-                if field in content_dict and content_dict[field]:
-                    if hasattr(content_dict[field], 'isoformat'):
-                        content_dict[field] = content_dict[field].isoformat()
-                    else:
-                        content_dict[field] = str(content_dict[field])
+            # 재귀적으로 모든 datetime과 ObjectId 변환
+            content_dict = serialize_for_json(content_dict)
             
             # Create filename with timestamp and URL hash
             url_hash = str(hash(contentsVO.url))[-8:]  # Last 8 chars of hash
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            filename = f"content_{timestamp}_{url_hash}.json"
+            # 모델 이름을 파일명에 추가
+            model_name = CONF.OLLAMA_MODEL.replace(':', '-').replace('/', '-')  # 특수문자 치환
+            filename = f"{model_name}_content_{timestamp}_{url_hash}.json"
             filepath = os.path.join(self.json_export_dir, filename)
             
             # Write to JSON file with pretty formatting

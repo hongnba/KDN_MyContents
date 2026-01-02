@@ -67,6 +67,7 @@ class DockerCollectMain:
         g2b_keywords = self.contentsOrgService.findOrgKeywords("A0004") 
         #[개발해야함]기관 카테고리 정보를 가져옴  
         contentsOrgList = ContentsOrgService().find_all(); 
+        self.docker_collect_logger.info(f"총 {len(contentsOrgList)}개 기관 조회 완료")
         # # test
         # for contentsOrg in contentsOrgList :
         #     for cate in contentsOrg.categoryList:
@@ -74,46 +75,56 @@ class DockerCollectMain:
         driver = get_driver()
         test_cnt = 0
         for contentsOrg in contentsOrgList:     
+            self.docker_collect_logger.info(f"기관 처리: {contentsOrg.orgName}({contentsOrg.orgId}), 카테고리 수: {len(contentsOrg.categoryList)}")
             # if contentsOrg.orgId != "A0030":
             #     continue       
+            if len(contentsOrg.categoryList) == 0:
+                self.docker_collect_logger.warning(f"  카테고리가 없어서 스킵: {contentsOrg.orgName}({contentsOrg.orgId})")
+                continue
             for category in contentsOrg.categoryList:    
                 result = None
                 test_cnt+=1
                 collect_datetime = datetime.utcnow().replace(tzinfo=pytz.utc)
                 err_handler = ErrorHandler() 
                 
-                # SELENIUM 
-                if category.COL_METHOD == "C0003":  
-                    #한국전력공사(주) and 보도자료
-                    if contentsOrg.orgId == "A0010" and category.cateId == "B0001" : 
-                        result = get_kepco_news(driver, contentsOrg, category) 
-                    #한국남동발전(주) and 보도자료
-                    elif contentsOrg.orgId == "A0014" and category.cateId == "B0001" : 
-                        result = get_koen_news(driver, contentsOrg, category)                      
-                    #한전KPS(주) and 보도자료
-                    elif contentsOrg.orgId == "A0020" and category.cateId == "B0001" : 
-                        result = get_kps_news(driver, contentsOrg, category)  
-                    #그외 
-                    else: 
-                        result = get_contents_by_selenium_main(driver, contentsOrg, category)
-                    
-                    err_handler.set_processor(SeleniumErrorHandler())   
+                try:
+                    # SELENIUM 
+                    if category.COL_METHOD == "C0003":  
+                        #한국전력공사(주) and 보도자료
+                        if contentsOrg.orgId == "A0010" and category.cateId == "B0001" : 
+                            result = get_kepco_news(driver, contentsOrg, category) 
+                        #한국남동발전(주) and 보도자료
+                        elif contentsOrg.orgId == "A0014" and category.cateId == "B0001" : 
+                            result = get_koen_news(driver, contentsOrg, category)                      
+                        #한전KPS(주) and 보도자료
+                        elif contentsOrg.orgId == "A0020" and category.cateId == "B0001" : 
+                            result = get_kps_news(driver, contentsOrg, category)  
+                        #그외 
+                        else: 
+                            result = get_contents_by_selenium_main(driver, contentsOrg, category)
+                        
+                        err_handler.set_processor(SeleniumErrorHandler())   
 
-                # RSS
-                elif category.COL_METHOD == "C0001": 
-                    result = get_contents_by_rss(contentsOrg, category)         # 윤택선: 오탈자 수정
-                    
-                # OPEN API
-                else: 
-                    #나라장터 and 입찰정보 
-                    if contentsOrg.orgId == "A0004" and category.cateId == "B0005" : 
-                        result =get_g2b_nara(contentsOrg, category, g2b_keywords) 
-                        err_handler.set_processor(OpenAPIErrorHandler())   
-                    #그외 
+                    # RSS
+                    elif category.COL_METHOD == "C0001": 
+                        result = get_contents_by_rss(contentsOrg, category)         # 윤택선: 오탈자 수정
+                        
+                    # OPEN API
                     else: 
-                        result = get_naver_news("A0026", contentsOrg, category)
-                        err_handler.set_processor(OpenAPIErrorHandler())                       
+                        #나라장터 and 입찰정보 
+                        if contentsOrg.orgId == "A0004" and category.cateId == "B0005" : 
+                            result =get_g2b_nara(contentsOrg, category, g2b_keywords) 
+                            err_handler.set_processor(OpenAPIErrorHandler())   
+                        #그외 
+                        else: 
+                            result = get_naver_news("A0026", contentsOrg, category)
+                            err_handler.set_processor(OpenAPIErrorHandler())
+                except Exception as e:
+                    self.docker_collect_logger.error(f"수집 함수 예외: {contentsOrg.orgName}({contentsOrg.orgId}) - {category.cateName}({category.cateId}): {e}")
+                    result = {"success": False, "error": str(e)}
+                       
                 if not result:
+                    self.docker_collect_logger.warning(f"result가 None: {contentsOrg.orgName}({contentsOrg.orgId}) - {category.cateName}({category.cateId})")
                     continue    
                       
                 if result["success"]:
@@ -143,6 +154,7 @@ class DockerCollectMain:
         driver.quit()
         print(test_cnt)        
         self.docker_collect_logger.info("--------------Docker_Collect 종료--------------")
+        self.docker_collect_logger.info(f"통계: 총 {self.total_cnt}건, 성공 {self.success_cnt}건, 실패 {self.fail_cnt}건")
 
 
 if __name__ == "__main__":

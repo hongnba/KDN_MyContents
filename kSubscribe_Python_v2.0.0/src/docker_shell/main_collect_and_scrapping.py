@@ -1,7 +1,11 @@
     
-
+    
 from datetime import datetime,timedelta
 import sys
+import os
+
+# huggingface/tokenizers 경고 제거
+os.environ['TOKENIZERS_PARALLELISM'] = 'false'
 
 from docker_collect.collect_v2 import DockerCollectMain
 from docker_scraping.contents_scraping_ollama_trafilaura import ContentsScrapingOllamaTrafilaura
@@ -45,20 +49,20 @@ if __name__ == "__main__":
         logger = Logger().setup_logger(Logger.docker_scraping_result_logger_name)
         logger.info("=== Running full pipeline (collect + scrape) ===")
 
-        # try:
-        #     # 1. docker collect
-        #     dockerCollectMain = DockerCollectMain()
-        #     logger.info("dockerCollectMain.distribute()")
-        #     dockerCollectMain.distribute()
-        #     
-        # except Exception as e:
-        #     pass 
+        try:
+            # 1. docker collect
+            dockerCollectMain = DockerCollectMain()
+            logger.info("dockerCollectMain.distribute()")
+            dockerCollectMain.distribute()
+            
+        except Exception as e:
+            pass 
 
-        # try:
-        #     #Queue의 중복성 검사   
-        #     ContentsQueueService().removeDuplicateUrl() 
-        # except Exception as e:
-        #     pass 
+        try:
+            #Queue의 중복성 검사   
+            ContentsQueueService().removeDuplicateUrl() 
+        except Exception as e:
+            pass 
 
         try:
             # 2. start ollama alive thread
@@ -100,7 +104,7 @@ if __name__ == "__main__":
             contents_org_service = ContentsOrgService()
             
             # Get all organizations
-            orgs = contents_org_service.get_all()
+            orgs = contents_org_service.find_all()
             logger.info(f"Found {len(orgs)} organizations")
             
             for org in orgs:

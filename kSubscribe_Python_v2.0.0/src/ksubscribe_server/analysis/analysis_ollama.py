@@ -1,11 +1,13 @@
 #from langchain_community.chat_models import ChatOllama
 import requests
+import os
 from openai import OpenAI
 import traceback
 import pandas as pd 
 from datetime import datetime, timezone
 import logging 
 from langchain_ollama import ChatOllama
+import ksubscribe_share.config as CONF
 from langchain_core.prompts import ChatPromptTemplate
 #from langchain_ollama.chat_models import ChatOllama 
 from langchain_core.messages import (
@@ -146,8 +148,25 @@ class AnalysisOllama:
     }} 
     """    
     def __init__(self):
-        self.chat_ollama =  ChatOllama(model="EEVE-Korean-10.8B",base_url="http://192.168.1.191:11434") 
-         #/llama-3-Korean-Bllossom-8B-gguf-Q4_K_M:latest
+        # Previous versions (kept for traceability):
+        # Hardcoded EEVE model and base_url (original):
+        # self.chat_ollama = ChatOllama(model="EEVE-Korean-10.8B",base_url="http://192.168.1.191:11434")
+        # Environment-driven initialization (commented out):
+        # ollama_model = os.getenv("OLLAMA_MODEL", "llama-3-Korean-Bllossom-8B-Q4_K_M")
+        # ollama_base = os.getenv("OLLAMA_BASE_URL")
+        # if ollama_base:
+        #     self.chat_ollama = ChatOllama(model=ollama_model, base_url=ollama_base)
+        # else:
+        #     self.chat_ollama = ChatOllama(model=ollama_model)
+
+        # 이전 llama-3-Korean-Bllossom-8B-Q4_K_M 모델 사용 (주석 처리):
+        # self.chat_ollama = ChatOllama(model="llama-3-Korean-Bllossom-8B-Q4_K_M", base_url="http://192.168.1.191:11434")
+
+        # 하드코딩된 기존 설정 (보관용 주석):
+        # self.chat_ollama = ChatOllama(model="gpt-oss:20b", base_url="http://192.168.1.191:11434")
+
+        # 설정 파일의 값을 사용하도록 변경 (config에서 모델/URL 사용)
+        self.chat_ollama = ChatOllama(model=CONF.OLLAMA_MODEL, base_url=CONF.OLLAMA_URL)
 
     def messages_to_prompt(self, messages):
         prompt = []

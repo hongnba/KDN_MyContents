@@ -15,6 +15,8 @@ from ksubscribe_share.db.dbmodelV2.weeklyStatsVO import WeeklyStatsVO
 from ksubscribe_share.db.dbmodelV2.monthlyStatsVO import MonthlyStatsVO
 from ksubscribe_share.db.dbmodelV2.keywordStatVO import KeywordStatVO
 
+import ksubscribe_share.config as CONF
+
 class StatsService(BaseQueryService):
     """기관 평판 통계 서비스 - 일별/주별/월별 통계 관리"""
     
@@ -180,11 +182,11 @@ class StatsService(BaseQueryService):
             for sentiment in contents.contentsMeta.sentiments:
                 if sentiment.orgId == orgId:
                     # 긍정/부정/중립 비율 계산 (Java Controller와 동일한 로직)
-                    if sentiment.positiveRatio and sentiment.positiveRatio > 0.5:
+                    if sentiment.positiveRatio and sentiment.positiveRatio > 50:
                         positive_count += 1
-                    elif sentiment.negativeRatio and sentiment.negativeRatio > 0.5:
+                    elif sentiment.negativeRatio and sentiment.negativeRatio > 50:
                         negative_count += 1
-                            else:
+                    else:
                         neutral_count += 1
                     break  # 해당 기관의 첫 번째 감정 분석 결과만 사용
         
@@ -285,24 +287,24 @@ class StatsService(BaseQueryService):
                     if sentiment.orgId == orgId:
                     # 긍정 기사 (positiveRatio > 0.5)
                         if sentiment.positiveRatio and sentiment.positiveRatio > 0.5:
-                        positive_articles.append({
-                            'id': str(contents._id),
-                            'value': {
-                                'title': contents.title if hasattr(contents, 'title') else '',
-                                'sentiment': sentiment.positiveRatio,
-                                'short_summary': contents.contentsMeta.shortSummary if contents.contentsMeta.shortSummary else ''
-                            }
-                        })
+                            positive_articles.append({
+                                'id': str(contents._id),
+                                'value': {
+                                    'title': contents.title if hasattr(contents, 'title') else '',
+                                    'sentiment': sentiment.positiveRatio,
+                                    'short_summary': contents.contentsMeta.shortSummary if contents.contentsMeta.shortSummary else ''
+                                }
+                            })
                     # 부정 기사 (negativeRatio > 0.5)
                         elif sentiment.negativeRatio and sentiment.negativeRatio > 0.5:
-                        negative_articles.append({
-                            'id': str(contents._id),
-                            'value': {
-                                'title': contents.title if hasattr(contents, 'title') else '',
-                                'sentiment': sentiment.negativeRatio,
-                                'short_summary': contents.contentsMeta.shortSummary if contents.contentsMeta.shortSummary else ''
-                            }
-                        })
+                            negative_articles.append({
+                                'id': str(contents._id),
+                                'value': {
+                                    'title': contents.title if hasattr(contents, 'title') else '',
+                                    'sentiment': sentiment.negativeRatio,
+                                    'short_summary': contents.contentsMeta.shortSummary if contents.contentsMeta.shortSummary else ''
+                                }
+                            })
         
         # 감정 점수 기준으로 정렬 (높은 순)
         positive_articles.sort(key=lambda x: x['value']['sentiment'], reverse=True)
@@ -348,15 +350,16 @@ class StatsService(BaseQueryService):
     def _call_ollama_for_analysis(self, stats_data: Dict) -> str:
         """Ollama를 호출하여 평판 분석 리포트 생성"""
         try:
-            # Ollama API 설정
-            ollama_url = "http://192.168.1.191:11434/api/generate"
+            # Ollama API 설정 - config.py의 설정값 사용
+            # ollama_url = "http://10.99.2.71:11434/api/generate"
+            ollama_url = f"{CONF.OLLAMA_URL}/api/generate"
             
             # 프롬프트 생성
             prompt = f"""
             다음은 기관 평판 분석 데이터입니다. 이 데이터를 바탕으로 종합적인 평판 분석 리포트를 작성해주세요.
             
             기관 ID: {stats_data.get('orgId', 'N/A')}
-            분석 기간: {stats_data.get('startDate', 'N/A')} ~ {stats_data.get('endDate', 'N/A')}
+            분석 기간: {stats_data.get('start_date', 'N/A')} ~ {stats_data.get('end_date', 'N/A')}
             총 기사 수: {stats_data.get('totalContentsCounts', 0)}
             긍정 비율: {stats_data.get('averagePositiveRatio', 0.0):.2f}%
             부정 비율: {stats_data.get('averageNegativeRatio', 0.0):.2f}%
@@ -370,7 +373,7 @@ class StatsService(BaseQueryService):
             
             # Ollama API 요청
             payload = {
-                "model": "llama-3-Korean-Bllossom-8B-Q4_K_M",
+                "model": "gpt-oss:20b", # "llama-3-Korean-Bllossom-8B-Q4_K_M",
                 "prompt": prompt,
                 "stream": False,
                 "num_predict": 200
@@ -407,12 +410,21 @@ class StatsService(BaseQueryService):
         # 기본 통계 계산
         basic_stats = self._calculate_stats(orgId, contents_list, start_date, end_date, 'day')
         
+        # 20251212 유헌수 변경
         # 새로운 스키마 필드들 추가
-        enhanced_stats = basic_stats.copy()
+        # enhanced_stats = basic_stats.copy()
+        # 새로운 스키마 필드들 추가 (basic_stats의 불필요한 키 제거)
+        enhanced_stats = {
+            'orgId': basic_stats['orgId'],
+            'last_calculate_date': basic_stats['last_calculate_date']
+        }
         
+        # 20251212 유헌수 변경
         # Query period and keyword lists
-        enhanced_stats['startDate'] = start_date
-        enhanced_stats['endDate'] = end_date
+        # enhanced_stats['startDate'] = start_date
+        # enhanced_stats['endDate'] = end_date
+        enhanced_stats['start_date'] = start_date
+        enhanced_stats['end_date'] = end_date
         
         # Content counts and ratios (use actual counts from basic_stats)
         enhanced_stats['totalContentsCounts'] = basic_stats['articles_no']
@@ -423,8 +435,10 @@ class StatsService(BaseQueryService):
         enhanced_stats['totalNegativeContentsCount'] = basic_stats['negative_count']
         enhanced_stats['totalNeutralContentsCount'] = basic_stats['neutral_count']
         
+        # 20251212 유헌수 변경
         # Calculate past period data
-        past_stats = self._calculate_past_period_stats(orgId, period, start_date, end_date)
+        # past_stats = self._calculate_past_period_stats(orgId, period, start_date, end_date)
+        past_stats = self._calculate_past_period_stats(orgId, 'day', start_date, end_date)
         enhanced_stats['pastTotalContentsCounts'] = past_stats['totalContentsCounts']
         enhanced_stats['pastAveragePositiveRatio'] = past_stats['averagePositiveRatio']
         
@@ -507,11 +521,14 @@ class StatsService(BaseQueryService):
         positive_keyword_list = sorted(positive_keyword_map.keys(), key=lambda k: positive_keyword_map[k], reverse=True)
         negative_keyword_list = sorted(negative_keyword_map.keys(), key=lambda k: negative_keyword_map[k], reverse=True)
         
+        # 20251212 유헌수 변경
         # Ollama 분석 리포트 생성
         stats_data = {
             'orgId': orgId,
-            'startDate': start_date,
-            'endDate': end_date,
+            # 'startDate': start_date,
+            # 'endDate': end_date,
+            'start_date': start_date,
+            'end_date': end_date,
             'totalContentsCounts': total_contents,
             'averagePositiveRatio': avg_positive_ratio,
             'averageNegativeRatio': avg_negative_ratio,
@@ -528,10 +545,13 @@ class StatsService(BaseQueryService):
         # Calculate past period data for weekly stats
         past_stats = self._calculate_past_period_stats(orgId, 'week', start_date, end_date)
         
+        # 20251212 유헌수 변경
         return {
             'orgId': orgId,
-            'startDate': start_date,
-            'endDate': end_date,
+            # 'startDate': start_date,
+            # 'endDate': end_date,
+            'start_date': start_date,
+            'end_date': end_date,
             'totalContentsCounts': total_contents,
             'pastTotalContentsCounts': past_stats['totalContentsCounts'],
             'averagePositiveRatio': avg_positive_ratio,
@@ -605,11 +625,14 @@ class StatsService(BaseQueryService):
         positive_keyword_list = sorted(positive_keyword_map.keys(), key=lambda k: positive_keyword_map[k], reverse=True)
         negative_keyword_list = sorted(negative_keyword_map.keys(), key=lambda k: negative_keyword_map[k], reverse=True)
         
+        # 20251212 유헌수 변경
         # Ollama 분석 리포트 생성
         stats_data = {
             'orgId': orgId,
-            'startDate': start_date,
-            'endDate': end_date,
+            # 'startDate': start_date,
+            # 'endDate': end_date,
+            'start_date': start_date,
+            'end_date': end_date,
             'totalContentsCounts': total_contents,
             'averagePositiveRatio': avg_positive_ratio,
             'averageNegativeRatio': avg_negative_ratio,
@@ -626,10 +649,13 @@ class StatsService(BaseQueryService):
         # Calculate past period data for monthly stats
         past_stats = self._calculate_past_period_stats(orgId, 'month', start_date, end_date)
         
+        # 20251212 유헌수 변경
         return {
             'orgId': orgId,
-            'startDate': start_date,
-            'endDate': end_date,
+            # 'startDate': start_date,
+            # 'endDate': end_date,
+            'start_date': start_date,
+            'end_date': end_date,
             'totalContentsCounts': total_contents,
             'pastTotalContentsCounts': past_stats['totalContentsCounts'],
             'averagePositiveRatio': avg_positive_ratio,
@@ -675,10 +701,13 @@ class StatsService(BaseQueryService):
 
     def _get_empty_enhanced_stats(self, orgId: str, start_date: datetime, end_date: datetime) -> Dict:
         """빈 향상된 통계 데이터 반환"""
+        # 20251212 유헌수 변경
         return {
             'orgId': orgId,
-            'startDate': start_date,
-            'endDate': end_date,
+            # 'startDate': start_date,
+            # 'endDate': end_date,
+            'start_date': start_date,
+            'end_date': end_date,
             'totalContentsCounts': 0,
             'pastTotalContentsCounts': 0,
             'averagePositiveRatio': 0.0,
@@ -705,11 +734,14 @@ class StatsService(BaseQueryService):
         """향상된 통계 요약 정보 반환 (Java Controller에서 사용할 형태)"""
         stats = self.get_for_period(orgId, period, start_date, end_date)
         
+        # 20251212 유헌수 변경
         if not stats:
             return {
                 'orgId': orgId,
-                'startDate': start_date,
-                'endDate': end_date,
+                # 'startDate': start_date,
+                # 'endDate': end_date,
+                'start_date': start_date,
+                'end_date': end_date,
                 'totalContentsCounts': 0,
                 'pastTotalContentsCounts': 0,
                 'averagePositiveRatio': 0.0,
@@ -731,10 +763,13 @@ class StatsService(BaseQueryService):
                 'neutralResult': {}
             }
         
+        # 20251212 유헌수 변경
         result = {
             'orgId': stats.orgId,
-            'startDate': stats.startDate,
-            'endDate': stats.endDate,
+            # 'startDate': stats.startDate,
+            # 'endDate': stats.endDate,
+            'start_date': stats.startDate,
+            'end_date': stats.endDate,
             'totalContentsCounts': stats.totalContentsCounts,
             'pastTotalContentsCounts': stats.pastTotalContentsCounts,
             'averagePositiveRatio': stats.averagePositiveRatio,
