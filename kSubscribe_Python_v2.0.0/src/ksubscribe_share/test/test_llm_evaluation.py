@@ -565,6 +565,13 @@ def process_documents(
                 if isSuccess and contentsMetaResult:
                     contentsVO = scraper.generateContentsMeta_ollama(contentsVO, contentsMetaResult)
                     contentsVO = scraper.generate_imageId(contentsVO)
+                    
+                    # Calculate and set totalProcessingDuration
+                    end_time_processing = datetime.now()
+                    duration_seconds = (end_time_processing - start_time).total_seconds()
+                    if contentsVO.contentsMeta:
+                        contentsVO.contentsMeta.totalProcessingDuration = round(duration_seconds, 3)
+                        
                     try:
                         BaseQueryService.insert_one(contentsVO)
                         logger.info(f"✅ 분석 및 저장 성공 (Base): {contentsVO.title}")

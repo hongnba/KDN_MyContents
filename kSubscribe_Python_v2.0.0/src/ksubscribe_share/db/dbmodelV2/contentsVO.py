@@ -63,30 +63,39 @@ class ContentsMeta(BaseModel):
         predKeywords: Dict[str, float] = None,  # {키워드: 점수}
         shortSummary: str = None,
         longSummary: str = None,
-        longDetailSummaryFormat1: str = None,
-        longDetailSummaryFormat2: str = None,
-        longDetailSummaryFormat3: str = None,
-        longDetailSummaryFormat4: str = None,
-        longDetailSummaryFormat5: str = None,
+        # consolidated detail summary (replaces previous 5-format fields)
+        detail_summary: str = None,
         sentiments: List[SentimentInfo] = None,
         errorInfo: ErrorInfo = None,
         llmSummaryMeta : LLMAnalysisMeta = None,  
         llmSentimentMeta : LLMAnalysisMeta = None,
+        totalProcessingDuration: float = None,
+        keywordRefinementDuration: float = None,
+        # New duration fields
+        verify_duration: float = None,
+        summary_duration: float = None,
+        detail_summary_duration: float = None,
+        sentiment_duration: float = None,
+        translation_duration: float = None,
         method:str = None   #ollama, gpt4o
     ):
         self.keywords = keywords
         self.shortSummary = shortSummary
         self.longSummary = longSummary
-        self.longDetailSummaryFormat1 = longDetailSummaryFormat1
-        self.longDetailSummaryFormat2 = longDetailSummaryFormat2
-        self.longDetailSummaryFormat3 = longDetailSummaryFormat3
-        self.longDetailSummaryFormat4 = longDetailSummaryFormat4
-        self.longDetailSummaryFormat5 = longDetailSummaryFormat5
+        self.detail_summary = detail_summary
         self.predKeywords = predKeywords if predKeywords is not None else {}
         self.sentiments = sentiments if sentiments is not None else []
         self.errorInfo = errorInfo
         self.llmSummaryMeta = llmSummaryMeta
         self.llmSentimentMeta = llmSentimentMeta
+        self.totalProcessingDuration = totalProcessingDuration
+        self.keywordRefinementDuration = keywordRefinementDuration
+        # New duration fields assignment
+        self.verify_duration = verify_duration
+        self.summary_duration = summary_duration
+        self.detail_summary_duration = detail_summary_duration
+        self.sentiment_duration = sentiment_duration
+        self.translation_duration = translation_duration
         self.method = method
     
     def to_mongo(self):
@@ -106,6 +115,27 @@ class ContentsMeta(BaseModel):
 
         if hasattr(self, "llmSentimentMeta") and  self.llmSentimentMeta:
             mongo_data["llmSentimentMeta"] = self.llmSentimentMeta.to_mongo()
+
+        # consolidated detail summary
+        if hasattr(self, "detail_summary") and self.detail_summary is not None:
+            mongo_data["detail_summary"] = self.detail_summary
+
+        if hasattr(self, "totalProcessingDuration") and self.totalProcessingDuration is not None:
+            mongo_data["totalProcessingDuration"] = self.totalProcessingDuration
+
+        if hasattr(self, "keywordRefinementDuration") and self.keywordRefinementDuration is not None:
+            mongo_data["keywordRefinementDuration"] = self.keywordRefinementDuration
+
+        if hasattr(self, "verify_duration") and self.verify_duration is not None:
+            mongo_data["verify_duration"] = self.verify_duration
+        if hasattr(self, "summary_duration") and self.summary_duration is not None:
+            mongo_data["summary_duration"] = self.summary_duration
+        if hasattr(self, "detail_summary_duration") and self.detail_summary_duration is not None:
+            mongo_data["detail_summary_duration"] = self.detail_summary_duration
+        if hasattr(self, "sentiment_duration") and self.sentiment_duration is not None:
+            mongo_data["sentiment_duration"] = self.sentiment_duration
+        if hasattr(self, "translation_duration") and self.translation_duration is not None:
+            mongo_data["translation_duration"] = self.translation_duration
 
         return mongo_data
             
@@ -141,6 +171,23 @@ class ContentsMeta(BaseModel):
             instance.llmSentimentMeta = LLMAnalysisMeta.from_mongo(mongo_data.get("llmSentimentMeta")) 
         else:
             instance.llmSentimentMeta = None  # 기본값 설정
+
+        # total processing duration
+        if "totalProcessingDuration" in mongo_data and mongo_data.get("totalProcessingDuration") is not None:
+            instance.totalProcessingDuration = mongo_data.get("totalProcessingDuration")
+        else:
+            instance.totalProcessingDuration = None
+
+        # keyword refinement total duration
+        if "keywordRefinementDuration" in mongo_data and mongo_data.get("keywordRefinementDuration") is not None:
+            instance.keywordRefinementDuration = mongo_data.get("keywordRefinementDuration")
+        else:
+            instance.keywordRefinementDuration = None
+        # consolidated detail summary
+        if "detail_summary" in mongo_data and mongo_data.get("detail_summary") is not None:
+            instance.detail_summary = mongo_data.get("detail_summary")
+        else:
+            instance.detail_summary = None
                 
         return instance
 

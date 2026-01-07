@@ -12,9 +12,11 @@ from datetime import datetime
 # 명령줄 인자로 모델 이름 받기
 parser = argparse.ArgumentParser(description="Generate Excel report from JSON test results")
 parser.add_argument("--model", default="unknown_model", help="The model name used in the tests")
+parser.add_argument("--iterations", type=int, default=10, help="Number of recent JSON files to include in the report")
 args = parser.parse_args()
 
 model = args.model
+iterations = args.iterations
 OUTPUT_FILENAME_PREFIX = model.replace(":", "-")
 
 # JSON 파일이 위치한 디렉토리 (컨테이너 내부 경로 기준)
@@ -22,14 +24,16 @@ BASE_DIR = "/app/ksubscribe_share/test/result/"
 # 결과 엑셀 파일 저장 경로 및 접두어
 OUTPUT_DIR = "/app/ksubscribe_share/test/test_summary/"
 
-# TARGET_FILES 자동 생성: BASE_DIR에서 최신 JSON 파일 10개
+# TARGET_FILES 자동 생성: BASE_DIR에서 최신 JSON 파일 N개 (기본값 10, --iterations로 제어)
 files = glob.glob(os.path.join(BASE_DIR, "*.json"))
 files.sort(key=os.path.getmtime, reverse=True)
 
 # 모델 이름으로 필터링 (파일명에 모델 이름이 포함된 것만 선택)
 model_normalized = model.replace(":", "-").replace("/", "-")
 filtered_files = [f for f in files if model_normalized in os.path.basename(f)]
-TARGET_FILES = [os.path.basename(f) for f in filtered_files[:10]]
+# Use provided iterations value to choose how many recent JSONs to include
+count = iterations if isinstance(iterations, int) and iterations > 0 else 10
+TARGET_FILES = [os.path.basename(f) for f in filtered_files[:count]]
 
 
 # -----------------------------------------------------------------------------
@@ -53,33 +57,6 @@ def format_list_or_dict(value):
         return "\n".join([f"{k}: {v}" for k, v in value.items()])
     return value
 
-def count_keywords(value):
-    """키워드 개수 카운트 (리스트 또는 쉼표 구분 문자열)"""
-    if isinstance(value, list):
-        return len(value)
-    elif isinstance(value, str) and value.strip():
-        return len([k.strip() for k in value.split(',') if k.strip()])
-    return 0
-
-def calculate_keyword_ratios(positive_kw, neutral_kw, negative_kw):
-    """
-    키워드 개수 기반 감정 비율 계산
-    Returns: (positiveKeywordRatio, neutralKeywordRatio, negativeKeywordRatio)
-    """
-    pos_count = count_keywords(positive_kw)
-    neu_count = count_keywords(neutral_kw)
-    neg_count = count_keywords(negative_kw)
-    total = pos_count + neu_count + neg_count
-    
-    if total == 0:
-        return 0.0, 0.0, 0.0
-    
-    pos_ratio = round((pos_count / total) * 100, 2)
-    neu_ratio = round((neu_count / total) * 100, 2)
-    neg_ratio = round((neg_count / total) * 100, 2)
-    
-    return pos_ratio, neu_ratio, neg_ratio
-
 def main():
     print(f"Selected TARGET_FILES (latest 10 JSON files): {TARGET_FILES}")
     print()
@@ -98,8 +75,16 @@ def main():
         data = load_json_file(filepath)
         if not data:
             continue
-            
-        docs = data.get('docs', [])
+
+        # Support two JSON formats:
+        # 1) Dict with key 'docs' (newer format)
+        # 2) List of items where each item has an 'analysis' field (legacy format)
+        if isinstance(data, dict):
+            docs = data.get('docs', [])
+        elif isinstance(data, list):
+            docs = data
+        else:
+            docs = []
         for doc in docs:
             url = doc.get('url')
             if not url:
@@ -114,10 +99,8 @@ def main():
                     'runs': {}
                 }
             
-            # 메타 데이터 추출
-            meta = doc.get('contentsMeta', {})
-            if not meta:
-                meta = {}
+            # 메타 데이터 추출: support both 'contentsMeta' and legacy 'analysis'
+            meta = doc.get('contentsMeta') or doc.get('analysis') or {}
                 
             # 감성 분석 정보 (첫 번째 기관 기준)
             sentiments = meta.get('sentiments', [])
@@ -128,29 +111,18 @@ def main():
             neu_kw = sentiment.get('neutralKeywords', [])
             neg_kw = sentiment.get('negativeKeywords', [])
             
-            pos_count = count_keywords(pos_kw)
-            neu_count = count_keywords(neu_kw)
-            neg_count = count_keywords(neg_kw)
-            
-            pos_kw_ratio, neu_kw_ratio, neg_kw_ratio = calculate_keyword_ratios(pos_kw, neu_kw, neg_kw)
-            
             # 데이터 추출 및 가공
             if run_label == "1회차":
                 extracted = {
                     "title": title,
                     "url": url,
-                    "scrapingDuration": meta.get('scrapingDuration'),
-                    "analysisDuration": meta.get('analysisDuration'),
                     "totalProcessingDuration": meta.get('totalProcessingDuration'),
+                    "keywordRefinementDuration": meta.get('keywordRefinementDuration'),
                     "predKeywords": format_list_or_dict(meta.get('predKeywords')),
                     "keywords": format_list_or_dict(meta.get('keywords')),
                     "shortSummary": meta.get('shortSummary'),
                     "longSummary": meta.get('longSummary'),
-                    "longDetailSummaryFormat1": meta.get('longDetailSummaryFormat1'),
-                    "longDetailSummaryFormat2": meta.get('longDetailSummaryFormat2'),
-                    "longDetailSummaryFormat3": meta.get('longDetailSummaryFormat3'),
-                    "longDetailSummaryFormat4": meta.get('longDetailSummaryFormat4'),
-                    "longDetailSummaryFormat5": meta.get('longDetailSummaryFormat5'),
+                    "detail_summary": meta.get('detail_summary'),
                     "positiveRatio": sentiment.get('positiveRatio'),
                     "negativeRatio": sentiment.get('negativeRatio'),
                     "neutralRatio": sentiment.get('neutralRatio'),
@@ -161,29 +133,18 @@ def main():
                     "positiveKeywords": format_list_or_dict(pos_kw),
                     "negativeKeywords": format_list_or_dict(neg_kw),
                     "neutralKeywords": format_list_or_dict(neu_kw),
-                    "positiveKeywordCount": pos_count,
-                    "neutralKeywordCount": neu_count,
-                    "negativeKeywordCount": neg_count,
-                    "positiveKeywordRatio": pos_kw_ratio,
-                    "neutralKeywordRatio": neu_kw_ratio,
-                    "negativeKeywordRatio": neg_kw_ratio
                 }
             else:
                 extracted = {
                     "title": "",
                     "url": "",
-                    "scrapingDuration": meta.get('scrapingDuration'),
-                    "analysisDuration": meta.get('analysisDuration'),
                     "totalProcessingDuration": meta.get('totalProcessingDuration'),
+                    "keywordRefinementDuration": meta.get('keywordRefinementDuration'),
                     "predKeywords": format_list_or_dict(meta.get('predKeywords')),
                     "keywords": format_list_or_dict(meta.get('keywords')),
                     "shortSummary": meta.get('shortSummary'),
                     "longSummary": meta.get('longSummary'),
-                    "longDetailSummaryFormat1": meta.get('longDetailSummaryFormat1'),
-                    "longDetailSummaryFormat2": meta.get('longDetailSummaryFormat2'),
-                    "longDetailSummaryFormat3": meta.get('longDetailSummaryFormat3'),
-                    "longDetailSummaryFormat4": meta.get('longDetailSummaryFormat4'),
-                    "longDetailSummaryFormat5": meta.get('longDetailSummaryFormat5'),
+                    "detail_summary": meta.get('detail_summary'),
                     "positiveRatio": sentiment.get('positiveRatio'),
                     "negativeRatio": sentiment.get('negativeRatio'),
                     "neutralRatio": sentiment.get('neutralRatio'),
@@ -194,12 +155,6 @@ def main():
                     "positiveKeywords": format_list_or_dict(pos_kw),
                     "negativeKeywords": format_list_or_dict(neg_kw),
                     "neutralKeywords": format_list_or_dict(neu_kw),
-                    "positiveKeywordCount": pos_count,
-                    "neutralKeywordCount": neu_count,
-                    "negativeKeywordCount": neg_count,
-                    "positiveKeywordRatio": pos_kw_ratio,
-                    "neutralKeywordRatio": neu_kw_ratio,
-                    "negativeKeywordRatio": neg_kw_ratio
                 }
             
             # Null 처리 (None인 경우 "Null" 문자열로 변환)
@@ -228,16 +183,15 @@ def main():
     # 행 순서 정의
     row_indices = [
         "title", "url",
-        "scrapingDuration", "analysisDuration",
         "totalProcessingDuration",
+        "keywordRefinementDuration",
         "predKeywords", "keywords", "shortSummary", "longSummary",
-        "longDetailSummaryFormat1", "longDetailSummaryFormat2", "longDetailSummaryFormat3", "longDetailSummaryFormat4", "longDetailSummaryFormat5",
+        "detail_summary",
         "positiveRatio", "negativeRatio", "neutralRatio",
         "reason",
         "positiveReason", "neutralReason", "negativeReason",
         "positiveKeywords", "negativeKeywords", "neutralKeywords",
-        "positiveKeywordCount", "neutralKeywordCount", "negativeKeywordCount",
-        "positiveKeywordRatio", "neutralKeywordRatio", "negativeKeywordRatio"
+        
     ]
     
     try:

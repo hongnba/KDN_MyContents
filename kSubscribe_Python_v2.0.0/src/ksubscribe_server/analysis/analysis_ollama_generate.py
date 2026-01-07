@@ -125,31 +125,34 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             mycontents_logger.info(f"🔍 [Debug] orgId: {orgId}, orgName: {orgName}, combined_keywords: {combined_keywords}")
 
             # 사전질의(주어진 db 키워드와 ai추출 키워드를 추출 및 비교)를 통한 키워드 검증로직 추가 20250429 mcst
-            # verify_start = time.time() # Removed timing
             pre_question_verify = self.question_verify.replace("pred_keywords_from_db", pred_keyword_list).replace("[contents]",content)
+            
+            verify_start = time.time()
             result_verify = self.chat_ollama._client.generate(
                                     model=CONF.OLLAMA_MODEL,
                                     prompt=pre_question_verify,
                                     format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
+            verify_end = time.time()
+            contentsMetaResult.contentsMeta.verify_duration = verify_end - verify_start
+
             is_success_keywords, result_verify_json = self.json_load(result_verify, mycontents_logger)  
             related = result_verify_json['related']  # True : 관련성 있음, False : 관련성 없음
             
             #20251013 리자: 프롬프트 2)에서 키워드 삭제에 따른 변경:
             ai_keywords = result_verify_json["ai_keyword"]
                         
-            # verify_end = time.time() # Removed timing
-            # mycontents_logger.info(f"분석대상 사전검증 소요시간 : {verify_end-verify_start} 초 소요")
-                        
-            # summary_start = time.time() # Removed timing
             #pred_keyword_list = [item + " 기술"  for item in pred_keyword_list]
             # 
             new_question_summary = self.question_summary.replace("pred_keywords_from_db", pred_keyword_list).replace("[contents]",content)
+            
+            summary_start = time.time()
             result_summary = self.chat_ollama._client.generate(
                                     model=CONF.OLLAMA_MODEL,
                                     prompt=new_question_summary,
                                     format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
+            summary_end = time.time()
+            contentsMetaResult.contentsMeta.summary_duration = summary_end - summary_start
             
-            # summary_end = time.time() # Removed timing
             is_success, result_summary_json = self.json_load(result_summary, mycontents_logger)  
             
             # pred_keywords = SimularityChecker().best_keyword_of_summary(result_summary_json["short_summary"],self.keywords)
@@ -194,7 +197,6 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             
             summary_success = self.summary_to_ollamaModel_v2(result_summary, result_summary_json, contentsMetaResult, pred_keywords, ai_keywords, mycontents_logger) 
             contentsMetaResult.summarySucYN = "Y" if summary_success else "N"
-            # mycontents_logger.info(f"요약분석 소요시간 : {summary_end-summary_start} 초 소요") # Removed timing
             
             # 20251113 MariaDB 미사용으로 주석처리 (MongoDB에만 저장)
             # article_sum = ArticlesSummaryVO(
@@ -212,51 +214,49 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             #     mycontents_logger.error(f"Failed to insert ArticlesSummary to MariaDB: {e}")
             #     mycontents_logger.info("Continuing analysis despite MariaDB error...")
 
-            # # [New Feature] Long Detail Summary Formats (5 Candidates)
-            # # Format 1
-            # new_question_longdetail_1 = self.question_longdetail_summary_format1.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
-            # result_longdetail_1 = self.chat_ollama._client.generate(
-            #                         model=CONF.OLLAMA_MODEL,
-            #                         prompt=new_question_longdetail_1,
-            #                         format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
-            # _, result_longdetail_1_json = self.json_load(result_longdetail_1, mycontents_logger)
-            # contentsMetaResult.contentsMeta.longDetailSummaryFormat1 = result_longdetail_1_json.get("longDetailSummary")
+            # Consolidated detail summary (replaces previous 5 variants)
+            try:
+                # compute approximate sentence count
+                sentences = [s for s in re.split(r'[。.!?！？\n]+', content) if s and s.strip()]
+                sentence_count = len(sentences)
+                mycontents_logger.info(f"🔍 [Debug] article sentence_count: {sentence_count}")
 
-            # # Format 2
-            # new_question_longdetail_2 = self.question_longdetail_summary_format2.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
-            # result_longdetail_2 = self.chat_ollama._client.generate(
-            #                         model=CONF.OLLAMA_MODEL,
-            #                         prompt=new_question_longdetail_2,
-            #                         format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
-            # _, result_longdetail_2_json = self.json_load(result_longdetail_2, mycontents_logger)
-            # contentsMetaResult.contentsMeta.longDetailSummaryFormat2 = result_longdetail_2_json.get("longDetailSummary")
+                # Use detail prompt only for sufficiently long articles (>=10 sentences)
+                if sentence_count >= 10:
+                    # Prefer the new question_detail_summary prompt; fallback to detail_summary for compatibility
+                    prompt_template = getattr(self, 'question_detail_summary', '')
 
-            # # Format 3
-            # new_question_longdetail_3 = self.question_longdetail_summary_format3.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
-            # result_longdetail_3 = self.chat_ollama._client.generate(
-            #                         model=CONF.OLLAMA_MODEL,
-            #                         prompt=new_question_longdetail_3,
-            #                         format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
-            # _, result_longdetail_3_json = self.json_load(result_longdetail_3, mycontents_logger)
-            # contentsMetaResult.contentsMeta.longDetailSummaryFormat3 = result_longdetail_3_json.get("longDetailSummary")
+                    # compute min/max sentence constraints per user formula
+                    min_sent = 10
+                    if sentence_count < 30:
+                        min_sent = int(max(5, (sentence_count / 3)))
+                    
+                    max_sent = 11
+                    if sentence_count < 30:
+                        max_sent = int(min(10, (sentence_count / 3)))
+                    
+                    if max_sent < min_sent:
+                        max_sent = min_sent
 
-            # # Format 4
-            # new_question_longdetail_4 = self.question_longdetail_summary_format4.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
-            # result_longdetail_4 = self.chat_ollama._client.generate(
-            #                         model=CONF.OLLAMA_MODEL,
-            #                         prompt=new_question_longdetail_4,
-            #                         format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
-            # _, result_longdetail_4_json = self.json_load(result_longdetail_4, mycontents_logger)
-            # contentsMetaResult.contentsMeta.longDetailSummaryFormat4 = result_longdetail_4_json.get("longDetailSummary")
+                    new_question_detail = prompt_template.replace("[organization]", str(orgName) if orgName else "").replace("[contents]", content).replace("[min_sentences]", str(min_sent)).replace("[max_sentences]", str(max_sent))
+                    
+                    detail_start = time.time()
+                    result_detail = self.chat_ollama._client.generate(
+                                        model=CONF.OLLAMA_MODEL,
+                                        prompt=new_question_detail,
+                                        format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
+                    detail_end = time.time()
+                    contentsMetaResult.contentsMeta.detail_summary_duration = detail_end - detail_start
 
-            # # Format 5
-            # new_question_longdetail_5 = self.question_longdetail_summary_format5.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
-            # result_longdetail_5 = self.chat_ollama._client.generate(
-            #                         model=CONF.OLLAMA_MODEL,
-            #                         prompt=new_question_longdetail_5,
-            #                         format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
-            # _, result_longdetail_5_json = self.json_load(result_longdetail_5, mycontents_logger)
-            # contentsMetaResult.contentsMeta.longDetailSummaryFormat5 = result_longdetail_5_json.get("longDetailSummary")
+                    _, result_detail_json = self.json_load(result_detail, mycontents_logger)
+                    # prefer explicit detail_summary key then fallbacks
+                    detail_text = result_detail_json.get("detail_summary") or result_detail_json.get("long_summary")
+                    contentsMetaResult.contentsMeta.detail_summary = detail_text
+                else:
+                    # fallback to using long_summary when article is short
+                    contentsMetaResult.contentsMeta.detail_summary = result_summary_json.get("long_summary", "")
+            except Exception as e:
+                mycontents_logger.warning(f"Failed to generate detail summary: {e}")
 
             ### sentiment part!
             # 20251013 리자: 프롬프트 3)분리 --> 반복 x 3
@@ -265,11 +265,6 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             # orgName, combined_keywords = ContentsOrgService().getOrgNameAndKeywords(queueContent.contentOrgId)
             mycontents_logger.info(f"🔍 [Debug] orgId: {orgId}, orgName: {orgName}, combined_keywords: {combined_keywords}")
             
-            ### Log each time separately???
-            # sentiment_start = time.time() # Removed timing
-
-
-
             # [시나리오 1] 감성 비율 + 키워드 통합 (중립 키워드 포함)
             # 2025.12.08: 기존 3단계(비율->이유->키워드)를 1단계로 통합하여 실험
             # new_question_sentiment_scenario_1 = self.question_sentiment_scenario_1.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
@@ -300,10 +295,13 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             else:
                 new_question_sentiment_integrated = new_question_sentiment_integrated.replace("[synonyms]", str(orgName) if orgName else "")
 
+            sentiment_start = time.time()
             result_sentiment_integrated = self.chat_ollama._client.generate(
                                     model=CONF.OLLAMA_MODEL,
                                     prompt=new_question_sentiment_integrated,
                                     format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
+            sentiment_end = time.time()
+            contentsMetaResult.contentsMeta.sentiment_duration = sentiment_end - sentiment_start
             
             is_success, result_sentiment_integrated_json = self.json_load(result_sentiment_integrated, mycontents_logger)
             
@@ -410,9 +408,12 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             try:
                 mycontents_logger.info("🔧 워드클라우드용 키워드 정제 시작...")
                 
-                # 각 감성별 키워드 정제
-                sentiment_types = ['positiveKeywords', 'negativeKeywords', 'neutralKeywords']
+                # sentiment_keywords 프롬프트 결과물에서 실제로 존재하는 키만 가져오기
+                # 하드코딩 대신 동적으로 처리
+                sentiment_types = [key for key in ['positiveKeywords', 'negativeKeywords', 'neutralKeywords'] 
+                                   if key in result_sentiment_keywords_json and result_sentiment_keywords_json.get(key)]
                 
+                total_refine_time = 0.0
                 for sentiment_type in sentiment_types:
                     original_keywords = result_sentiment_keywords_json.get(sentiment_type, [])
                     
@@ -421,7 +422,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                         continue
                     
                     # 정제 수행
-                    refined_keywords = self.refine_keywords_for_wordcloud(
+                    refined_result = self.refine_keywords_for_wordcloud(
                         original_keywords=original_keywords,
                         org_name=orgName,
                         combined_keywords=combined_keywords,
@@ -429,6 +430,14 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                         sentiment_type=sentiment_type,
                         mycontents_logger=mycontents_logger
                     )
+                    # refine_keywords_for_wordcloud now returns (refined_keywords, elapsed_seconds)
+                    if isinstance(refined_result, tuple) and len(refined_result) == 2:
+                        refined_keywords, elapsed = refined_result
+                    else:
+                        refined_keywords = refined_result
+                        elapsed = 0.0
+
+                    total_refine_time += (elapsed if isinstance(elapsed, (int, float)) else 0.0)
                     
                     # 정제된 키워드로 업데이트
                     if refined_keywords:
@@ -438,6 +447,14 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                         mycontents_logger.warning(f"⚠️ {sentiment_type} 정제 실패, 원본 유지")
                 
                 mycontents_logger.info("✅ 워드클라우드용 키워드 정제 완료")
+                # 기록: 총 키워드 정제 시간(세 가지 감성 합산)
+                # Note: totalProcessingDuration은 스크래핑 단계에서 설정되므로 여기서 덮어쓰지 않음
+                try:
+                    if hasattr(contentsMetaResult, 'contentsMeta') and contentsMetaResult.contentsMeta:
+                        contentsMetaResult.contentsMeta.keywordRefinementDuration = round(total_refine_time, 3)
+                        mycontents_logger.info(f"키워드 정제 소요 시간: {total_refine_time:.3f}초")
+                except Exception:
+                    mycontents_logger.warning('Could not set keywordRefinementDuration on contentsMetaResult')
                 
             except Exception as e:
                 mycontents_logger.error(f"❌ 키워드 정제 중 오류 발생 (무시하고 진행): {e}")
@@ -463,6 +480,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                     ("neutralKeywords", result_sentiment_keywords_json, [])
                 ]
 
+                translation_total_time = 0.0
                 for key, source_json, default_val in fields_to_check:
                     val = source_json.get(key, default_val)
                     
@@ -475,10 +493,13 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                     
                     new_question_translate = self.question_translate_to_korean.replace("[json_data]", json.dumps(target_json, ensure_ascii=False)).replace("[contents]", content)
                     
+                    trans_start = time.time()
                     result_translate = self.chat_ollama._client.generate(
                                             model=CONF.OLLAMA_MODEL,
                                             prompt=new_question_translate,
                                             format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
+                    trans_end = time.time()
+                    translation_total_time += (trans_end - trans_start)
                     
                     is_success_trans, result_translate_json = self.json_load(result_translate, mycontents_logger)
                     
@@ -491,7 +512,9 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                             source_json["keywords"] = result_translate_json[key]
                             ai_keywords = result_translate_json[key]
 
+                contentsMetaResult.contentsMeta.translation_duration = translation_total_time
                 mycontents_logger.info("✅ 한국어 검증 및 번역 완료 (개별 필드)")
+                mycontents_logger.info(f"번역 소요 시간: {translation_total_time:.3f}초")
                 
                 # [Summary & Keywords] 모델 재업데이트
                 # 이 필드들은 번역 로직 이전에 이미 contentsMetaResult에 할당되었으므로, 번역된 값으로 갱신해야 합니다.
@@ -513,8 +536,6 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             sentiment_separated_success = self.assemble_sentiment_to_ollamaModel_v2(queueContent, orgName, result_sentiment_ratio, result_sentiment_ratio_json, result_sentiment_reason, result_sentiment_reason_json, result_sentiment_keywords, result_sentiment_keywords_json, contentsMetaResult,  mycontents_logger) 
             
             contentsMetaResult.sentimentSucYN = "Y" if sentiment_separated_success else "N"
-            # sentiment_end = time.time() # Removed timing
-            # mycontents_logger.info(f"평판분석 소요시간 : {sentiment_end-sentiment_start} 초 소요") # Removed timing
             
             # Note: Sentiment persistence to RDBMS is temporarily disabled due to schema/API changes
             
@@ -670,7 +691,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
 
     def refine_keywords_for_wordcloud(self, original_keywords: list, org_name: str, 
                                       combined_keywords: list, article_content: str, 
-                                      sentiment_type: str, mycontents_logger: logging.Logger) -> list:
+                                      sentiment_type: str, mycontents_logger: logging.Logger) -> tuple:
         """
         워드클라우드용 키워드 정제 메서드
         문장형 키워드를 간결한 키워드로 정제하여 빈도수 통합 가능하도록 처리
@@ -680,8 +701,9 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
         - 키워드 리스트가 20개 이상이면 배치로 나누어 처리
         """
         try:
+            start_time = time.time()
             if not original_keywords or len(original_keywords) == 0:
-                return []
+                return [], 0.0
             
             # 기사 내용은 전체 사용 (잘리지 않음)
             full_content = article_content if article_content else ""
@@ -704,7 +726,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             
             # 3. 정제 대상 키워드가 없으면 빈 리스트 반환
             if not keywords_to_refine:
-                return []
+                return [], round(time.time() - start_time, 3)
             
             # 4. 정제 대상 키워드 배치 처리: 5개 단위로 나누기
             MAX_KEYWORDS_PER_BATCH = 5
@@ -742,12 +764,14 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                     refined_keywords = []
             
             # 5. 정제된 키워드 반환
-            return refined_keywords
+            elapsed = round(time.time() - start_time, 3)
+            return refined_keywords, elapsed
                 
         except Exception as e:
             mycontents_logger.error(f"❌ {sentiment_type} 키워드 정제 중 예외 발생: {e}")
             mycontents_logger.error(traceback.format_exc())
-            return original_keywords  # 실패 시 원본 반환
+            elapsed = round(time.time() - start_time, 3) if 'start_time' in locals() else 0.0
+            return original_keywords, elapsed  # 실패 시 원본 반환
 
     def _refine_keywords_batch(self, batch_keywords: list, org_name: str, 
                                combined_keywords: list, article_content: str,

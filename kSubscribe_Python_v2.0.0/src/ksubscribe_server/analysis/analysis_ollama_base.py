@@ -36,63 +36,41 @@ from ksubscribe_share.db.service.contentsService import ContentsService
 
 class AnalysisOllamaBase:
 
-    def __init__(self, yaml_path: str = None):
-        """
-        :param yaml_path: YAML 프롬프트 파일 경로 (선택적)
-                          제공되면 YAML에서 프롬프트 로드, 없으면 기존 하드코딩된 프롬프트 사용
-        """
-        if yaml_path and os.path.exists(yaml_path):
-            # YAML 파일에서 프롬프트 로드
-            self._load_prompts_from_yaml(yaml_path)
-        else:
-            # 기존 하드코딩된 프롬프트 사용 (기본값)
-            self._init_default_prompts()
-    
-    def _load_prompts_from_yaml(self, yaml_path: str):
-        """YAML 파일에서 프롬프트를 로드하여 인스턴스 변수로 설정"""
-        with open(yaml_path, 'r', encoding='utf-8') as f:
-            config = yaml.safe_load(f)
-        
-        prompts = config.get('prompts', {})
-        
-        # YAML의 각 프롬프트를 인스턴스 변수로 설정
-        self.question_verify = prompts.get('question_verify', '')
-        self.question_summary = prompts.get('question_summary', '')
-        self.question_sentiment_integrated = prompts.get('question_sentiment_integrated', '')
-        self.sentiment_keywords = prompts.get('sentiment_keywords', '')
-        self.question_refine_keywords_for_wordcloud = prompts.get('question_refine_keywords_for_wordcloud', '')
-        self.question_translate_to_korean = prompts.get('question_translate_to_korean', '')
-        
-        # Long Detail Summary Format 1~5 (모양만)
-        self.question_longdetail_summary_format1 = prompts.get('question_longdetail_summary_format1', '')
-        self.question_longdetail_summary_format2 = prompts.get('question_longdetail_summary_format2', '')
-        self.question_longdetail_summary_format3 = prompts.get('question_longdetail_summary_format3', '')
-        self.question_longdetail_summary_format4 = prompts.get('question_longdetail_summary_format4', '')
-        self.question_longdetail_summary_format5 = prompts.get('question_longdetail_summary_format5', '')
-    
-    def _init_default_prompts(self):
-        """기존 하드코딩된 프롬프트 초기화 (기본 동작)"""
-        # 기존 프롬프트 정의는 그대로 유지 (아래 코드에서 정의됨)
-        # Long Detail Summary Format 1~5는 빈 문자열로 초기화
-        self.question_longdetail_summary_format1 = ""
-        self.question_longdetail_summary_format2 = ""
-        self.question_longdetail_summary_format3 = ""
-        self.question_longdetail_summary_format4 = ""
-        self.question_longdetail_summary_format5 = ""
-        self.question_longdetail_summary_format4 = prompts.get('question_longdetail_summary_format4', '')
-        self.question_longdetail_summary_format5 = prompts.get('question_longdetail_summary_format5', '')
-    
-    def _init_default_prompts(self):
-        """기존 하드코딩된 프롬프트 초기화 (기본 동작)"""
-        # 기존 프롬프트 정의는 그대로 유지 (아래 코드에서 정의됨)
-        # Long Detail Summary Format 1~5는 빈 문자열로 초기화
-        self.question_longdetail_summary_format1 = ""
-        self.question_longdetail_summary_format2 = ""
-        self.question_longdetail_summary_format3 = ""
-        self.question_longdetail_summary_format4 = ""
-        self.question_longdetail_summary_format5 = ""
+   def __init__(self, yaml_path: str = None):
+      """
+      :param yaml_path: YAML 프롬프트 파일 경로 (선택적)
+                    제공되면 YAML에서 프롬프트 로드, 없으면 기존 하드코딩된 프롬프트 사용
+      """
+      if yaml_path and os.path.exists(yaml_path):
+         # YAML 파일에서 프롬프트 로드
+         self._load_prompts_from_yaml(yaml_path)
+      else:
+         # 기존 하드코딩된 프롬프트 사용 (기본값)
+         self._init_default_prompts()
 
-    def nanoseconds_to_seconds(self, nanoseconds):
+   def _load_prompts_from_yaml(self, yaml_path: str):
+      """YAML 파일에서 프롬프트를 로드하여 인스턴스 변수로 설정"""
+      with open(yaml_path, 'r', encoding='utf-8') as f:
+         config = yaml.safe_load(f)
+
+      prompts = config.get('prompts', {})
+
+      # YAML의 각 프롬프트를 인스턴스 변수로 설정
+      self.question_verify = prompts.get('question_verify', '')
+      self.question_summary = prompts.get('question_summary', '')
+      self.question_sentiment_integrated = prompts.get('question_sentiment_integrated', '')
+      self.sentiment_keywords = prompts.get('sentiment_keywords', '')
+      self.question_refine_keywords_for_wordcloud = prompts.get('question_refine_keywords_for_wordcloud', '')
+      self.question_translate_to_korean = prompts.get('question_translate_to_korean', '')
+
+      # Consolidated detail summary prompt (replaces previous 5 longDetail formats)
+      self.question_detail_summary = prompts.get('question_detail_summary', '')
+
+   def _init_default_prompts(self):
+      """기존 하드코딩된 프롬프트 초기화 (기본 동작)"""
+      # 기존 프롬프트 정의는 그대로 유지 (아래 코드에서 정의됨)
+
+   def nanoseconds_to_seconds(self, nanoseconds):
         # 나노초를 초로 변환
         return nanoseconds / 1_000_000_000    
     
@@ -101,7 +79,7 @@ class AnalysisOllamaBase:
     # ==================================================================================
 
     # 1. [검증] 기사와 키워드 연관성 검증
-    question_verify = f"""
+   question_verify = f"""
     Reasoning: high
     # Valid channels: analysis, final
 
@@ -136,7 +114,7 @@ class AnalysisOllamaBase:
     """
 
     # 2. [요약] 기관 관점 요약
-    question_summary = f"""
+   question_summary = f"""
     Reasoning: high
     # Valid channels: analysis, final
 
@@ -171,7 +149,7 @@ class AnalysisOllamaBase:
     }}
     """ 
     # 3. [감성 분석 통합] 감성 비율 및 근거 분석 (CoT 적용)
-    question_sentiment_integrated = f"""
+   question_sentiment_integrated = f"""
     Reasoning: high
     # Valid channels: analysis, final
 
@@ -277,7 +255,7 @@ class AnalysisOllamaBase:
     # """
 
     # 5. [감성 키워드] 문맥 기반 키워드 추출 및 분류
-    sentiment_keywords = f"""
+   sentiment_keywords = f"""
     Reasoning: high
     # Valid channels: analysis, final
 
@@ -315,7 +293,7 @@ class AnalysisOllamaBase:
     """
 
     # 6. [워드클라우드용 키워드 정제] 문장형 키워드를 간결한 키워드로 정제
-    question_refine_keywords_for_wordcloud = f"""
+   question_refine_keywords_for_wordcloud = f"""
     Reasoning: high
     # Valid channels: analysis, final
 
@@ -396,7 +374,7 @@ class AnalysisOllamaBase:
     """
 
     # 7. [최종 검수] 한국어 번역 및 검수 (Safety Net)
-    question_translate_to_korean = f"""
+   question_translate_to_korean = f"""
     Reasoning: high
     # Valid channels: analysis, final
 
@@ -419,12 +397,38 @@ class AnalysisOllamaBase:
     반드시 입력된 JSON과 동일한 키를 가진 JSON 포맷으로만 응답해라. 주석, 설명은 절대 포함하지 마라.
     """
 
-    # 8. [Long Detail Summary Formats] 상세 요약 형식 1~5 (모양만)
-    question_longdetail_summary_format1 = ""
-    question_longdetail_summary_format2 = ""
-    question_longdetail_summary_format3 = ""
-    question_longdetail_summary_format4 = ""
-    question_longdetail_summary_format5 = ""
+   # 8. Consolidated detail summary prompt (replaces previous 1~5 formats)
+   question_detail_summary = """
+    Reasoning: high
+    # Valid channels: analysis, final
+
+    너는 전문적인 뉴스 분석 및 요약 전문가다.
+    아래 [기사]를 심층적으로 분석하여 [기관]의 관점에서 `detail_summary`를 생성해라. 이 프롬프트는 기사의 문장 수가 10문장 이상인 경우에만 호출되어야 한다.
+
+    ### [기관]
+    기관: [organization]
+
+    ### [기사]
+    [contents]
+
+    ### 길이 제약
+    - 생성할 문장 수는 최소 [min_sentences]문장, 최대 [max_sentences]문장으로 제한한다.
+    - (계산식) 최소: min(5, 문장수/3), 최대: max(10, 문장수/2) — 실제 값은 호출 시 정수로 전달된다.
+
+    ### 작성 지침
+    1. **기관 중심**: 기사 전체 내용 중 [기관]과 관련된 이슈를 중심으로 요약해라.
+    2. **상세 분석**: 기사의 핵심 사건, 배경, 결과 등을 빠짐없이 포함하여 작성해라. 단순한 사실 나열보다는 인과관계가 드러나도록 서술해라.
+    3. **명칭 처리**: 요약문 내에서 기관명을 언급할 때는 기사에 나온 실제 명칭을 사용해라. 만약 기사에서 명칭을 찾을 수 없다면 '해당 기관'이라고 지칭해라. 절대 '[organization]'이라는 텍스트를 그대로 출력하지 마라.
+    4. **언어 제약**: 생각(Reasoning)은 자유롭게 하되, **최종 답변(JSON 값)은 반드시 한국어**로 작성해라. (조사, 서술어 포함)
+    5. **포맷팅**: JSON 값에는 불필요한 줄바꿈 문자(\n)나 특수문자를 포함하지 말고 자연스러운 문장으로 이어 써라.
+
+    ### 출력 형식
+    반드시 아래 JSON 포맷으로만 응답해라. 주석, 설명은 절대 포함하지 마라.
+
+    {
+        "detail_summary": "기사에 대한 상세 요약(한국어, 문장 수 제약 준수)"
+    }
+    """
 
     # ==================================================================================
     # [Deprecated / Zombie Prompts] 사용하지 않는 구버전 프롬프트 (보관용)

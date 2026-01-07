@@ -422,8 +422,14 @@ class ContentsScrapingOllamaTrafilaura(ContentsScrapingBase):
         contentsVO = self.generate_imageId(contentsVO)
         total_end = time.time()
         total_duration = total_end - total_start
-        if contentsVO.contentsMeta:
-            contentsVO.contentsMeta.totalProcessingDuration = total_duration
+        # Ensure contentsMeta exists so we can always record totalProcessingDuration
+        try:
+            if not hasattr(contentsVO, 'contentsMeta') or contentsVO.contentsMeta is None:
+                contentsVO.contentsMeta = ContentsMeta()
+            contentsVO.contentsMeta.totalProcessingDuration = round(total_duration, 3)
+        except Exception as e:
+            # Fallback: log and continue without interrupting the main flow
+            self.docker_scraping_logger.warning(f"Could not set totalProcessingDuration: {e}")
         try:
             #2025.03.18 콘텐츠 저장되지 않도록 수정 
             if contentsVO and contentsVO.contentsRaw:
