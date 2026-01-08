@@ -215,6 +215,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
             #     mycontents_logger.info("Continuing analysis despite MariaDB error...")
 
             # Consolidated detail summary (replaces previous 5 variants)
+            result_detail_json = {}  # 초기화
             try:
                 # compute approximate sentence count
                 sentences = [s for s in re.split(r'[。.!?！？\n]+', content) if s and s.strip()]
@@ -240,6 +241,7 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
 
                     new_question_detail = prompt_template.replace("[organization]", str(orgName) if orgName else "").replace("[contents]", content).replace("[min_sentences]", str(min_sent)).replace("[max_sentences]", str(max_sent))
                     
+                    mycontents_logger.info(f"🔍 [Debug] detail_summary 프롬프트 실행 시작 (min: {min_sent}, max: {max_sent})")
                     detail_start = time.time()
                     result_detail = self.chat_ollama._client.generate(
                                         model=CONF.OLLAMA_MODEL,
@@ -248,15 +250,28 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                     detail_end = time.time()
                     contentsMetaResult.contentsMeta.detail_summary_duration = detail_end - detail_start
 
-                    _, result_detail_json = self.json_load(result_detail, mycontents_logger)
-                    # prefer explicit detail_summary key then fallbacks
-                    detail_text = result_detail_json.get("detail_summary") or result_detail_json.get("long_summary")
-                    contentsMetaResult.contentsMeta.detail_summary = detail_text
+                    is_success_detail, result_detail_json = self.json_load(result_detail, mycontents_logger)
+                    
+                    if is_success_detail:
+                        # prefer explicit detail_summary key then fallbacks
+                        detail_text = result_detail_json.get("detail_summary") or result_detail_json.get("long_summary")
+                        if detail_text:
+                            contentsMetaResult.contentsMeta.detail_summary = detail_text
+                            mycontents_logger.info(f"✅ detail_summary 생성 완료 (길이: {len(detail_text)}자)")
+                        else:
+                            mycontents_logger.warning(f"⚠️ detail_summary 키가 없음, long_summary 사용")
+                            contentsMetaResult.contentsMeta.detail_summary = result_summary_json.get("long_summary", "")
+                    else:
+                        mycontents_logger.error(f"❌ detail_summary JSON 파싱 실패, long_summary 사용")
+                        contentsMetaResult.contentsMeta.detail_summary = result_summary_json.get("long_summary", "")
                 else:
                     # fallback to using long_summary when article is short
+                    mycontents_logger.info(f"ℹ️ 문장 수 부족 ({sentence_count}개), long_summary 사용")
                     contentsMetaResult.contentsMeta.detail_summary = result_summary_json.get("long_summary", "")
             except Exception as e:
-                mycontents_logger.warning(f"Failed to generate detail summary: {e}")
+                mycontents_logger.error(f"❌ detail_summary 생성 중 오류: {e}")
+                mycontents_logger.error(traceback.format_exc())
+                contentsMetaResult.contentsMeta.detail_summary = result_summary_json.get("long_summary", "")
 
             ### sentiment part!
             # 20251013 리자: 프롬프트 3)분리 --> 반복 x 3
@@ -477,7 +492,8 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                     ("neutralReason", result_sentiment_reason_json, ""),
                     ("positiveKeywords", result_sentiment_keywords_json, []),
                     ("negativeKeywords", result_sentiment_keywords_json, []),
-                    ("neutralKeywords", result_sentiment_keywords_json, [])
+                    ("neutralKeywords", result_sentiment_keywords_json, []),
+                    ("detail_summary", result_detail_json, "")
                 ]
 
                 translation_total_time = 0.0
@@ -486,6 +502,62 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                     
                     # Skip empty values or empty lists
                     if not val:
+                        mycontents_logger.info(f"✅ [{key}] 스킵: 빈 값")
+                        continue
+
+                    # 빠른 한국어 검증: 정규표현식으로 한글/영문 비율 체크
+                    needs_translation = False
+                    if isinstance(val, str):
+                        # 공백/숫자/구두점을 제외한 실제 문자만 추출
+                        text_only = re.sub(r'[\s\d.,!?()·、。，！？（）\-/]', '', val)
+                        if len(text_only) == 0:
+                            mycontents_logger.info(f"✅ [{key}] 스킵: 문자 없음 (공백/숫자/구두점만)")
+                            continue
+                        
+                        # 한글 및 영문 문자 수 체크
+                        hangul_chars = re.findall(r'[\uac00-\ud7a3]', text_only)
+                        english_chars = re.findall(r'[a-zA-Z]', text_only)
+                        korean_ratio = len(hangul_chars) / len(text_only)
+                        english_ratio = len(english_chars) / len(text_only)
+                        
+                        # 한글 80% 이상 OR 영문 50% 미만이면 스킵
+                        if korean_ratio >= 0.8 or english_ratio < 0.5:
+                            mycontents_logger.info(f"✅ [{key}] 스킵: 한글 {korean_ratio:.2%}, 영문 {english_ratio:.2%} (번역 불필요)")
+                            continue
+                        else:
+                            needs_translation = True
+                            mycontents_logger.info(f"🔄 [{key}] 번역 필요: 한글 {korean_ratio:.2%}, 영문 {english_ratio:.2%}")
+                            mycontents_logger.info(f"📄 [{key}] 번역 전 원문:\n{val}")
+                    elif isinstance(val, list):
+                        # 리스트인 경우 각 요소별 체크
+                        total_text_chars = 0
+                        total_hangul = 0
+                        total_english = 0
+                        for item in val:
+                            if isinstance(item, str):
+                                # 공백/숫자/구두점을 제외한 실제 문자만 추출
+                                text_only = re.sub(r'[\s\d.,!?()·、。，！？（）\-/]', '', item)
+                                total_text_chars += len(text_only)
+                                total_hangul += len(re.findall(r'[\uac00-\ud7a3]', text_only))
+                                total_english += len(re.findall(r'[a-zA-Z]', text_only))
+                        
+                        if total_text_chars > 0:
+                            korean_ratio = total_hangul / total_text_chars
+                            english_ratio = total_english / total_text_chars
+                            
+                            # 한글 80% 이상 OR 영문 50% 미만이면 스킵
+                            if korean_ratio >= 0.8 or english_ratio < 0.5:
+                                mycontents_logger.info(f"✅ [{key}] 스킵: 한글 {korean_ratio:.2%}, 영문 {english_ratio:.2%} (요소 수: {len(val)}, 번역 불필요)")
+                                continue
+                            else:
+                                needs_translation = True
+                                mycontents_logger.info(f"🔄 [{key}] 번역 필요: 한글 {korean_ratio:.2%}, 영문 {english_ratio:.2%} (요소 수: {len(val)})")
+                                mycontents_logger.info(f"📄 [{key}] 번역 전 원문 ({len(val)}개):\n{val}")
+                        else:
+                            mycontents_logger.info(f"✅ [{key}] 스킵: 문자 없음 (공백/숫자/구두점만)")
+                            continue
+                    else:
+                        mycontents_logger.info(f"✅ [{key}] 스킵: 문자열/리스트가 아님 (타입: {type(val).__name__})")
                         continue
 
                     # Construct small JSON for validation
@@ -505,12 +577,17 @@ class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
                     
                     if is_success_trans and key in result_translate_json:
                         # Update the source json with translated value
-                        source_json[key] = result_translate_json[key]
+                        translated_value = result_translate_json[key]
+                        source_json[key] = translated_value
+                        mycontents_logger.info(f"✅ [{key}] 번역 완료")
+                        mycontents_logger.info(f"📝 [{key}] 번역 후 결과:\n{translated_value}")
                         
                         # Special handling for ai_keyword/keywords sync
                         if key == "ai_keyword":
                             source_json["keywords"] = result_translate_json[key]
                             ai_keywords = result_translate_json[key]
+                    else:
+                        mycontents_logger.warning(f"⚠️ [{key}] 번역 실패: 응답에 키가 없거나 JSON 파싱 실패")
 
                 contentsMetaResult.contentsMeta.translation_duration = translation_total_time
                 mycontents_logger.info("✅ 한국어 검증 및 번역 완료 (개별 필드)")
