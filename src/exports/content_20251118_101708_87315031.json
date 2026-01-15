@@ -1,0 +1,72 @@
+{
+  "_id": "691c47903200c93926e130a8",
+  "title": "2025년 하반기 혁신제품 심의예정 공고",
+  "url": "https://www.ipet.re.kr/Notice/NoticeVP.asp?page=1&cate=CA&tbl_id=27901&_sbj=2025%EB%85%84+%ED%95%98%EB%B0%98%EA%B8%B0+%ED%98%81%EC%8B%A0%EC%A0%9C%ED%92%88+%EC%8B%AC%EC%9D%98%EC%98%88%EC%A0%95+%EA%B3%B5%EA%B3%A0",
+  "contentsOrgId": "A0056",
+  "contentsOrgName": "농림식품기술기획평가원",
+  "categoryId": "B0003",
+  "categoryName": "공지사항",
+  "originallink": "https://www.ipet.re.kr/Notice/NoticeVP.asp?page=1&cate=CA&tbl_id=27901&_sbj=2025%EB%85%84+%ED%95%98%EB%B0%98%EA%B8%B0+%ED%98%81%EC%8B%A0%EC%A0%9C%ED%92%88+%EC%8B%AC%EC%9D%98%EC%98%88%EC%A0%95+%EA%B3%B5%EA%B3%A0",
+  "link": "https://www.ipet.re.kr/Notice/NoticeVP.asp?page=1&cate=CA&tbl_id=27901&_sbj=2025%EB%85%84+%ED%95%98%EB%B0%98%EA%B8%B0+%ED%98%81%EC%8B%A0%EC%A0%9C%ED%92%88+%EC%8B%AC%EC%9D%98%EC%98%88%EC%A0%95+%EA%B3%B5%EA%B3%A0",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:48:23.762000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "2025년 하반기 혁신제품 심의예정 공고",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:16:48.847040",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "데이터",
+      "AI",
+      "플랫폼",
+      "디지털",
+      "반도체",
+      "에너지"
+    ],
+    "shortSummary": "농림축산식품부는 2025년 하반기 혁신제품 심의를 예고했다.",
+    "longSummary": "농림축산식품부는 2025년 하반기 「(농림축산식품부)혁신제품 지정 지침」에 따라, 기술의 혁신성·공공성이 인정된 혁신제품을 심의예정이다. 농업관련기관 및 R&D전문기관과의 협력을 통해 혁신제품을 상용화할 계획이다.",
+    "predKeywords": {
+      "디지털": 0.2113308161497116,
+      "플랫폼": 0.10192734003067017,
+      "AI": 0.10060624033212662
+    },
+    "sentiments": [
+      {
+        "orgId": "A0056",
+        "orgName": "농림식품기술기획평가원",
+        "positiveRatio": 67.0,
+        "negativeRatio": 10.0,
+        "neutralRatio": 23.0,
+        "reason": "긍정적인 감성 비율이 높아 보이는 이유는 농림식품기술기획평가원의 홈페이지에서 다양한 긍정적인 정보들이 많이 제공되고 있어 이러한 결과를 초래한 것으로 판단된다.",
+        "positiveReason": "홈페이지에서 혁신제품 심의예정 공고, 기술상용화 플랫폼, R&D 전문기관 등 긍정적인 내용이 다수 포함되어 있어",
+        "negativeReason": "부정적 인식은 주로 부족한 부분이나 문제점에 대한 언급이 거의 없기 때문에 부정 비율이 낮다고 할 수 있다.",
+        "positiveKeywords": [
+          "혁신제품",
+          "기술 혁신",
+          "농림식품산업",
+          "미래"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:17:08.655715+00:00",
+  "imageId": "6784a2911ccfd362485cd9cd",
+  "v1ContentsIdx": null
+}

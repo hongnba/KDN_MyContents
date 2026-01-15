@@ -1,0 +1,65 @@
+{
+  "_id": "691c4a523200c93926e130d9",
+  "title": "공무원연금공단, 제주 사이버 위기대응 합동훈련 실시",
+  "url": "http://www.headlinejeju.co.kr/news/articleView.html?idxno=581593",
+  "contentsOrgId": "A0041",
+  "contentsOrgName": "공무원연금공단",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "http://www.headlinejeju.co.kr/news/articleView.html?idxno=581593",
+  "link": "http://www.headlinejeju.co.kr/news/articleView.html?idxno=581593",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:28:51.423000+00:00",
+  "collectKeyword": "공무원연금공단",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "공무원연금공단, 제주 사이버 위기대응 합동훈련 실시",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:28:34.163889",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "공무원연금공단",
+      "사이버 위기대응",
+      "합동훈련",
+      "국가위기대응"
+    ],
+    "shortSummary": "공무원연금공단과 제주지역 6곳이 사이버 위기대응 합동훈련을 실시, 보안 대응 체계 강화",
+    "longSummary": "공무원연금공단은 제주국제자유도시개발센터, 제주지방해양경찰청, 제주특별자치도, 한국가스공사 제주LNG본부 등과 함께 사이버 위기대응 합동훈련을 실시했다. 이 훈련은 실제 사이버 공격 사례를 기반으로 진행되어 각 기관의 초동 대응, 사고 조사, 유관기관 모의 신고 절차를 점검했다. 김동극 공무원연금공단 이사장은 '상황 변화에 따라 보안 대응 체계를 강화해야 한다'며, 앞으로도 지역사회와 협력해 안전한 디지털 환경을 만들겠다고 밝혔다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0041",
+        "orgName": "공무원연금공단",
+        "positiveRatio": 70.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 30.0,
+        "reason": "긍정과 부정 비율을 종합적으로 판단한 근거는 기사의 내용이 대부분 긍정적이며, 공무원연금공단의 위기대응 체계 강화와 디지털 환경 안전화를 위한 노력이 다수의 문장에서 강조되어 있기 때문에 긍정적인 감성을 나타냈다.",
+        "positiveReason": "공무원연금공단이 유관기관과 협력해 사이버 위기 대응을 강화하고, 이를 통해 디지털 환경을 안전하게 만들겠다는 의지를 표현한 문장",
+        "negativeReason": "부정적 감정이 없는 문장",
+        "positiveKeywords": [
+          "우수 등급",
+          "선제적 보안 대응체계",
+          "안전한 디지털 환경"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:28:49.868008+00:00",
+  "imageId": "6784a2911ccfd362485cd9d9",
+  "v1ContentsIdx": null
+}

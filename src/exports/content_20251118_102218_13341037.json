@@ -1,0 +1,69 @@
+{
+  "_id": "691c48c93200c93926e130c6",
+  "title": "제논, 한국중부발전 2차 AI 프로젝트 수주",
+  "url": "https://www.newsis.com/view/NISX20251118_0003406604",
+  "contentsOrgId": "A0015",
+  "contentsOrgName": "한국중부발전(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.newsis.com/view/NISX20251118_0003406604",
+  "link": "https://www.newsis.com/view/NISX20251118_0003406604",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:04:28.442000+00:00",
+  "collectKeyword": "중부발전",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "제논, 한국중부발전 2차 AI 프로젝트 수주",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:22:01.317592",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "AI 에이전트",
+      "플랫폼 고도화",
+      "액셔너블 AI",
+      "업무 자동화",
+      "모바일 연동"
+    ],
+    "shortSummary": "제논이 한국중부발전 2차 AI 프로젝트 수주",
+    "longSummary": "제논은 한국중부발전에 AI 에이전트 플랫폼 및 업무 자동화 개발 사업을 수주했다. 1차 사업의 성공을 바탕으로, 2차 사업에서는 하이코미 고도화를 포함해 AI 에이전트 업무 지원 시스템을 구축하고 전사 차원의 업무 체계로 확장할 예정이다. 특히, 액셔너블 AI 기반의 원에이전트 기술이 도입될 예정이며, 이는 AI가 실제 사람처럼 컴퓨터와 브라우저 화면을 인식하고 직접 시스템을 조작하며 업무를 완결하는 차세대 AI 에이전트다.",
+    "predKeywords": {
+      "AI": 0.5171754956245422,
+      "디지털": 0.3885422348976135,
+      "플랫폼": 0.3630543351173401
+    },
+    "sentiments": [
+      {
+        "orgId": "A0015",
+        "orgName": "한국중부발전(주)",
+        "positiveRatio": 70.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 25.0,
+        "reason": "기사에서 제논이 한국중부발전에 AI 에이전트 플랫폼 및 업무 자동화 개발 사업을 수주함을 알리는 긍정적인 뉴스와, 제논의 기술력과 발전업무 환경에 대한 깊은 이해가 바탕인 것으로 보임.",
+        "positiveReason": "제논 대표가 'AI 에이전트 플랫폼 구축 사업을 통해 발전 업무 전반의 디지털 전환을 가속화하고, 액셔너블 AI로 업무 효율성과 생산성을 대폭 끌어올릴 것'이라고 말했다.",
+        "negativeReason": "부정적 요소는 거의 없는 것으로 보이며, 기사 내에서 부정적인 언급은 찾아볼 수 없었다.",
+        "positiveKeywords": [
+          "기술 혁신",
+          "성과 향상"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:22:18.761939+00:00",
+  "imageId": "6784a2911ccfd362485cd99d",
+  "v1ContentsIdx": null
+}

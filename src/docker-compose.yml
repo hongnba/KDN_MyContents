@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  docker_collect:
+    build:
+      context: ./src
+      dockerfile: ./docker_collect/Dockerfile
+    image: docker_collect:latest
+    container_name: docker_collect
+
+  docker_crawl:
+    build:
+      context: ./src
+      dockerfile: ./docker_crawl/Dockerfile
+    image: docker_crawl:latest
+    container_name: docker_crawl
+
+  docker_talk_friend_send:
+    build:
+      context: ./src
+      dockerfile: ./docker_talk_friend_send/Dockerfile
+    image: docker_talk_friend_send:latest
+    container_name: docker_talk_friend_send
+
+  docker_talk_send:
+    build:
+      context: ./src
+      dockerfile: ./docker_talk_send/Dockerfile
+    image: docker_talk_send:latest
+    container_name: docker_talk_send
+
+            

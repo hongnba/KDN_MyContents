@@ -1,0 +1,69 @@
+{
+  "_id": "691c45ac3200c93926e1308e",
+  "title": "한국인터넷진흥원(KISA), '정보 통신 기술·AI 분쟁조정 경연대회' 개최",
+  "url": "https://www.cstimes.com/news/articleView.html?idxno=678574",
+  "contentsOrgId": "A0006",
+  "contentsOrgName": "한국인터넷진흥원",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.cstimes.com/news/articleView.html?idxno=678574",
+  "link": "https://www.cstimes.com/news/articleView.html?idxno=678574",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:10:37.870000+00:00",
+  "collectKeyword": "한국인터넷진흥원",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한국인터넷진흥원(KISA), '정보 통신 기술·AI 분쟁조정 경연대회' 개최",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:08:44.205942",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "데이터",
+      "AI",
+      "플랫폼",
+      "디지털",
+      "정보보호"
+    ],
+    "shortSummary": "한국인터넷진흥원은 과학기술정보통신부와 함께 2025 ICT·AI 분쟁조정 경연대회를 개최했다.",
+    "longSummary": "한국인터넷진흥원(KISA)은 과학기술정보통신부(과기정통부)와 함께 '2025 정보 통신 기술(ICT)․인공지능(AI) 분쟁조정 경연대회'를 개최했다. 본 대회는 인공지능 시대에 나타날 수 있는 다양한 사회적 갈등을 선제적으로 논의하기 위해 마련됐다. 다섯 개의 분쟁조정 경연 분야(인공지능 산업, 전자거래, 인터넷주소, 정보보호산업, 온라인 광고)에서 총 35개 팀이 예선에 참여해 최종 6개의 팀이 본선에 진출했다. 본선에서는 각 팀이 자유롭게 시나리오를 작성하고 현장 경연을 진행했으며, 과기정통부 장관상을 수상한 '조정에몽'팀은 인터넷주소 분야의 '국가 도메인 이름 이전 청구의 건'을 주제로 조정을 시연했다.",
+    "predKeywords": {
+      "AI": 0.30417129397392273,
+      "플랫폼": 0.211062490940094,
+      "데이터": 0.14048585295677185
+    },
+    "sentiments": [
+      {
+        "orgId": "A0006",
+        "orgName": "한국인터넷진흥원",
+        "positiveRatio": 60.0,
+        "negativeRatio": 10.0,
+        "neutralRatio": 30.0,
+        "reason": "기사 내용에서 한국인터넷진흥원과 관련된 긍정적인 표현이 주를 이룸",
+        "positiveReason": "기사에 따르면, '뜨거운 관심을 확인할 수 있었다', '안심하고 신뢰할 수 있는 디지털 환경 조성' 등 긍정적인 표현이 많다.",
+        "negativeReason": "부정적인 표현은 거의 없음",
+        "positiveKeywords": [
+          "뜨거운 관심",
+          "안심하고 신뢰할 수 있는 디지털 환경"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:09:03.335388+00:00",
+  "imageId": "6784a2911ccfd362485cd999",
+  "v1ContentsIdx": null
+}

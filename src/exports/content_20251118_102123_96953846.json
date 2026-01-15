@@ -1,0 +1,67 @@
+{
+  "_id": "691c48903200c93926e130c3",
+  "title": "한수원, 경주엑스포대공원에 기업홍보관 ʻSSNCʼ 개관",
+  "url": "https://www.imaeil.com/page/view/2025111809303311617",
+  "contentsOrgId": "A0011",
+  "contentsOrgName": "한국수력원자력(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.imaeil.com/page/view/2025111809303311617",
+  "link": "https://www.imaeil.com/page/view/2025111809303311617",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:00:43.313000+00:00",
+  "collectKeyword": "한수원",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한수원, 경주엑스포대공원에 기업홍보관 ʻSSNCʼ 개관",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:21:04.963263",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "한국수력원자력",
+      "소형모듈원전",
+      "SMR",
+      "탄소중립",
+      "에너지"
+    ],
+    "shortSummary": "한국수력원자력(한수원)이 경주엑스포대공원 내 기업홍보관 'SSNC(SMR Smart Net zero City)'를 개관.",
+    "longSummary": "한국수력원자력은 18일 경주엑스포대공원 내 'SSNC(SMR Smart Net zero City)' 기업홍보관을 개관했다. 이 공간은 소형모듈원전(SMR)과 신재생에너지를 활용한 한수원의 비전을 담고 있다. SMR과 신재생에너지 등 다양한 에너지원이 조화롭게 순환하는 미래 에너지 생태계를 체험할 수 있다. 전시 공간에는 인류 역사와 에너지의 여정을 담은 에너지 루프, 대형 원자력 기술을 살펴보는 에너지 파운데이션, 최신 SMR 기술을 소개하는 에너지 하모니-SMR 등 5개 구역이 있다. 한수원 관계자는 '탄소중립 사회로 나아가는 한수원의 비전과 노력을 국민과 공유하는 상징적인 공간'이라고 밝혔다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0011",
+        "orgName": "한국수력원자력(주)",
+        "positiveRatio": 90.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 10.0,
+        "reason": "기사 내용과 해당 기관의 긍정적인 메시지가 전체 감성을 결정했다.",
+        "positiveReason": "한수원 관계자의 발언이 공개적인 비전을 제시하고 미래에 대한 긍정적인 전망을 담고 있기 때문이다.",
+        "negativeReason": "없음",
+        "positiveKeywords": [
+          "미래 에너지 전시 공간",
+          "차세대 원자력 기술",
+          "탄소중립",
+          "청정에너지 리더"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:21:18.927097+00:00",
+  "imageId": "6784a2911ccfd362485cda5b",
+  "v1ContentsIdx": null
+}

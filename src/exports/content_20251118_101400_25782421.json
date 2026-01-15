@@ -1,0 +1,64 @@
+{
+  "_id": "691c46d63200c93926e1309e",
+  "title": "농식품부, 대구·경상 권역서 양돈질병 방역관리 강화 설명회",
+  "url": "https://www.news1.kr/economy/trend/5979687",
+  "contentsOrgId": "A0037",
+  "contentsOrgName": "농림축산식품부",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.news1.kr/economy/trend/5979687",
+  "link": "https://www.news1.kr/economy/trend/5979687",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:26:37.133000+00:00",
+  "collectKeyword": "농식품부",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "농식품부, 대구·경상 권역서 양돈질병 방역관리 강화 설명회",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:13:42.095130",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "농림축산식품부",
+      "가축전염병",
+      "K-푸드",
+      "글로벌 진출"
+    ],
+    "shortSummary": "",
+    "longSummary": "",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0037",
+        "orgName": "농림축산식품부",
+        "positiveRatio": 85.7,
+        "negativeRatio": 4.0,
+        "neutralRatio": 10.3,
+        "reason": "기사 내용에서 강조된 주요 키워드와 문맥을 종합적으로 분석한 결과, 긍정적인 요소가 대부분이다. 특히 '방역 대책 강화', '병원성 AI 감소', '효율 7배 증가' 등이 긍정적이다.",
+        "positiveReason": "농림축산식품부의 가축전염병 방역대책 강화와 그로 인한 병원성 감소, 그리고 검사 기술 개발로 인한 효율과 비용 절감 등의 내용을 통해 긍정적인 요소를 찾을 수 있다.",
+        "negativeReason": "기사의 부정적인 부분은 거의 없어 보인다.",
+        "positiveKeywords": [
+          "efficiency",
+          "cost reduction"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:13:55.890373+00:00",
+  "imageId": "6784a2911ccfd362485cda57",
+  "v1ContentsIdx": null
+}

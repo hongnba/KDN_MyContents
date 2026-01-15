@@ -1,0 +1,69 @@
+{
+  "_id": "691c45e43200c93926e13091",
+  "title": "한국서부발전, ‘2030 재난안전 기본계획’ 착수회의 개최",
+  "url": "https://www.mk.co.kr/article/11470598",
+  "contentsOrgId": "A0016",
+  "contentsOrgName": "한국서부발전(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.mk.co.kr/article/11470598",
+  "link": "https://www.mk.co.kr/article/11470598",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:16:58.070000+00:00",
+  "collectKeyword": "한국서부발전",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한국서부발전, ‘2030 재난안전 기본계획’ 착수회의 개최",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:09:40.572510",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "AI",
+      "디지털 기술",
+      "재난관리 혁신"
+    ],
+    "shortSummary": "서부발전이 인공지능 및 디지털 기술을 활용한 재난관리 체계 구축에 나섰다.",
+    "longSummary": "서부발전은 인공지능 및 디지털 기술을 활용한 재난안전관리 체계를 구축하기 위해 중장기 재난안전관리 기본계획을 수립했다. 2030년까지 '선제적 재난 대응 및 디지털 재난관리체계 구축'을 목표로 디지털 기반 중점위험 맞춤 관리, 신종·잠재위험 대응체계 선도, 신속대응 안전역량 제고 등의 3대 전략을 추진할 예정이다.",
+    "predKeywords": {
+      "디지털": 0.4635292887687683,
+      "AI": 0.34713053703308105,
+      "정보보호": 0.21734662353992462
+    },
+    "sentiments": [
+      {
+        "orgId": "A0016",
+        "orgName": "한국서부발전(주)",
+        "positiveRatio": 70.83333333333333,
+        "negativeRatio": 9.166666666666668,
+        "neutralRatio": 20.0,
+        "reason": "기사 내용에서 재난 관리 혁신과 디지털 기술의 긍정적인 활용을 강조하는 부분이 대부분을 차지하며, 부정적 요소는 거의 없었다.",
+        "positiveReason": "재난관리 체계를 구축하고, 디지털 기술을 활용하여 안전사고 예방에 초점을 맞춘다는 내용은 긍정적인 기대를 불러일으킨다.",
+        "negativeReason": "",
+        "positiveKeywords": [
+          "재난관리",
+          "디지털 기술",
+          "혁신",
+          "안전사고 예방"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:09:57.150018+00:00",
+  "imageId": "6784a2911ccfd362485cd9d5",
+  "v1ContentsIdx": null
+}

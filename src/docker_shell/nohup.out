@@ -1,0 +1,789 @@
+2025-12-23 05:13:47,739 - docker_collect - INFO - --------------Docker_Collect 시작--------------
+2025-12-23 05:14:03,548 - docker_scraping - INFO - --------------Docker_Scraping 시작--------------
+2025-12-23 05:14:03,548 - docker_scraping_result - INFO - --------------Docker_Scraping 시작 --------------
+2025-12-23 05:14:14,502 - docker_scraping - INFO - --------------Docker_Scraping 시작--------------
+2025-12-23 05:14:14,502 - docker_scraping_result - INFO - --------------Docker_Scraping 시작 --------------
+2025-12-23 05:14:25,079 - docker_scraping_result - INFO - === Calculating statistics ===
+2025-12-23 05:14:25,095 - docker_scraping_result - INFO - 총 60개 기관 확인됨
+2025-12-23 05:14:25,095 - docker_scraping_result - INFO - 기관 A0001 통계 계산 시작...
+2025-12-23 05:14:32,915 - docker_scraping_result - INFO -   - day: 6949b14e5eb64948bf63dbb5
+2025-12-23 05:14:32,958 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:14:32,958 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:14:32,958 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:14:43,198 - docker_scraping_result - INFO -   - week: 693ba669485e3a03e788848c
+2025-12-23 05:14:43,251 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:14:43,251 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:14:43,251 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:14:51,963 - docker_scraping_result - INFO -   - month: 693ba66d485e3a03e788848d
+2025-12-23 05:14:52,007 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:14:52,007 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:14:52,007 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:14:52,007 - docker_scraping_result - INFO - 기관 A0002 통계 계산 시작...
+2025-12-23 05:14:54,278 - docker_scraping_result - INFO -   - day: 69495d035044cb163bd7d2a7
+2025-12-23 05:14:54,322 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:14:54,322 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:14:54,322 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:15:03,946 - docker_scraping_result - INFO -   - week: 693bbe6c09385b46195c941a
+2025-12-23 05:15:03,969 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:15:03,969 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:15:03,969 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:15:10,849 - docker_scraping_result - INFO -   - month: 693bbe7409385b46195c941b
+2025-12-23 05:15:10,898 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:15:10,898 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:15:10,898 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:15:10,898 - docker_scraping_result - INFO - 기관 A0003 통계 계산 시작...
+2025-12-23 05:15:14,472 - docker_scraping_result - INFO -   - day: 69495d1e5044cb163bd7d2aa
+2025-12-23 05:15:14,521 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:15:14,521 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:15:14,521 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:15:24,228 - docker_scraping_result - INFO -   - week: 693bbe8709385b46195c941e
+2025-12-23 05:15:24,272 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:15:24,272 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:15:24,272 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:15:32,802 - docker_scraping_result - INFO -   - month: 693bbe9109385b46195c941f
+2025-12-23 05:15:32,840 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:15:32,840 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:15:32,840 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:15:32,840 - docker_scraping_result - INFO - 기관 A0004 통계 계산 시작...
+2025-12-23 05:15:40,817 - docker_scraping_result - INFO -   - day: 69495d3e5044cb163bd7d2ad
+2025-12-23 05:15:40,860 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:15:40,860 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:15:40,860 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:15:43,327 - docker_scraping_result - INFO -   - week: 693bbe9e09385b46195c9422
+2025-12-23 05:15:43,368 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:15:43,368 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:15:43,368 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:15:49,610 - docker_scraping_result - INFO -   - month: 693bbea509385b46195c9423
+2025-12-23 05:15:49,653 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:15:49,653 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:15:49,653 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:15:49,653 - docker_scraping_result - INFO - 기관 A0005 통계 계산 시작...
+2025-12-23 05:15:55,039 - docker_scraping_result - INFO -   - day: 69495d5d5044cb163bd7d2b0
+2025-12-23 05:15:55,042 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:15:55,042 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:15:55,042 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:16:12,880 - docker_scraping_result - INFO -   - week: 693bbeb409385b46195c9426
+2025-12-23 05:16:12,933 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:16:12,933 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:16:12,933 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:16:20,954 - docker_scraping_result - INFO -   - month: 693bbeba09385b46195c9427
+2025-12-23 05:16:20,997 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:16:20,997 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:16:20,997 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:16:20,997 - docker_scraping_result - INFO - 기관 A0006 통계 계산 시작...
+2025-12-23 05:16:26,855 - docker_scraping_result - INFO -   - day: 69495d6f5044cb163bd7d2b3
+2025-12-23 05:16:26,899 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:16:26,899 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:16:26,899 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:16:33,677 - docker_scraping_result - INFO -   - week: 693bbec809385b46195c942a
+2025-12-23 05:16:33,721 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:16:33,721 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:16:33,721 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:16:42,920 - docker_scraping_result - INFO -   - month: 693bbee609385b46195c942b
+2025-12-23 05:16:42,966 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:16:42,966 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:16:42,966 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:16:42,966 - docker_scraping_result - INFO - 기관 A0007 통계 계산 시작...
+2025-12-23 05:16:47,671 - docker_scraping_result - INFO -   - day: 69495d855044cb163bd7d2b6
+2025-12-23 05:16:47,713 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:16:47,713 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:16:47,713 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:16:58,810 - docker_scraping_result - INFO -   - week: 693bbeee09385b46195c942e
+2025-12-23 05:16:58,855 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:16:58,855 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:16:58,855 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:17:06,242 - docker_scraping_result - INFO -   - month: 693bbef309385b46195c942f
+2025-12-23 05:17:06,299 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:17:06,299 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:17:06,299 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:17:06,299 - docker_scraping_result - INFO - 기관 A0008 통계 계산 시작...
+2025-12-23 05:17:14,124 - docker_scraping_result - INFO -   - day: 69495d9c5044cb163bd7d2b9
+2025-12-23 05:17:14,179 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:17:14,179 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:17:14,179 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:17:23,461 - docker_scraping_result - INFO -   - week: 693bbeff09385b46195c9432
+2025-12-23 05:17:23,501 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:17:23,501 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:17:23,501 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:17:29,160 - docker_scraping_result - INFO -   - month: 693bbf0309385b46195c9433
+2025-12-23 05:17:29,195 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:17:29,195 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:17:29,195 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:17:29,195 - docker_scraping_result - INFO - 기관 A0009 통계 계산 시작...
+2025-12-23 05:17:36,488 - docker_scraping_result - INFO -   - day: 69495db45044cb163bd7d2bc
+2025-12-23 05:17:36,532 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:17:36,532 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:17:36,532 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:17:43,031 - docker_scraping_result - INFO -   - week: 693bbf0f09385b46195c9436
+2025-12-23 05:17:43,071 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:17:43,071 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:17:43,071 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:17:49,359 - docker_scraping_result - INFO -   - month: 693bbf1609385b46195c9437
+2025-12-23 05:17:49,411 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:17:49,411 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:17:49,411 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:17:49,411 - docker_scraping_result - INFO - 기관 A0010 통계 계산 시작...
+2025-12-23 05:17:55,490 - docker_scraping_result - INFO -   - day: 69495dc75044cb163bd7d2bf
+2025-12-23 05:17:55,541 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:17:55,541 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:17:55,541 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:18:11,728 - docker_scraping_result - INFO -   - week: 693bbf3209385b46195c943a
+2025-12-23 05:18:11,769 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:18:11,769 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:18:11,769 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:18:21,306 - docker_scraping_result - INFO -   - month: 693bbf3b09385b46195c943b
+2025-12-23 05:18:21,314 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:18:21,315 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:18:21,315 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:18:21,315 - docker_scraping_result - INFO - 기관 A0011 통계 계산 시작...
+2025-12-23 05:18:30,792 - docker_scraping_result - INFO -   - day: 69495de65044cb163bd7d2c2
+2025-12-23 05:18:30,816 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:18:30,816 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:18:30,816 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:18:40,649 - docker_scraping_result - INFO -   - week: 693bbf4909385b46195c943e
+2025-12-23 05:18:40,673 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:18:40,673 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:18:40,673 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:18:49,539 - docker_scraping_result - INFO -   - month: 693bbf4f09385b46195c943f
+2025-12-23 05:18:49,583 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:18:49,583 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:18:49,583 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:18:49,583 - docker_scraping_result - INFO - 기관 A0012 통계 계산 시작...
+2025-12-23 05:18:50,837 - docker_scraping_result - INFO -   - day: 69495e045044cb163bd7d2c5
+2025-12-23 05:18:50,881 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:18:50,881 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:18:50,881 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:18:57,985 - docker_scraping_result - INFO -   - week: 693bbf5d09385b46195c9442
+2025-12-23 05:18:58,020 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:18:58,020 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:18:58,020 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:19:09,287 - docker_scraping_result - INFO -   - month: 693bbf6209385b46195c9443
+2025-12-23 05:19:09,306 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:19:09,306 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:19:09,307 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:19:09,307 - docker_scraping_result - INFO - 기관 A0013 통계 계산 시작...
+2025-12-23 05:19:15,883 - docker_scraping_result - INFO -   - day: 69495e1c5044cb163bd7d2c8
+2025-12-23 05:19:15,911 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:19:15,911 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:19:15,911 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:19:28,903 - docker_scraping_result - INFO -   - week: 693bbf7309385b46195c9446
+2025-12-23 05:19:28,947 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:19:28,947 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:19:28,947 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:19:40,995 - docker_scraping_result - INFO -   - month: 693bbf7e09385b46195c9447
+2025-12-23 05:19:41,032 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:19:41,032 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:19:41,032 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:19:41,032 - docker_scraping_result - INFO - 기관 A0014 통계 계산 시작...
+2025-12-23 05:19:47,593 - docker_scraping_result - INFO -   - day: 69495e555044cb163bd7d2cb
+2025-12-23 05:19:47,638 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:19:47,638 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:19:47,638 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:19:52,676 - docker_scraping_result - INFO -   - week: 693bbf8e09385b46195c944a
+2025-12-23 05:19:52,720 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:19:52,720 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:19:52,720 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:20:03,044 - docker_scraping_result - INFO -   - month: 693bbf9809385b46195c944b
+2025-12-23 05:20:03,048 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:20:03,048 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:20:03,048 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:20:03,048 - docker_scraping_result - INFO - 기관 A0015 통계 계산 시작...
+2025-12-23 05:20:06,844 - docker_scraping_result - INFO -   - day: 69495e6a5044cb163bd7d2ce
+2025-12-23 05:20:06,886 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:20:06,886 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:20:06,897 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:20:17,786 - docker_scraping_result - INFO -   - week: 693bbfa809385b46195c944e
+2025-12-23 05:20:17,798 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:20:17,798 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:20:17,798 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:20:30,181 - docker_scraping_result - INFO -   - month: 693bbfae09385b46195c944f
+2025-12-23 05:20:30,216 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:20:30,216 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:20:30,216 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:20:30,216 - docker_scraping_result - INFO - 기관 A0016 통계 계산 시작...
+2025-12-23 05:20:38,928 - docker_scraping_result - INFO -   - day: 69495e835044cb163bd7d2d1
+2025-12-23 05:20:38,972 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:20:38,972 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:20:38,972 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:20:46,409 - docker_scraping_result - INFO -   - week: 693bbfbb09385b46195c9452
+2025-12-23 05:20:46,453 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:20:46,453 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:20:46,453 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:21:16,603 - docker_scraping_result - INFO -   - month: 693bbfc109385b46195c9453
+2025-12-23 05:21:16,647 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:21:16,647 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:21:16,647 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:21:16,647 - docker_scraping_result - INFO - 기관 A0017 통계 계산 시작...
+2025-12-23 05:21:22,729 - docker_scraping_result - INFO -   - day: 69495e9c5044cb163bd7d2d4
+2025-12-23 05:21:22,753 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:21:22,753 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:21:22,753 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:21:37,821 - docker_scraping_result - INFO -   - week: 693bbfcd09385b46195c9456
+2025-12-23 05:21:37,860 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:21:37,860 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:21:37,860 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:21:46,405 - docker_scraping_result - INFO -   - month: 693bbfd309385b46195c9457
+2025-12-23 05:21:46,451 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:21:46,451 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:21:46,451 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:21:46,451 - docker_scraping_result - INFO - 기관 A0018 통계 계산 시작...
+2025-12-23 05:21:55,138 - docker_scraping_result - INFO -   - day: 69495eb65044cb163bd7d2d7
+2025-12-23 05:21:55,190 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:21:55,190 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:21:55,190 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:22:05,503 - docker_scraping_result - INFO -   - week: 693bbfe709385b46195c945a
+2025-12-23 05:22:05,552 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:22:05,552 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:22:05,552 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:22:14,212 - docker_scraping_result - INFO -   - month: 693bc00509385b46195c945b
+2025-12-23 05:22:14,251 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:22:14,251 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:22:14,251 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:22:14,251 - docker_scraping_result - INFO - 기관 A0019 통계 계산 시작...
+2025-12-23 05:22:19,896 - docker_scraping_result - INFO -   - day: 69495ed05044cb163bd7d2da
+2025-12-23 05:22:19,934 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:22:19,934 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:22:19,934 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:22:25,660 - docker_scraping_result - INFO -   - week: 693bc01009385b46195c945e
+2025-12-23 05:22:25,695 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:22:25,695 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:22:25,695 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:22:31,886 - docker_scraping_result - INFO -   - month: 693bc01609385b46195c945f
+2025-12-23 05:22:31,930 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:22:31,930 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:22:31,930 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:22:31,930 - docker_scraping_result - INFO - 기관 A0020 통계 계산 시작...
+2025-12-23 05:23:02,014 - docker_scraping_result - INFO -   - day: 69495ede5044cb163bd7d2dd
+2025-12-23 05:23:02,033 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:23:02,034 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:23:02,034 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:23:08,586 - docker_scraping_result - INFO -   - week: 693bc02009385b46195c9462
+2025-12-23 05:23:08,626 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:23:08,626 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:23:08,626 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:23:21,554 - docker_scraping_result - INFO -   - month: 693bc02909385b46195c9463
+2025-12-23 05:23:21,585 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:23:21,585 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:23:21,585 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:23:21,585 - docker_scraping_result - INFO - 기관 A0021 통계 계산 시작...
+2025-12-23 05:23:29,277 - docker_scraping_result - INFO -   - day: 69495ef85044cb163bd7d2e0
+2025-12-23 05:23:29,281 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:23:29,281 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:23:29,281 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:23:34,854 - docker_scraping_result - INFO -   - week: 693bc04d09385b46195c9466
+2025-12-23 05:23:34,859 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:23:34,859 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:23:34,859 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:23:40,753 - docker_scraping_result - INFO -   - month: 693bc05209385b46195c9467
+2025-12-23 05:23:40,805 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:23:40,805 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:23:40,805 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:23:40,805 - docker_scraping_result - INFO - 기관 A0022 통계 계산 시작...
+2025-12-23 05:23:47,618 - docker_scraping_result - INFO -   - day: 69495f0a5044cb163bd7d2e3
+2025-12-23 05:23:47,657 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:23:47,657 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:23:47,657 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:23:56,003 - docker_scraping_result - INFO -   - week: 693bc06009385b46195c946a
+2025-12-23 05:23:56,021 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:23:56,021 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:23:56,021 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:23:59,279 - docker_scraping_result - INFO -   - month: 693bc06609385b46195c946b
+2025-12-23 05:23:59,321 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:23:59,321 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:23:59,321 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:23:59,321 - docker_scraping_result - INFO - 기관 A0023 통계 계산 시작...
+2025-12-23 05:24:06,971 - docker_scraping_result - INFO -   - day: 69495f205044cb163bd7d2e6
+2025-12-23 05:24:07,015 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:24:07,015 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:24:07,015 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:24:37,114 - docker_scraping_result - INFO -   - week: 693bc07609385b46195c946e
+2025-12-23 05:24:37,169 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:24:37,169 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:24:37,169 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:24:45,331 - docker_scraping_result - INFO -   - month: 693bc07909385b46195c946f
+2025-12-23 05:24:45,369 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:24:45,369 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:24:45,370 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:24:45,370 - docker_scraping_result - INFO - 기관 A0024 통계 계산 시작...
+2025-12-23 05:24:49,501 - docker_scraping_result - INFO -   - day: 69495f385044cb163bd7d2e9
+2025-12-23 05:24:49,530 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:24:49,530 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:24:49,530 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:24:58,127 - docker_scraping_result - INFO -   - week: 693bc08709385b46195c9472
+2025-12-23 05:24:58,148 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:24:58,148 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:24:58,148 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:25:28,265 - docker_scraping_result - INFO -   - month: 693bc08f09385b46195c9473
+2025-12-23 05:25:28,306 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:25:28,306 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:25:28,306 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:25:28,306 - docker_scraping_result - INFO - 기관 A0025 통계 계산 시작...
+2025-12-23 05:25:36,345 - docker_scraping_result - INFO -   - day: 69495f4c5044cb163bd7d2ec
+2025-12-23 05:25:36,355 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:25:36,355 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:25:36,355 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:25:43,492 - docker_scraping_result - INFO -   - week: 693bc09d09385b46195c9476
+2025-12-23 05:25:43,537 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:25:43,537 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:25:43,537 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:25:48,687 - docker_scraping_result - INFO -   - month: 693bc0a909385b46195c9477
+2025-12-23 05:25:48,699 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:25:48,699 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:25:48,699 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:25:48,699 - docker_scraping_result - INFO - 기관 A0026 통계 계산 시작...
+2025-12-23 05:25:55,779 - docker_scraping_result - INFO -   - day: 69495f635044cb163bd7d2ef
+2025-12-23 05:25:55,824 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:25:55,824 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:25:55,824 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:26:09,369 - docker_scraping_result - INFO -   - week: 693bc0ba09385b46195c947a
+2025-12-23 05:26:09,409 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:26:09,409 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:26:09,409 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:26:19,958 - docker_scraping_result - INFO -   - month: 693bc0c109385b46195c947b
+2025-12-23 05:26:19,979 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:26:19,979 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:26:19,979 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:26:19,979 - docker_scraping_result - INFO - 기관 A0027 통계 계산 시작...
+2025-12-23 05:26:50,071 - docker_scraping_result - INFO -   - day: 69495f7e5044cb163bd7d2f2
+2025-12-23 05:26:50,114 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:26:50,114 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:26:50,114 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:27:20,230 - docker_scraping_result - INFO -   - week: 693bc0d009385b46195c947e
+2025-12-23 05:27:20,256 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:27:20,257 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:27:20,257 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:27:28,352 - docker_scraping_result - INFO -   - month: 693bc0d809385b46195c947f
+2025-12-23 05:27:28,404 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:27:28,404 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:27:28,404 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:27:28,404 - docker_scraping_result - INFO - 기관 A0029 통계 계산 시작...
+2025-12-23 05:27:34,391 - docker_scraping_result - INFO -   - day: 69495f945044cb163bd7d2f5
+2025-12-23 05:27:34,413 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:27:34,414 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:27:34,414 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:27:39,753 - docker_scraping_result - INFO -   - week: 693bc0de09385b46195c9482
+2025-12-23 05:27:39,760 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:27:39,760 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:27:39,760 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:27:47,036 - docker_scraping_result - INFO -   - month: 693bc0e509385b46195c9483
+2025-12-23 05:27:47,064 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:27:47,064 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:27:47,064 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:27:47,064 - docker_scraping_result - INFO - 기관 A0028 통계 계산 시작...
+2025-12-23 05:27:55,045 - docker_scraping_result - INFO -   - day: 69495faa5044cb163bd7d2f8
+2025-12-23 05:27:55,092 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:27:55,092 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:27:55,092 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:28:00,855 - docker_scraping_result - INFO -   - week: 693bc0f109385b46195c9486
+2025-12-23 05:28:00,887 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:28:00,887 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:28:00,887 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:28:07,510 - docker_scraping_result - INFO -   - month: 693bc0fb09385b46195c9487
+2025-12-23 05:28:07,551 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:28:07,551 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:28:07,551 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:28:07,551 - docker_scraping_result - INFO - 기관 A0033 통계 계산 시작...
+2025-12-23 05:28:15,404 - docker_scraping_result - INFO -   - day: 69495fc15044cb163bd7d2fb
+2025-12-23 05:28:15,448 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:28:15,448 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:28:15,448 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:28:24,043 - docker_scraping_result - INFO -   - week: 693bc11a09385b46195c948a
+2025-12-23 05:28:24,089 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:28:24,089 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:28:24,089 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:28:33,330 - docker_scraping_result - INFO -   - month: 693bc12209385b46195c948b
+2025-12-23 05:28:33,370 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:28:33,370 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:28:33,370 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:28:33,370 - docker_scraping_result - INFO - 기관 A0034 통계 계산 시작...
+2025-12-23 05:28:37,235 - docker_scraping_result - INFO -   - day: 69495fd05044cb163bd7d2fe
+2025-12-23 05:28:37,239 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:28:37,239 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:28:37,239 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:28:43,857 - docker_scraping_result - INFO -   - week: 693bc13009385b46195c948e
+2025-12-23 05:28:43,871 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:28:43,871 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:28:43,871 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:28:52,714 - docker_scraping_result - INFO -   - month: 693bc13909385b46195c948f
+2025-12-23 05:28:52,737 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:28:52,737 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:28:52,737 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:28:52,737 - docker_scraping_result - INFO - 기관 A0035 통계 계산 시작...
+2025-12-23 05:28:58,222 - docker_scraping_result - INFO -   - day: 69495fe95044cb163bd7d301
+2025-12-23 05:28:58,266 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:28:58,266 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:28:58,266 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:29:10,056 - docker_scraping_result - INFO -   - week: 693bc14209385b46195c9492
+2025-12-23 05:29:10,080 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:29:10,081 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:29:10,081 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:29:40,195 - docker_scraping_result - INFO -   - month: 693bc14709385b46195c9493
+2025-12-23 05:29:40,236 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:29:40,236 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:29:40,236 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:29:40,236 - docker_scraping_result - INFO - 기관 A0036 통계 계산 시작...
+2025-12-23 05:29:43,976 - docker_scraping_result - INFO -   - day: 69495ffd5044cb163bd7d304
+2025-12-23 05:29:44,019 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:29:44,019 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:29:44,019 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:29:50,527 - docker_scraping_result - INFO -   - week: 693bc15109385b46195c9496
+2025-12-23 05:29:50,535 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:29:50,535 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:29:50,535 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:30:02,463 - docker_scraping_result - INFO -   - month: 693bc16009385b46195c9497
+2025-12-23 05:30:02,499 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:30:02,499 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:30:02,499 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:30:02,499 - docker_scraping_result - INFO - 기관 A0037 통계 계산 시작...
+2025-12-23 05:30:09,488 - docker_scraping_result - INFO -   - day: 694960165044cb163bd7d307
+2025-12-23 05:30:09,522 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:30:09,522 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:30:09,522 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:30:12,854 - docker_scraping_result - INFO -   - week: 693bc17509385b46195c949a
+2025-12-23 05:30:12,909 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:30:12,909 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:30:12,909 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:30:42,302 - docker_scraping_result - INFO -   - month: 693bc18109385b46195c949b
+2025-12-23 05:30:42,322 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:30:42,322 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:30:42,323 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:30:42,323 - docker_scraping_result - INFO - 기관 A0038 통계 계산 시작...
+2025-12-23 05:30:48,732 - docker_scraping_result - INFO -   - day: 694960455044cb163bd7d30a
+2025-12-23 05:30:48,736 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:30:48,736 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:30:48,736 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:30:55,192 - docker_scraping_result - INFO -   - week: 693bc18709385b46195c949e
+2025-12-23 05:30:55,230 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:30:55,230 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:30:55,230 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:31:03,562 - docker_scraping_result - INFO -   - month: 693bc18809385b46195c949f
+2025-12-23 05:31:03,608 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:31:03,608 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:31:03,608 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:31:03,608 - docker_scraping_result - INFO - 기관 A0039 통계 계산 시작...
+2025-12-23 05:31:11,045 - docker_scraping_result - INFO -   - day: 694960635044cb163bd7d30d
+2025-12-23 05:31:11,089 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:31:11,089 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:31:11,089 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:31:19,934 - docker_scraping_result - INFO -   - week: 693bc19209385b46195c94a2
+2025-12-23 05:31:19,965 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:31:19,965 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:31:19,965 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:31:43,203 - docker_scraping_result - INFO -   - month: 693bc19a09385b46195c94a3
+2025-12-23 05:31:43,242 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:31:43,242 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:31:43,242 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:31:43,242 - docker_scraping_result - INFO - 기관 A0040 통계 계산 시작...
+2025-12-23 05:31:46,622 - docker_scraping_result - INFO -   - day: 694960945044cb163bd7d310
+2025-12-23 05:31:46,675 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:31:46,675 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:31:46,675 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:31:55,277 - docker_scraping_result - INFO -   - week: 693bc1a709385b46195c94a6
+2025-12-23 05:31:55,312 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:31:55,312 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:31:55,312 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:32:04,463 - docker_scraping_result - INFO -   - month: 693bc1ae09385b46195c94a7
+2025-12-23 05:32:04,476 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:32:04,476 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:32:04,476 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:32:04,476 - docker_scraping_result - INFO - 기관 A0041 통계 계산 시작...
+2025-12-23 05:32:09,736 - docker_scraping_result - INFO -   - day: 694960ac5044cb163bd7d313
+2025-12-23 05:32:09,747 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:32:09,747 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:32:09,747 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:32:18,000 - docker_scraping_result - INFO -   - week: 693bc1d409385b46195c94aa
+2025-12-23 05:32:18,013 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:32:18,013 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:32:18,013 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:32:26,286 - docker_scraping_result - INFO -   - month: 693bc1d909385b46195c94ab
+2025-12-23 05:32:26,330 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:32:26,331 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:32:26,331 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:32:26,331 - docker_scraping_result - INFO - 기관 A0042 통계 계산 시작...
+2025-12-23 05:32:32,612 - docker_scraping_result - INFO -   - day: 694960c25044cb163bd7d316
+2025-12-23 05:32:32,646 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:32:32,646 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:32:32,646 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:32:42,471 - docker_scraping_result - INFO -   - week: 693bc1eb09385b46195c94ae
+2025-12-23 05:32:42,506 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:32:42,506 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:32:42,506 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:32:54,486 - docker_scraping_result - INFO -   - month: 693bc1f109385b46195c94af
+2025-12-23 05:32:54,523 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:32:54,523 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:32:54,523 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:32:54,523 - docker_scraping_result - INFO - 기관 A0043 통계 계산 시작...
+2025-12-23 05:32:56,610 - docker_scraping_result - INFO -   - day: 694960de5044cb163bd7d319
+2025-12-23 05:32:56,634 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:32:56,634 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:32:56,634 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:33:02,510 - docker_scraping_result - INFO -   - week: 693bc20e09385b46195c94b2
+2025-12-23 05:33:02,517 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:33:02,517 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:33:02,517 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:33:14,633 - docker_scraping_result - INFO -   - month: 693bc21609385b46195c94b3
+2025-12-23 05:33:14,675 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:33:14,675 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:33:14,675 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:33:14,675 - docker_scraping_result - INFO - 기관 A0044 통계 계산 시작...
+2025-12-23 05:33:19,601 - docker_scraping_result - INFO -   - day: 694960f65044cb163bd7d31c
+2025-12-23 05:33:19,648 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:33:19,648 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:33:19,648 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:33:30,674 - docker_scraping_result - INFO -   - week: 693bc22009385b46195c94b6
+2025-12-23 05:33:30,719 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:33:30,719 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:33:30,719 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:33:42,372 - docker_scraping_result - INFO -   - month: 693bc22809385b46195c94b7
+2025-12-23 05:33:42,416 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:33:42,416 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:33:42,416 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:33:42,416 - docker_scraping_result - INFO - 기관 A0045 통계 계산 시작...
+2025-12-23 05:33:48,603 - docker_scraping_result - INFO -   - day: 694961155044cb163bd7d31f
+2025-12-23 05:33:48,607 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:33:48,607 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:33:48,607 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:33:54,039 - docker_scraping_result - INFO -   - week: 693bc23409385b46195c94ba
+2025-12-23 05:33:54,081 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:33:54,081 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:33:54,081 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:34:01,941 - docker_scraping_result - INFO -   - month: 693bc23c09385b46195c94bb
+2025-12-23 05:34:01,963 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:34:01,963 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:34:01,963 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:34:01,963 - docker_scraping_result - INFO - 기관 A0046 통계 계산 시작...
+2025-12-23 05:34:10,040 - docker_scraping_result - INFO -   - day: 6949612b5044cb163bd7d322
+2025-12-23 05:34:10,074 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:34:10,074 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:34:10,074 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:34:15,046 - docker_scraping_result - INFO -   - week: 693bc24609385b46195c94be
+2025-12-23 05:34:15,090 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:34:15,090 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:34:15,090 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:34:23,531 - docker_scraping_result - INFO -   - month: 693bc24d09385b46195c94bf
+2025-12-23 05:34:23,576 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:34:23,576 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:34:23,576 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:34:23,576 - docker_scraping_result - INFO - 기관 A0047 통계 계산 시작...
+2025-12-23 05:34:28,996 - docker_scraping_result - INFO -   - day: 694961365044cb163bd7d325
+2025-12-23 05:34:29,036 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:34:29,036 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:34:29,036 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:34:39,217 - docker_scraping_result - INFO -   - week: 693bc25c09385b46195c94c2
+2025-12-23 05:34:39,260 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:34:39,260 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:34:39,260 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:34:44,894 - docker_scraping_result - INFO -   - month: 693bc26609385b46195c94c3
+2025-12-23 05:34:44,905 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:34:44,905 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:34:44,905 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:34:44,905 - docker_scraping_result - INFO - 기관 A0048 통계 계산 시작...
+2025-12-23 05:34:53,916 - docker_scraping_result - INFO -   - day: 694961655044cb163bd7d328
+2025-12-23 05:34:53,969 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:34:53,969 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:34:53,969 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:35:04,078 - docker_scraping_result - INFO -   - week: 693bc27209385b46195c94c6
+2025-12-23 05:35:04,103 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:35:04,103 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:35:04,103 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:35:18,589 - docker_scraping_result - INFO -   - month: 693bc27909385b46195c94c7
+2025-12-23 05:35:18,633 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:35:18,633 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:35:18,633 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:35:18,633 - docker_scraping_result - INFO - 기관 A0049 통계 계산 시작...
+2025-12-23 05:35:25,288 - docker_scraping_result - INFO -   - day: 6949617d5044cb163bd7d32b
+2025-12-23 05:35:25,332 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:35:25,332 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:35:25,332 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:35:29,100 - docker_scraping_result - INFO -   - week: 693bc28609385b46195c94ca
+2025-12-23 05:35:29,112 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:35:29,112 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:35:29,112 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:35:33,287 - docker_scraping_result - INFO -   - month: 693bc28809385b46195c94cb
+2025-12-23 05:35:33,332 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:35:33,332 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:35:33,332 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:35:33,332 - docker_scraping_result - INFO - 기관 A0051 통계 계산 시작...
+2025-12-23 05:35:36,969 - docker_scraping_result - INFO -   - day: 694961915044cb163bd7d32e
+2025-12-23 05:35:37,010 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:35:37,010 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:35:37,010 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:35:45,063 - docker_scraping_result - INFO -   - week: 693bc29809385b46195c94ce
+2025-12-23 05:35:45,102 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:35:45,102 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:35:45,102 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:35:55,138 - docker_scraping_result - INFO -   - month: 693bc2b609385b46195c94cf
+2025-12-23 05:35:55,177 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:35:55,177 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:35:55,177 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:35:55,177 - docker_scraping_result - INFO - 기관 A0052 통계 계산 시작...
+2025-12-23 05:36:01,710 - docker_scraping_result - INFO -   - day: 694961a45044cb163bd7d331
+2025-12-23 05:36:01,754 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:36:01,754 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:36:01,754 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:36:07,823 - docker_scraping_result - INFO -   - week: 693bc2da09385b46195c94d2
+2025-12-23 05:36:07,855 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:36:07,855 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:36:07,855 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:36:15,594 - docker_scraping_result - INFO -   - month: 693bc2e509385b46195c94d3
+2025-12-23 05:36:15,637 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:36:15,637 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:36:15,637 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:36:15,637 - docker_scraping_result - INFO - 기관 A0053 통계 계산 시작...
+2025-12-23 05:36:22,131 - docker_scraping_result - INFO -   - day: 694961b65044cb163bd7d334
+2025-12-23 05:36:22,174 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:36:22,174 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:36:22,174 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:36:28,200 - docker_scraping_result - INFO -   - week: 693bc2f909385b46195c94d6
+2025-12-23 05:36:28,247 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:36:28,247 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:36:28,247 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:36:43,937 - docker_scraping_result - INFO -   - month: 693bc30009385b46195c94d7
+2025-12-23 05:36:43,988 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:36:43,988 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:36:43,988 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:36:43,988 - docker_scraping_result - INFO - 기관 A0054 통계 계산 시작...
+2025-12-23 05:37:14,069 - docker_scraping_result - INFO -   - day: 694961ca5044cb163bd7d337
+2025-12-23 05:37:14,114 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:37:14,114 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:37:14,114 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:37:20,608 - docker_scraping_result - INFO -   - week: 693bc30f09385b46195c94da
+2025-12-23 05:37:20,650 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:37:20,650 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:37:20,650 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:37:31,826 - docker_scraping_result - INFO -   - month: 693bc31609385b46195c94db
+2025-12-23 05:37:31,863 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:37:31,863 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:37:31,863 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:37:31,863 - docker_scraping_result - INFO - 기관 A0055 통계 계산 시작...
+2025-12-23 05:37:39,468 - docker_scraping_result - INFO -   - day: 694961dd5044cb163bd7d33a
+2025-12-23 05:37:39,512 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:37:39,512 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:37:39,512 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:38:09,610 - docker_scraping_result - INFO -   - week: 693bc32409385b46195c94de
+2025-12-23 05:38:09,632 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:38:09,632 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:38:09,632 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:38:16,188 - docker_scraping_result - INFO -   - month: 693bc32c09385b46195c94df
+2025-12-23 05:38:16,194 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:38:16,194 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:38:16,194 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:38:16,194 - docker_scraping_result - INFO - 기관 A0056 통계 계산 시작...
+2025-12-23 05:38:21,378 - docker_scraping_result - INFO -   - day: 694961f05044cb163bd7d33d
+2025-12-23 05:38:21,385 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:38:21,385 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:38:21,386 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:38:27,088 - docker_scraping_result - INFO -   - week: 693bc33c09385b46195c94e2
+2025-12-23 05:38:27,122 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:38:27,122 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:38:27,122 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:38:34,659 - docker_scraping_result - INFO -   - month: 693bc34209385b46195c94e3
+2025-12-23 05:38:34,711 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:38:34,711 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:38:34,711 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:38:34,711 - docker_scraping_result - INFO - 기관 A0057 통계 계산 시작...
+2025-12-23 05:38:41,534 - docker_scraping_result - INFO -   - day: 694962045044cb163bd7d340
+2025-12-23 05:38:41,578 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:38:41,578 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:38:41,578 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:38:50,565 - docker_scraping_result - INFO -   - week: 693bc35109385b46195c94e6
+2025-12-23 05:38:50,601 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:38:50,601 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:38:50,601 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:38:58,522 - docker_scraping_result - INFO -   - month: 693bc35d09385b46195c94e7
+2025-12-23 05:38:58,563 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:38:58,563 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:38:58,564 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:38:58,564 - docker_scraping_result - INFO - 기관 A0058 통계 계산 시작...
+2025-12-23 05:39:04,745 - docker_scraping_result - INFO -   - day: 694962365044cb163bd7d343
+2025-12-23 05:39:04,758 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:39:04,758 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:39:04,758 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:39:11,249 - docker_scraping_result - INFO -   - week: 693bc36709385b46195c94ea
+2025-12-23 05:39:11,301 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:39:11,301 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:39:11,301 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:39:15,338 - docker_scraping_result - INFO -   - month: 693bc36e09385b46195c94eb
+2025-12-23 05:39:15,372 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:39:15,372 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:39:15,373 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:39:15,373 - docker_scraping_result - INFO - 기관 A0059 통계 계산 시작...
+2025-12-23 05:39:21,663 - docker_scraping_result - INFO -   - day: 694962535044cb163bd7d346
+2025-12-23 05:39:21,686 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:39:21,687 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:39:21,687 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:39:26,767 - docker_scraping_result - INFO -   - week: 693bc37a09385b46195c94ee
+2025-12-23 05:39:26,793 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:39:26,793 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:39:26,793 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:39:34,977 - docker_scraping_result - INFO -   - month: 693bc37b09385b46195c94ef
+2025-12-23 05:39:35,026 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:39:35,026 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:39:35,026 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:39:35,027 - docker_scraping_result - INFO - 기관 A0060 통계 계산 시작...
+2025-12-23 05:39:41,959 - docker_scraping_result - INFO -   - day: 694962705044cb163bd7d349
+2025-12-23 05:39:42,003 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:39:42,003 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:39:42,003 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:39:47,637 - docker_scraping_result - INFO -   - week: 693bc38709385b46195c94f2
+2025-12-23 05:39:47,681 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:39:47,681 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:39:47,681 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:39:56,015 - docker_scraping_result - INFO -   - month: 693bc38d09385b46195c94f3
+2025-12-23 05:39:56,058 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:39:56,058 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:39:56,058 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:39:56,058 - docker_scraping_result - INFO - 기관 A0065 통계 계산 시작...
+2025-12-23 05:40:02,441 - docker_scraping_result - INFO -   - day: 694962825044cb163bd7d34c
+2025-12-23 05:40:02,494 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:40:02,494 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:40:02,494 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:40:08,562 - docker_scraping_result - INFO -   - week: 693bc3b409385b46195c94f6
+2025-12-23 05:40:08,569 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:40:08,569 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:40:08,569 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:40:14,735 - docker_scraping_result - INFO -   - month: 693bc3ba09385b46195c94f7
+2025-12-23 05:40:14,763 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:40:14,763 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:40:14,763 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:40:14,763 - docker_scraping_result - INFO - 기관 A0066 통계 계산 시작...
+2025-12-23 05:40:22,274 - docker_scraping_result - INFO -   - day: 694962935044cb163bd7d34f
+2025-12-23 05:40:22,318 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:40:22,318 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:40:22,318 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:40:52,409 - docker_scraping_result - INFO -   - week: 693bc3c609385b46195c94fa
+2025-12-23 05:40:52,448 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:40:52,449 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:40:52,449 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:41:01,951 - docker_scraping_result - INFO -   - month: 693bc3cd09385b46195c94fb
+2025-12-23 05:41:01,995 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:41:01,995 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:41:01,995 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:41:01,995 - docker_scraping_result - INFO - 기관 A0067 통계 계산 시작...
+2025-12-23 05:41:08,889 - docker_scraping_result - INFO -   - day: 694962a55044cb163bd7d352
+2025-12-23 05:41:08,932 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:41:08,932 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:41:08,932 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:41:16,611 - docker_scraping_result - INFO -   - week: 693bc3dc09385b46195c94fe
+2025-12-23 05:41:16,656 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:41:16,656 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:41:16,656 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:41:46,782 - docker_scraping_result - INFO -   - month: 693bc3dd09385b46195c94ff
+2025-12-23 05:41:46,816 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:41:46,816 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:41:46,816 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:41:46,816 - docker_scraping_result - INFO - 기관 A0068 통계 계산 시작...
+2025-12-23 05:41:50,682 - docker_scraping_result - INFO -   - day: 694962bd5044cb163bd7d355
+2025-12-23 05:41:50,723 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:41:50,723 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:41:50,723 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:41:58,573 - docker_scraping_result - INFO -   - week: 693bc3e409385b46195c9502
+2025-12-23 05:41:58,583 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:41:58,583 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:41:58,583 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:42:00,885 - docker_scraping_result - INFO -   - month: 693bc3ea09385b46195c9503
+2025-12-23 05:42:00,930 - docker_scraping_result - INFO -   - calendar positive: 8일
+2025-12-23 05:42:00,930 - docker_scraping_result - INFO -   - calendar negative: 8일
+2025-12-23 05:42:00,930 - docker_scraping_result - INFO -   - calendar neutral: 8일
+2025-12-23 05:42:00,930 - docker_scraping_result - INFO - === 전체 기관 통계 계산 완료 ===
+봇 생성 실패: Timed out

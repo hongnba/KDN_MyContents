@@ -1,0 +1,71 @@
+{
+  "_id": "691c46073200c93926e13093",
+  "title": "김양식에 AI 접목…전남정보문화산업진흥원 어업인 설명회 개최",
+  "url": "https://www.ohmynews.com/NWS_Web/View/at_pg.aspx?CNTN_CD=A0003183812&CMPT_CD=P0010&utm_source=naver&utm_medium=newsearch&utm_campaign=naver_news",
+  "contentsOrgId": "A0028",
+  "contentsOrgName": "전남정보문화산업진흥원",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.ohmynews.com/NWS_Web/View/at_pg.aspx?CNTN_CD=A0003183812&CMPT_CD=P0010&utm_source=naver&utm_medium=newsearch&utm_campaign=naver_news",
+  "link": "https://www.ohmynews.com/NWS_Web/View/at_pg.aspx?CNTN_CD=A0003183812&CMPT_CD=P0010&utm_source=naver&utm_medium=newsearch&utm_campaign=naver_news",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:20:41.976000+00:00",
+  "collectKeyword": "전남정보문화산업진흥원",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "김양식에 AI 접목…전남정보문화산업진흥원 어업인 설명회 개최",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:10:15.943527",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "AI 기반 어장공간정보 빅데이터 플랫폼 구축",
+      "김, 전복 양식 주산지",
+      "고수온 등 양식산업의 위기"
+    ],
+    "shortSummary": "전남정보문화산업진흥원이 'AI 기반 어장공간정보 빅데이터 플랫폼 구축 활용사업' 설명회 개최",
+    "longSummary": "전남정보문화산업진흥원은 AI 기반 어장공간정보 빅데이터 플랫폼을 통해 전남 수산양식산업의 혁신을 이끌기 위한 사업에 대한 설명회를 개최했다. 해남군 김 생산 수산양식 어업인들과 협력하여 사업 추진 내용과 의견을 공유하고, AI 기반 서비스 개발을 위한 기술 지원을 약속했다.",
+    "predKeywords": {
+      "AI": 0.5177698135375977,
+      "데이터": 0.39621368050575256
+    },
+    "sentiments": [
+      {
+        "orgId": "A0028",
+        "orgName": "전남정보문화산업진흥원",
+        "positiveRatio": 50.0,
+        "negativeRatio": 20.0,
+        "neutralRatio": 30.0,
+        "reason": "긍정과 부정 비율을 종합적으로 판단한 근거 (한 문단)",
+        "positiveReason": "긍정적 표현이 전체 기사에 걸쳐 보편적으로 나타나며, 특히 'AI기반 어장공간정보 빅데이터 플랫폼 구축 활용사업'에 대한 설명과 지원 기관들의 의견 수렴 과정에서의 긍정적인 성과가 두드러진다.",
+        "negativeReason": "전체 기사에서 부정적 표현은 거의 없으며, 그 중에서도 기사가 다루고 있는 AI 기반 어장공간정보 빅데이터 플랫폼 구축 활용사업의 목적과 필요성에 대한 설명이 대부분 긍정적인 요소를 포함하고 있다.",
+        "positiveKeywords": [
+          "혁신",
+          "고객중심",
+          "효과적인",
+          "지속 가능성"
+        ],
+        "negativeKeywords": [
+          "비리 의혹",
+          "경영 악화"
+        ]
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:10:35.506641+00:00",
+  "imageId": "6784a2911ccfd362485cd9a1",
+  "v1ContentsIdx": null
+}

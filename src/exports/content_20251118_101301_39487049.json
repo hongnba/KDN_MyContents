@@ -1,0 +1,70 @@
+{
+  "_id": "691c46923200c93926e1309b",
+  "title": "농식품부, 양돈질병 방역관리 강화에 박차... 대구·경상 권역 현장설명회 참석 및 야생멧돼지 포획트랩 운영실태 점검",
+  "url": "http://www.mafra.go.kr/bbs/home/792/575925/artclView.do",
+  "contentsOrgId": "A0037",
+  "contentsOrgName": "농림축산식품부",
+  "categoryId": "B0001",
+  "categoryName": "보도자료",
+  "originallink": "http://www.mafra.go.kr/bbs/home/792/575925/artclView.do",
+  "link": "http://www.mafra.go.kr/bbs/home/792/575925/artclView.do",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:26:35.380000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "농식품부, 양돈질병 방역관리 강화에 박차... 대구·경상 권역 현장설명회 참석 및 야생멧돼지 포획트랩 운영실태 점검",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:12:34.493511",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "양돈질병 방역",
+      "농식품부",
+      "대구·경상 권역",
+      "야생멧돼지 포획"
+    ],
+    "shortSummary": "농림축산식품부가 양돈질병 방역관리 강화에 박차를 가하고, 대구·경상 권역에서 현장설명회를 개최 및 야생멧돼지 포획트랩 운영실태 점검을 진행했다.",
+    "longSummary": "농림축산식품부는 양돈질병 방역관리 강화를 위해 대구와 경상권역에서 현장설명회를 개최하고, 야생 멧돼지 포획트랩 운영실태를 점검하는 등 적극적인 조치를 취했다. 이번 설명회는 돼지열병 청정화 추진방안 및 소모성 질병 방역 대책의 일환으로, 양돼지 농가와 지역 주민들에게 중요한 정보를 제공하고 방역 의식을 높이는 것을 목표로 했다.",
+    "predKeywords": {
+      "부동산": 0.13147157430648804,
+      "신도시": 0.08359161019325256,
+      "아파트": 0.022622324526309967
+    },
+    "sentiments": [
+      {
+        "orgId": "A0037",
+        "orgName": "농림축산식품부",
+        "positiveRatio": 80.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 20.0,
+        "reason": "기사 내용과 제목을 종합적으로 분석했을 때, 긍정적인 요소가 명확하게 드러났기 때문이다.",
+        "positiveReason": "농식품부의 양돼지 질병 방역 관리 강화와 관련된 현장 설명회 참석 및 포획 트랩 운영 실태 점검 등이 언급되어서, 긍정적인 조치가 이루어지고 있다는 인식을 주는 내용들이 많습니다.",
+        "negativeReason": "부정적인 표현이나 내용은 찾지 못했습니다.",
+        "positiveKeywords": [
+          "양돼지질병 방역 강화",
+          "현장설명회",
+          "야생멧돼지 포획",
+          "방역정책 통과"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:12:57.016342+00:00",
+  "imageId": "6784a2911ccfd362485cda19",
+  "v1ContentsIdx": null
+}

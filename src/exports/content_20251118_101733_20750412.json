@@ -1,0 +1,78 @@
+{
+  "_id": "691c47a43200c93926e130a9",
+  "title": "2025년 옹진군 주꾸미 산란시설물(피뿔고둥 천연패각)..",
+  "url": "https://www.fira.or.kr/fira/fira_010101_3.jsp?mode=view&article_no=34938&board_wrapper=%2Ffira%2Ffira_010101_3.jsp&pager.offset=0&board_no=4",
+  "contentsOrgId": "A0057",
+  "contentsOrgName": "한국수산자원공단",
+  "categoryId": "B0005",
+  "categoryName": "입찰공고",
+  "originallink": "https://www.fira.or.kr/fira/fira_010101_3.jsp?mode=view&article_no=34938&board_wrapper=%2Ffira%2Ffira_010101_3.jsp&pager.offset=0&board_no=4",
+  "link": "https://www.fira.or.kr/fira/fira_010101_3.jsp?mode=view&article_no=34938&board_wrapper=%2Ffira%2Ffira_010101_3.jsp&pager.offset=0&board_no=4",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:49:05.195000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "2025년 옹진군 주꾸미 산란시설물(피뿔고둥 천연패각)..",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:17:08.676530",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "데이터",
+      "AI",
+      "플랫폼",
+      "디지털",
+      "반도체",
+      "에너지",
+      "정보보호",
+      "전력",
+      "클라우드"
+    ],
+    "shortSummary": "한국수산자원공단의 어업 관련 공지사항을 확인할 수 있는 페이지입니다.",
+    "longSummary": "한국수산자원공단은 한국어촌어항협회, 한국수산회 등을 통해 어업인들의 지원과 협력을 바탕으로 해양 자원을 효율적으로 관리하고 있습니다. 공단은 국가상징인 바다숲 조성사업을 통해 수산업의 발전과 지속 가능한 해양 자원 관리를 목표로 하고 있으며, 이를 위해 다양한 사업과 프로그램을 추진하고 있습니다.",
+    "predKeywords": {
+      "플랫폼": 0.27807751297950745,
+      "데이터": 0.24327965080738068,
+      "디지털": 0.14128342270851135
+    },
+    "sentiments": [
+      {
+        "orgId": "A0057",
+        "orgName": "한국수산자원공단",
+        "positiveRatio": 80.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 15.0,
+        "reason": "한국수산자원공단의 입찰정보 게시판에서 제시된 긍정적이고 구체적인 정보들이 주로 등장하며, 공공기관의 공식적인 공지사항을 통해 제공되는 것이기 때문에 대부분 긍정적인 기분을 주는 것으로 판단됨.",
+        "positiveReason": "글로벌 어업자원 관리, 바리류 산란서식장 조성사업, 종자 매입방류 등 다양한 긍정적 수산 자원 관리와 개발 관련 내용이 포함되어 있어.",
+        "negativeReason": "부정적인 단락은 찾지 못했지만, 전체적인 긍정적인 기조에 따라 부정적 요소는 거의 존재하지 않는 것으로 보임.",
+        "positiveKeywords": [
+          "기술 혁신",
+          "성과 향상",
+          "고객 만족"
+        ],
+        "negativeKeywords": [
+          "비리 의혹",
+          "경영 악화",
+          "불투명한 운영"
+        ]
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:17:33.849923+00:00",
+  "imageId": "6784a2911ccfd362485cda6b",
+  "v1ContentsIdx": null
+}

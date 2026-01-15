@@ -1,0 +1,75 @@
+{
+  "_id": "691c47693200c93926e130a6",
+  "title": "국민건강보험공단 당진지사, 대학생 특강 진행",
+  "url": "http://www.idjnews.kr/news/articleView.html?idxno=213242",
+  "contentsOrgId": "A0048",
+  "contentsOrgName": "국민건강보험공단",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "http://www.idjnews.kr/news/articleView.html?idxno=213242",
+  "link": "http://www.idjnews.kr/news/articleView.html?idxno=213242",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:46:19.109000+00:00",
+  "collectKeyword": "국민건강보험공단",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "국민건강보험공단 당진지사, 대학생 특강 진행",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:16:09.922053",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "국민건강보험공단",
+      "당진지사",
+      "신성대학교",
+      "간호학과",
+      "특강",
+      "건강보험 제도",
+      "특사경 제도",
+      "담배소송",
+      "장기요양보험제도"
+    ],
+    "shortSummary": "",
+    "longSummary": "",
+    "predKeywords": {
+      "AI": 0.5146437287330627,
+      "데이터": 0.5144444704055786
+    },
+    "sentiments": [
+      {
+        "orgId": "A0048",
+        "orgName": "국민건강보험공단",
+        "positiveRatio": 65.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 35.0,
+        "reason": "기사 내 모든 문맥과 표현이 긍정적인 성향을 띠고 있으며, 주로 건강보험 관련 주요 현안 사항에 대한 설명과 학생들이 얻은 만족감이 강조되며, 지사장의 발언에서도 긍정적인 노력 및 기대가 드러나므로 전체적으로 긍정적인 감정을 나타냄.",
+        "positiveReason": "특강이 학생들에게 긍정적인 영향을 미쳤고, 공단의 다양한 활동과 미래 세대의 올바른 가치관 확립에 대한 언급 등",
+        "negativeReason": "없음",
+        "positiveKeywords": [
+          "올바른 가치관",
+          "우호적 인식",
+          "긍정적인 반응",
+          "지속가능한 건강보험",
+          "이미지"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:16:26.498473+00:00",
+  "imageId": "6784a2911ccfd362485cd99f",
+  "v1ContentsIdx": null
+}

@@ -1,0 +1,73 @@
+{
+  "_id": "691c46403200c93926e13096",
+  "title": "이상욱 서울시의원 “토지거래허가제, 국토교통부가 명확한 해제 기준 ...",
+  "url": "https://www.seoul.co.kr/news/publicnews/local_govern/smc_movement/2025/11/18/20251118500231?wlog_tag3=naver",
+  "contentsOrgId": "A0033",
+  "contentsOrgName": "국토교통부",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.seoul.co.kr/news/publicnews/local_govern/smc_movement/2025/11/18/20251118500231?wlog_tag3=naver",
+  "link": "https://www.seoul.co.kr/news/publicnews/local_govern/smc_movement/2025/11/18/20251118500231?wlog_tag3=naver",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:20:45.943000+00:00",
+  "collectKeyword": "국토교통부",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "이상욱 서울시의원 “토지거래허가제, 국토교통부가 명확한 해제 기준 ...",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:11:12.457120",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "규제 해제",
+      "토지거래허가제",
+      "국토교통부 장관",
+      "서울시",
+      "부동산",
+      "아파트"
+    ],
+    "shortSummary": "서울시의회 운영위원회 소속 이상욱 의원은 토지거래허가제 해제 권한이 국토교통부 장관에게 있음을 지적하고, 현장 혼란을 줄이기 위해 중앙정부 차원의 해제 기준과 절차 필요하다고 밝혔다.",
+    "longSummary": "서울시의회 운영위원회 소속 이상욱 의원은 최근 열린 제333회 정례회 행정사무감사에서 토지거래허가제의 해제 권한이 국토교통부 장관에게 있는 상황에서 중앙정부 차원의 해제 기준과 절차가 필요하다고 지적했다. 그는 이번 규제 해제 여부가 국토교통부 장관만이 결정할 수 있는 사안이라고 언급하며, 현장에서의 혼란을 줄이기 위해 제도적 기준과 절차가 필수적이라고 강조했다. 또한, 유동성 충격과 시장 혼란을 방지하기 위해서는 해제 기준이 필요하다고 주장했다.",
+    "predKeywords": {
+      "부동산": 0.17161747813224792,
+      "아파트": 0.008317573927342892
+    },
+    "sentiments": [
+      {
+        "orgId": "A0033",
+        "orgName": "국토교통부",
+        "positiveRatio": 20.0,
+        "negativeRatio": 50.0,
+        "neutralRatio": 30.0,
+        "reason": "기사 내용에서 국토교통부 장관에게 규제 해제 권한이 있다는 사실과, 서울시와 대통령실에 제도 개선 의견을 전달해야 한다는 지적이 나온 만큼 기사의 전체적인 감정이 부정적입니다.",
+        "positiveReason": "기사 내용에서 언급된 해제 기준 필수 및 유동성 충격, 시장 혼란 대비가 필요하다는 긍정적인 의견이 적시됩니다.",
+        "negativeReason": "국토교통부 장관에게 규제 해체 권한이 있다는 점과, 이를 통해 발생할 수 있는 현장 혼란 및 시장의 예상치 못한 충격에 직면할 수 있다라는 부정적인 내용이 주를 이루고 있습니다.",
+        "positiveKeywords": [
+          "필수"
+        ],
+        "negativeKeywords": [
+          "비리",
+          "혼란",
+          "부동산 시장이 예상치 못한 충격에 직면할 수 있다",
+          "정무적 부담을 떠안게 된다"
+        ]
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:11:32.637727+00:00",
+  "imageId": "6784a2911ccfd362485cda2b",
+  "v1ContentsIdx": null
+}

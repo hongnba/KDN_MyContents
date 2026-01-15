@@ -1,0 +1,62 @@
+{
+  "_id": "691c47333200c93926e130a3",
+  "title": "한국농어촌공사 보성지사, 장학금 500만 원 기탁",
+  "url": "https://www.newspim.com/news/view/20251118000630",
+  "contentsOrgId": "A0038",
+  "contentsOrgName": "한국농어촌공사",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.newspim.com/news/view/20251118000630",
+  "link": "https://www.newspim.com/news/view/20251118000630",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:26:47.373000+00:00",
+  "collectKeyword": "한국농어촌공사",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한국농어촌공사 보성지사, 장학금 500만 원 기탁",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:15:15.253414",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "지역 인재 양성",
+      "기금 대폭 확대"
+    ],
+    "shortSummary": "보성군은 한국농어촌공사 보성지사가 지역 인재 양성을 위해 500만 원을 기탁했다.",
+    "longSummary": "보성군은 한국농어촌공사 보성지사의 장학금 500만 원 기탁을 통해 지역 학생들의 교육 격차 해소와 진로 지원에 기여할 계획이다. 이에 따라 보성군장학재단은 농업과 관련된 다양한 프로그램과 함께 기술, 특기 개발, 미래형 인재 양성을 위한 사업을 확대할 방침이다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0038",
+        "orgName": "한국농어촌공사",
+        "positiveRatio": 80.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 20.0,
+        "reason": "기사 내내 긍정적인 내용이 주를 이룹니다. 기탁된 장학기금의 활용 방안과 교육 지원에 대한 언급 등이 긍정적인 감정을 불러일으킵니다.",
+        "positiveReason": "한국농어촌공사 보성지사의 장학금 기탁과 이를 통해 학생들의 학습환경 개선 및 진로 지원이 언급되며, 다양한 교육 프로그램 운영을 목표로 하고 있다는 점에서 긍정적인 내용이 주를 이룹니다.",
+        "negativeReason": "부정적 인식이나 비난 등의 언어는 발견되지 않았습니다.",
+        "positiveKeywords": [
+          "지역 인재 양성",
+          "기금 대폭 확대"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:15:26.509950+00:00",
+  "imageId": "6784a2911ccfd362485cda27",
+  "v1ContentsIdx": null
+}

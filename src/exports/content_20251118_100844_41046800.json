@@ -1,0 +1,71 @@
+{
+  "_id": "691c45943200c93926e1308d",
+  "title": "관악구, ‘디지털 이노베이션 어워드’ 과기부장관상 수상",
+  "url": "https://www.siminilbo.co.kr/news/newsview.php?ncode=1160286491572560",
+  "contentsOrgId": "A0003",
+  "contentsOrgName": "과학기술정보통신부",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.siminilbo.co.kr/news/newsview.php?ncode=1160286491572560",
+  "link": "https://www.siminilbo.co.kr/news/newsview.php?ncode=1160286491572560",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:10:28.136000+00:00",
+  "collectKeyword": "과기부",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "관악구, ‘디지털 이노베이션 어워드’ 과기부장관상 수상",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:08:20.868276",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "디지털 이노베이션 어워드",
+      "스마트도시",
+      "AI",
+      "빅데이터",
+      "디지털 복지서비스"
+    ],
+    "shortSummary": "관악구는 2025 대한민국 디지털 이노베이션 어워드에서 부총리 겸 장관상을 수상했다.",
+    "longSummary": "관악구는 최근 '2025 대한민국 디지털 이노베이션 어워드'에서 서울시 자치구 최초로 부총리 겸 장관상을 받았다. 구는 AI와 빅데이터를 활용한 '스마트도시 관악' 조성에 공을 들려 기후변화와 재난, 재해에 대응하는 안전 인프라 구축과 디지털 복지 서비스 제공을 통해 지속 가능한 미래 도시 구현을 선도했다. 이는 구가 병원과 공원, 학교 앞 버스정류장에 '스마트 쉼터'를 설치하고, 노인의 건강한 노후 생활을 지원하는 '스마트경로당' 45곳을 조성하며 디지털 복합복지 공간을 확대했기 때문이다. 구는 또한 IoT 기반의 스마트 헬스케어 장비를 도입하고, 어린이 보호 구역 일대 교통사고 예방을 위한 통합 안전 스마트폴을 구축하는 등 다양한 디지털 기술을 행정에 활용해 주민 안전을 확보했다.",
+    "predKeywords": {
+      "디지털": 0.2833090126514435,
+      "AI": 0.0677260160446167
+    },
+    "sentiments": [
+      {
+        "orgId": "A0003",
+        "orgName": "과학기술정보통신부",
+        "positiveRatio": 75.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 20.0,
+        "reason": "기사에서 사용된 긍정적인 표현과 부정적인 표현을 종합적으로 분석했으며, 긍정적인 표현이 부정적인 표현보다 더 많이 나타났다.",
+        "positiveReason": "기사는 관악구가 서울시 자치구 최초로 부총리 겸 장관상을 수상했다고 밝혔으며, 구는 다양한 디지털 기술을 활용한 서비스와 프로젝트를 소개하였다. 이러한 긍정적인 성공 사례와 기대감이 긍정 비율에 영향을 미쳤다.",
+        "negativeReason": "기사에서 부정적인 내용은 거의 등장하지 않았으며, 전체적으로 긍정적이고 감사의 분위기가 강조되어 있어 부정 비율이 낮았다.",
+        "positiveKeywords": [
+          "디지털 혁신",
+          "스마트도시",
+          "안전 인프라",
+          "디지털 복지서비스",
+          "기후변화 대응"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:08:44.187998+00:00",
+  "imageId": "6784a2911ccfd362485cd9d9",
+  "v1ContentsIdx": null
+}

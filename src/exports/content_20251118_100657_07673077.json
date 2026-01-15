@@ -1,0 +1,67 @@
+{
+  "_id": "691c452e3200c93926e13088",
+  "title": "한국에너지공단, 한국안전공공기관 감사협의회와 '아동복지시설 안전점...",
+  "url": "http://www.newsworker.co.kr/news/articleView.html?idxno=403194",
+  "contentsOrgId": "A0023",
+  "contentsOrgName": "한국에너지공단",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "http://www.newsworker.co.kr/news/articleView.html?idxno=403194",
+  "link": "http://www.newsworker.co.kr/news/articleView.html?idxno=403194",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:03:44.613000+00:00",
+  "collectKeyword": "한국에너지공단",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한국에너지공단, 한국안전공공기관 감사협의회와 '아동복지시설 안전점...",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:06:38.531216",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "에너지공단",
+      "안전점검",
+      "사회공헌",
+      "울산양육원"
+    ],
+    "shortSummary": "한국에너지공단이 울산양육원 안전 점검 및 물품 기증 행사를 진행했다.",
+    "longSummary": "한국에너지공단은 18일 한국안전공공기관 감사협의회와 함께 울산양육원에서 안전 점검과 물품 기증 행사를 진행했다. 권오현 상임감사는 '지역사회 공동체 일원으로서 나눔을 실천하고, 공직사회 청렴문화 확산 및 안전 사각지대 해소에 기여할 수 있도록 최선을 다하겠다'고 밝혔다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0023",
+        "orgName": "한국에너지공단",
+        "positiveRatio": 80.0,
+        "negativeRatio": 10.0,
+        "neutralRatio": 10.0,
+        "reason": "기사의 내용이 주로 공공기관의 사회적 책임을 다하는 활동과 지역사회에 기여하는 행위들에 대해 긍정적으로 다루고 있어, 긍정적인 감성이 우세합니다. 또한, 단순히 안전 점검과 물품 전달 등의 구체적인 도움 내용이 다수 언급되어 있어 긍정적 인상을 주며, 부정적인 요소는 거의 없어 전체적으로 긍정적인 감정이 강하게 느껴집니다.",
+        "positiveReason": "공공기관의 사회적 책임을 다하는 활동과 지역사회에 기여하는 행위들이 많이 언급되어 있어",
+        "negativeReason": "부정적인 내용이 거의 없고, 그보다 더 큰 긍정적 요소들이 많아",
+        "positiveKeywords": [
+          "사회적 책임 이행",
+          "안전 점검",
+          "물품 기증",
+          "협력",
+          "사회공헌"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:06:52.284675+00:00",
+  "imageId": "6784a2911ccfd362485cd9b7",
+  "v1ContentsIdx": null
+}

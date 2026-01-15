@@ -1,0 +1,81 @@
+{
+  "_id": "691c4a103200c93926e130d6",
+  "title": "농식품부, 해외 우수 한식당 7개소 신규 지정",
+  "url": "https://www.news1.kr/economy/trend/5979562",
+  "contentsOrgId": "A0037",
+  "contentsOrgName": "농림축산식품부",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.news1.kr/economy/trend/5979562",
+  "link": "https://www.news1.kr/economy/trend/5979562",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:27:49.399000+00:00",
+  "collectKeyword": "농식품부",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "농식품부, 해외 우수 한식당 7개소 신규 지정",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:27:28.178878",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "가",
+      "K-푸드",
+      "글로벌 진출",
+      "양돈질병",
+      "대통령실",
+      "총리실",
+      "국회",
+      "정당",
+      "감사원",
+      "위원회",
+      "경제ㆍ정책",
+      "재정ㆍ통화",
+      "산업ㆍ통상",
+      "인구ㆍ통계",
+      "고용노동",
+      "농업ㆍ식량",
+      "환경정책"
+    ],
+    "shortSummary": "2025년 11월 18일 농식품부가 해외 우수 한식당 7개소를 신규 지정했으며, K-푸드가 글로벌 진출 전략을 점검 중이다.",
+    "longSummary": "농식품부는 2025년 11월 18일, 해외 우수 한식당 7개소를 신규 지정했다. 이는 'K-푸드'의 글로벌 진출 전략과 직접적으로 연결된 주요 결정으로, 농식품부가 한식을 세계 시장에 선보이기 위한 노력을 강화하고 있다는 신호이다. 이와 함께, K-푸드는 올해 100억불을 돌파할 가능성이 높아지고 있다. 이를 위해 농식품부는 대구·경상 권역서 양돈질병 방역 관리 강화를 설명회를 개최했으며, 이를 통해 한식당의 해외 진출을 위한 준비가 더욱 가속화될 것으로 예상된다.",
+    "predKeywords": {
+      "데이터": 0.03243185579776764,
+      "클라우드": 0.01577114313840866,
+      "정보보호": -0.02022835612297058
+    },
+    "sentiments": [
+      {
+        "orgId": "A0037",
+        "orgName": "농림축산식품부",
+        "positiveRatio": 80.5,
+        "negativeRatio": 4.3,
+        "neutralRatio": 15.2,
+        "reason": "기사 내용이 주로 농림축산식품부의 해외 우수 한식당 7개소 지정과 K-푸드의 글로벌 진출 전략에 관한 긍정적인 뉴스를 포함하고 있어, 긍정적인 감성을 부여합니다. 또한, 'K-푸드'가 올해 100억불을 돌파한 것 역시 긍정적 요소입니다.",
+        "positiveReason": "농림축산식품부의 한식당 지정과 K-푸드의 글로벌 진출 전략이 긍정적인ニュ스를 제공합니다.",
+        "negativeReason": "기사 내용에서 부정적인 요소는 발견되지 않았습니다.",
+        "positiveKeywords": [
+          "K-푸드",
+          "100억불 돌파"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:27:49.995612+00:00",
+  "imageId": "6784a2911ccfd362485cd9bb",
+  "v1ContentsIdx": null
+}

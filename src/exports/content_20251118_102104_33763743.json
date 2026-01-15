@@ -1,0 +1,72 @@
+{
+  "_id": "691c487e3200c93926e130c2",
+  "title": "원전 핵심직무에 여성 배치…한수원 '여성공학인 지원 우수기관' 영예",
+  "url": "https://www.kizmom.com/news/articleView.html?idxno=105922",
+  "contentsOrgId": "A0011",
+  "contentsOrgName": "한국수력원자력(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.kizmom.com/news/articleView.html?idxno=105922",
+  "link": "https://www.kizmom.com/news/articleView.html?idxno=105922",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:00:43.313000+00:00",
+  "collectKeyword": "한수원",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "원전 핵심직무에 여성 배치…한수원 '여성공학인 지원 우수기관' 영예",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:20:46.905533",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "한국수력원자력",
+      "산업현장 여성공학인대회",
+      "여성공학인 지원 우수기관",
+      "양성평등채용목표제",
+      "출산·육아기 지원제도",
+      "유연근무제",
+      "사내외 교육 프로그램"
+    ],
+    "shortSummary": "한수원은 2025 산업현장 여성공학인대회에서 공공기관 부문 우수기관으로 선정됐다.",
+    "longSummary": "한국수력원자력(한수원)은 2025 산업현장 여성공학인대회에서 공공기관 부문 '여성공학인 지원 우수기관'으로 선정되어 산업통상부 장관상을 수상했다. 한수원은 양성평등채용목표제를 도입해 최근 3년간 기술직 대졸 신입사원의 30% 이상을 여성 인재로 채용하고, 원자력발전·엔지니어링 등 핵심 직무에 여성 신입사원을 100% 배치했다. 여성 관리자 비율은 5년 연속 증가했으며, 유연근무제와 출산·육아기 지원제도를 운영 중이다.",
+    "predKeywords": {
+      "AI": 0.1580638885498047,
+      "원자력": 0.129645437002182,
+      "정보보호": 0.12088995426893234
+    },
+    "sentiments": [
+      {
+        "orgId": "A0011",
+        "orgName": "한국수력원자력(주)",
+        "positiveRatio": 80.45,
+        "negativeRatio": 9.5,
+        "neutralRatio": 10.05,
+        "reason": "기사 내용의 전반적인 긍정적 성격과 한수원 사장이 밝힌 목표에 대한 긍정적 언급",
+        "positiveReason": "한수원은 최근 3년간 기술직 대졸 신입사원의 30% 이상을 여성 인재로 채용하고 있으며, 핵심 직무에도 여성 신규 배치가 이루어졌다.",
+        "negativeReason": "",
+        "positiveKeywords": [
+          "여성공학인 지원 우수기관",
+          "균형 인사 정책",
+          "조직문화 개선"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:21:04.942937+00:00",
+  "imageId": "6784a2911ccfd362485cd995",
+  "v1ContentsIdx": null
+}

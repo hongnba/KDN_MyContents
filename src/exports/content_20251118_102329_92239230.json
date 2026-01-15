@@ -1,0 +1,74 @@
+{
+  "_id": "691c49103200c93926e130ca",
+  "title": "에너지공단, COP30에서‘기후·청정에너지 전환 포럼’ 개최",
+  "url": "https://www.energy.or.kr/front/board/View2.do?boardMngNo=2&10024931",
+  "contentsOrgId": "A0023",
+  "contentsOrgName": "한국에너지공단",
+  "categoryId": "B0001",
+  "categoryName": "보도자료",
+  "originallink": "https://www.energy.or.kr/front/board/View2.do?boardMngNo=2&10024931",
+  "link": "https://www.energy.or.kr/front/board/View2.do?boardMngNo=2&10024931",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:07:47.711000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "에너지공단, COP30에서‘기후·청정에너지 전환 포럼’ 개최",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:23:12.651811",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "에너지",
+      "공공기관",
+      "데이터",
+      "AI",
+      "신재생 에너지",
+      "정보보호"
+    ],
+    "shortSummary": "한국에너지공단은 대한민국 공식 전자정부 누리집입니다. 공공기관이 국민에게 공공데이터를 제공하며, 온실가스 저감과 삶의 질 향상을 목표로 합니다.",
+    "longSummary": "한국에너지공단은 대한민국 공식 전자정부 누리집으로, 국민들의 알권리를 최대한 보장하고 편리하게 이용할 수 있도록 공공데이터를 활용한 정보를 제공합니다. 한국에너지공단은 온실가스 저감을 유도하고 국민의 삶의 질을 제고하는 데 기여하며, 합리적ㆍ효율적 에너지이용 증진과 신재생 에너지 보급 촉진 및 산업 활성화를 목표로 합니다. 또한, 한국에너지공단은 조직 각 업무별 담당자를 확인하실 수 있으며, 기업정보를 투명하게 공시하여 국민여러분에게 다가가는 공공기관이 되도록 최선을 다합니다.",
+    "predKeywords": {
+      "정보보호": 0.3667861819267273,
+      "에너지": 0.3055541515350342,
+      "데이터": 0.27800890803337097
+    },
+    "sentiments": [
+      {
+        "orgId": "A0023",
+        "orgName": "한국에너지공단",
+        "positiveRatio": 90.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 10.0,
+        "reason": "이 기사에서는 한국에너지공단의 다양한 활동과 목표, 그리고 국민과의 협력을 강조하며 긍정적인 성격을 지니고 있어",
+        "positiveReason": "한국에너지공단은 온실가스 저감을 유도하고 국민의 삶의 질을 제고하며, 미래를 여는 에너지 리더로서의 역할을 강조합니다. 또한, 합리적ㆍ효율적 에너지이용 증진과 신재생 에너지 보급 촉진 및 산업 활성화를 목표로 하고 있습니다.",
+        "negativeReason": "없음",
+        "positiveKeywords": [
+          "알권리",
+          "편리",
+          "온실가스 저감",
+          "신재생 에너지",
+          "효율적 에너지이용",
+          "국민행복"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:23:29.221888+00:00",
+  "imageId": "6784a2911ccfd362485cda43",
+  "v1ContentsIdx": null
+}

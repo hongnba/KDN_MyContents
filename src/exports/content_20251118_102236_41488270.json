@@ -1,0 +1,63 @@
+{
+  "_id": "691c48da3200c93926e130c7",
+  "title": "서부발전 2030 재난안전 기본계획 착수회의 개최",
+  "url": "https://www.news1.kr/local/daejeon-chungnam/5980376",
+  "contentsOrgId": "A0016",
+  "contentsOrgName": "한국서부발전(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.news1.kr/local/daejeon-chungnam/5980376",
+  "link": "https://www.news1.kr/local/daejeon-chungnam/5980376",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:06:13.059000+00:00",
+  "collectKeyword": "서부발전",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "서부발전 2030 재난안전 기본계획 착수회의 개최",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:22:18.782461",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "서부발전",
+      "재난안전 기본계획",
+      "인공지능·디지털 기술"
+    ],
+    "shortSummary": "서부발전은 인공지능과 디지털 기술을 활용해 재난 관리를 혁신하겠다고 밝혔다.",
+    "longSummary": "서부발전은 2030년까지 재난안전 기본계획을 착수하기 위해 회의를 열었다. 이 계획에는 인공지능과 디지털 기술이 강하게 반영될 예정이다. 이를 통해 재난 관리의 효율성을 높이고, 신속한 대응 가능성을 확보하겠다는 목표다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0016",
+        "orgName": "한국서부발전(주)",
+        "positiveRatio": 75.5,
+        "negativeRatio": 3.7,
+        "neutralRatio": 20.8,
+        "reason": "기사의 내용이 재난관리 혁신과 기술 도입에 대한 긍정적인 기대를 반영하고 있어, 긍정적 감성 비율이 높습니다.",
+        "positiveReason": "기사가 재난안전 기본계획 착수회의와 인공지능·디지털 기술로의 혁신을 다루고 있어, 긍정적인 내용이 많습니다.",
+        "negativeReason": "부정적 표현은 거의 없어, 전체적으로 긍정적인 기사를 구성하고 있습니다.",
+        "positiveKeywords": [
+          "기사",
+          "혁신"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:22:31.862216+00:00",
+  "imageId": "6784a2911ccfd362485cda2b",
+  "v1ContentsIdx": null
+}

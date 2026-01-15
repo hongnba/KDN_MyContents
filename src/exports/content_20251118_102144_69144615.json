@@ -1,0 +1,69 @@
+{
+  "_id": "691c48a33200c93926e130c4",
+  "title": "한수원, ʻ새정부 동반성장정책 혁신 아이디어 공모전ʼ 시상식 개최",
+  "url": "https://weekly.hankooki.com/news/articleView.html?idxno=7137511",
+  "contentsOrgId": "A0011",
+  "contentsOrgName": "한국수력원자력(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://weekly.hankooki.com/news/articleView.html?idxno=7137511",
+  "link": "https://weekly.hankooki.com/news/articleView.html?idxno=7137511",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:00:43.313000+00:00",
+  "collectKeyword": "한수원",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한수원, ʻ새정부 동반성장정책 혁신 아이디어 공모전ʼ 시상식 개최",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:21:23.635846",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "AI",
+      "플랫폼",
+      "디지털",
+      "원전수출",
+      "한수원"
+    ],
+    "shortSummary": "한국수력원자력이 '새정부 동반성장정책 혁신 아이디어 공모전'에서 AI 기반 원전수출 통합 지원 플랫폼과 한수원 DB 연동형 AI 문서 자동생성 플랫폼이 최우수상을 수상했다.",
+    "longSummary": "한국수력원자력이 '새정부 동반성장정책 혁신 아이디어 공모전'에서 AI 기반 원전수출 통합 지원 플랫폼과 한수원 DB 연동형 AI 문서 자동생성 플랫폼이 각각 최우수상을 수상했다. 이번 공모전은 중소벤처기업들의 수출 경쟁력 강화, 디지털 기술 활용한 판로 확대 및 마케팅 활성화, 혁신 성장 및 스케일업 지원, 복지 인프라 혁신, 생태계 조성을 주제로 진행됐다. 총 128건의 제안서가 접수되었고, 사내외 전문가의 심사를 거쳐 최종 수상작을 선발했다. 이번 공모전으로 발굴된 우수 제안들은 한수원의 동반성장 중장기 전략과 '사기충전' 지원사원 플랫폼에 적극 반영될 예정이다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0011",
+        "orgName": "한국수력원자력(주)",
+        "positiveRatio": 67.5,
+        "negativeRatio": 0.0,
+        "neutralRatio": 32.5,
+        "reason": "기사 내용에서 언급된 전반적인 긍정적 성격과 다양한 혁신적인 아이디어가 반영되면서 긍정 비율이 높고, 부정적인 언급은 없는 것으로 판단.",
+        "positiveReason": "한수원 DB 연동형 AI 문서 자동생성 플랫폼 등의 혁신적인 아이디어와 수상작에 대한 긍정적인 평가가 기사 전체를 통해서 보편적으로 나타남. 또한, 다양한 지원 전략과 정책이 언급되어 있는 것으로 볼 때 긍정적 기조가 지배적입니다.",
+        "negativeReason": "기사에는 부정적인 내용이나 비판적 평가나 부정적인 감정이 없음.",
+        "positiveKeywords": [
+          "혁신 아이디어",
+          "중소벤처기업 지원",
+          "디지털 기술",
+          "판로 확대",
+          "마케팅 활성화",
+          "복지 인프라 혁신"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:21:39.714649+00:00",
+  "imageId": "6784a2911ccfd362485cd9fd",
+  "v1ContentsIdx": null
+}

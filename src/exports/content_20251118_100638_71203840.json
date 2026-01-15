@@ -1,0 +1,72 @@
+{
+  "_id": "691c451c3200c93926e13087",
+  "title": "한국에너지공단, COP30에서‘기후·청정에너지 전환 포럼’ 개최",
+  "url": "https://idsn.co.kr/news/view/1065590202205914",
+  "contentsOrgId": "A0023",
+  "contentsOrgName": "한국에너지공단",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://idsn.co.kr/news/view/1065590202205914",
+  "link": "https://idsn.co.kr/news/view/1065590202205914",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:03:44.613000+00:00",
+  "collectKeyword": "한국에너지공단",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한국에너지공단, COP30에서‘기후·청정에너지 전환 포럼’ 개최",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:06:20.532222",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "에너지 공단",
+      "글로벌 주요 협력국",
+      "탄소중립",
+      "정책",
+      "혁신",
+      "우수사례",
+      "기후 변화",
+      "환경"
+    ],
+    "shortSummary": "한국 에너지공단이 COP30에서 청정에너지 전환 포럼을 개최, 국제사회와의 협력을 강화했다.",
+    "longSummary": "한국 에너지공단은 유엔기후변화협약 당사국총회(KP30)에서 '청정에너지 전환 포럼'을 개최하고, 주요 협력국의 장관들과 국제기구 고위급 인사들이 참석해 기후 위기 대응과 청정에너지 전환 가속화를 논의했다. 이번 포럼은 한국의 지속가능한 에너지 전환 전략을 공식 소개하며, 국제사회와의 협력 기반을 한층 강화하는 계기가 되었다.",
+    "predKeywords": {
+      "에너지": 0.23092813789844513,
+      "혁신": 0.15850673615932465,
+      "정책": 0.1466922163963318
+    },
+    "sentiments": [
+      {
+        "orgId": "A0023",
+        "orgName": "한국에너지공단",
+        "positiveRatio": 90.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 10.0,
+        "reason": "기사의 주요 내용이 국제 기구와의 협력, 에너지 전환에 대한 긍정적인 논의가 대부분을 차지하고 있으며, 장관과 고위급 인사들이 참여해 강조하는 부분이 다수 포함되어 있어 긍정적이다.",
+        "positiveReason": "기사 내용에서 '한국의 지속가능한 에너지 전환 전략'을 공식적으로 소개했으며, 주요 협력국 장관 및 국제기구 고위급 인사들과의 교류로 국가 간 협력 기반을 한층 강화하는 계기가 됐다.",
+        "negativeReason": "부정적인 내용이 없음",
+        "positiveKeywords": [
+          "지속가능한 에너지 전환",
+          "국제 협력 강화"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:06:38.509387+00:00",
+  "imageId": "6784a2911ccfd362485cda15",
+  "v1ContentsIdx": null
+}

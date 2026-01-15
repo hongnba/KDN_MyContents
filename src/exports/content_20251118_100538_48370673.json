@@ -1,0 +1,69 @@
+{
+  "_id": "691c44e03200c93926e13084",
+  "title": "한전KDN, 시각장애인 위한 'KDN IT ON' 4호 기증",
+  "url": "https://www.newsis.com/view/NISX20251118_0003407522",
+  "contentsOrgId": "A0018",
+  "contentsOrgName": "한전KDN(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.newsis.com/view/NISX20251118_0003407522",
+  "link": "https://www.newsis.com/view/NISX20251118_0003407522",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:03:09.365000+00:00",
+  "collectKeyword": "한전KDN",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한전KDN, 시각장애인 위한 'KDN IT ON' 4호 기증",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:05:20.599058",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "디지털 소외 계층",
+      "시각장애인",
+      "IT 정보접근성",
+      "사회공헌",
+      "에너지ICT"
+    ],
+    "shortSummary": "한전KDN은 시각장애인복지연합회에 'KDN IT ON'을 기증하며, 전국 확대 및 개선 방안 논의를 진행했다.",
+    "longSummary": "한전KDN은 시각장애인 복지 향상을 위해 'KDN IT ON'을 4호로 기증하고, 이는 디지털 소외 계층인 시각장애인의 정보접근성 강화와 삶의 질 향상에 기여한다. 이 외에도 한전KDN은 전국으로 확대해 시각장애인의 지역 간 정보 격차를 해소하고 균등한 정보 접근권을 지원할 계획이다.",
+    "predKeywords": {
+      "ICT": 0.1577117145061493,
+      "디지털": 0.13706287741661072,
+      "데이터": 0.10053960233926773
+    },
+    "sentiments": [
+      {
+        "orgId": "A0018",
+        "orgName": "한전KDN(주)",
+        "positiveRatio": 75.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 20.0,
+        "reason": "긍정적인 키워드와 문구가 대부분을 차지했기 때문",
+        "positiveReason": "기사가 긍정적인 내용을 다루었으며, 한전KDN이 시각장애인들의 정보 접근성을 높이는 데 기여한 점을 강조하고 있어.",
+        "negativeReason": "부정적 키워드는 거의 나오지 않았으며, 전체적으로 긍정적인 분위기에서 진행된 기사임.",
+        "positiveKeywords": [
+          "기사 기증",
+          "시각장애인 지원"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:05:38.565533+00:00",
+  "imageId": "6784a2911ccfd362485cd9dd",
+  "v1ContentsIdx": null
+}

@@ -1,0 +1,66 @@
+{
+  "_id": "691c477a3200c93926e130a7",
+  "title": "2025년 제3회  국립축산과학원 공무직근로자 공개경쟁채용 공고",
+  "url": "https://nias.go.kr/front/acp_adopancmEntry_view.do?cmCode=M120920093255303&dataNo=100000806167",
+  "contentsOrgId": "A0054",
+  "contentsOrgName": "국립축산과학원",
+  "categoryId": "B0013",
+  "categoryName": "인사채용",
+  "originallink": "https://nias.go.kr/front/acp_adopancmEntry_view.do?cmCode=M120920093255303&dataNo=100000806167",
+  "link": "https://nias.go.kr/front/acp_adopancmEntry_view.do?cmCode=M120920093255303&dataNo=100000806167",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:47:53.349000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "2025년 제3회  국립축산과학원 공무직근로자 공개경쟁채용 공고",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:16:26.519860",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "데이터",
+      "AI",
+      "플랫폼",
+      "디지털",
+      "반도체",
+      "에너지"
+    ],
+    "shortSummary": "국립축산과학원에서 공무직근로자를 공개채용한다.",
+    "longSummary": "국립축산과학원은 2025년 제3회 국립축산과학원 공무직근로자 공개경쟁채용을 공고하였다. 이에 따라 전국적으로 유능한 인재를 모집하여 국립축산과학원에서 근무할 예정이다. 자세한 사항은 공고문을 확인하시기 바란다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0054",
+        "orgName": "국립축산과학원",
+        "positiveRatio": 30.0,
+        "negativeRatio": 30.0,
+        "neutralRatio": 40.0,
+        "reason": "긍정과 부정 비율을 종합적으로 판단한 근거는 기관의 성격, 제공하는 정보의 내용, 전체적인 문맥을 고려한 심리적 반응입니다.",
+        "positiveReason": "긍정적인 키워드와 문구가 포함되어 있으며, 정보를 제공하고 있는 모습이 긍정적인 이미지를 형성합니다.",
+        "negativeReason": "부정적인 키워드나 문구가 존재하지만 전체적으로는 중립적이며 부정적인 기색을 크게 인식하기 어렵습니다.",
+        "positiveKeywords": [
+          "공무직근로자",
+          "공개경쟁채용"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:16:44.138083+00:00",
+  "imageId": "6784a2911ccfd362485cd9db",
+  "v1ContentsIdx": null
+}

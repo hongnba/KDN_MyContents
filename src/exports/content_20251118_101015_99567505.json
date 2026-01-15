@@ -1,0 +1,71 @@
+{
+  "_id": "691c45f53200c93926e13092",
+  "title": "불붙는 '얼굴결제' 시장…토스 독주에 네이버페이 '후발' 전략은",
+  "url": "https://www.bloter.net/news/articleView.html?idxno=647791",
+  "contentsOrgId": "A0026",
+  "contentsOrgName": "네이버 뉴스",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.bloter.net/news/articleView.html?idxno=647791",
+  "link": "https://www.bloter.net/news/articleView.html?idxno=647791",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:18:43.757000+00:00",
+  "collectKeyword": "네이버",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "불붙는 '얼굴결제' 시장…토스 독주에 네이버페이 '후발' 전략은",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:09:57.170118",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "오프라인 결제",
+      "얼굴인식 기반 서비스",
+      "토스",
+      "네이버",
+      "간편결제"
+    ],
+    "shortSummary": "토스와 네이버가 오프라인 결제 시장에서 얼굴인식 기반 서비스 확산에 나섰다.",
+    "longSummary": "토스와 네이버는 오프라인 결제 시장에서 얼굴인식 기반 서비스 확산에 나섰다. 토스는 '페이스페이'를 통해 100만명 이상의 가입자를 확보했고, 네이버는 'Npay 커넥트' 단말기를 출시해 베타 기간에 약 2200개의 매장에서 사용중이다. 두 회사는 얼굴인식 결제 기능을 단말기 기반으로 제공하며, 기존 간편결제 방식과 병행해 확산을 시도하고 있다.",
+    "predKeywords": {
+      "정보보호": 0.33575713634490967,
+      "디지털": 0.2989586889743805,
+      "데이터": 0.25384530425071716
+    },
+    "sentiments": [
+      {
+        "orgId": "A0026",
+        "orgName": "네이버",
+        "positiveRatio": 70.0,
+        "negativeRatio": 10.0,
+        "neutralRatio": 20.0,
+        "reason": "기사에서 언급된 두 회사의 오프라인 결제 서비스 확산과 사용자 경험 개선에 대한 긍정적인 성과와 전망을 담은 긍정적 기조가 전체적으로 우세한 반면, 일부 부정적인 의견이나 경쟁 심화의 여지가 있는 문장들이 존재하지만 그 비중이 적어 전체적으로 긍정적인 감성이 우세합니다.",
+        "positiveReason": "토스가 100만 명을 돌파했고, 얼굴결제 서비스가 빠르게 확산되고 있으며, 사용자 경험 개선에 대한 긍정적인 전망과 경쟁 심화의 기조가 강하게 나타납니다.",
+        "negativeReason": "경쟁 심화와 일부 매장에서의 도입장벽 등이 언급되었지만 그 비중은 전체적으로 낮습니다.",
+        "positiveKeywords": [
+          "혁신",
+          "확산",
+          "빠른 확장",
+          "안정성"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:10:15.920857+00:00",
+  "imageId": "6784a2911ccfd362485cda47",
+  "v1ContentsIdx": null
+}

@@ -1,0 +1,67 @@
+{
+  "_id": "691c49d53200c93926e130d3",
+  "title": "농식품부, APEC 홍보 성과에 이어 케이(K)-푸드 글로벌 진출 전략 점검",
+  "url": "http://www.mafra.go.kr/bbs/home/792/575917/artclView.do",
+  "contentsOrgId": "A0037",
+  "contentsOrgName": "농림축산식품부",
+  "categoryId": "B0001",
+  "categoryName": "보도자료",
+  "originallink": "http://www.mafra.go.kr/bbs/home/792/575917/artclView.do",
+  "link": "http://www.mafra.go.kr/bbs/home/792/575917/artclView.do",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:27:47.598000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "농식품부, APEC 홍보 성과에 이어 케이(K)-푸드 글로벌 진출 전략 점검",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:26:29.148474",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "농식품부",
+      "K-푸드",
+      "글로벌 진출"
+    ],
+    "shortSummary": "농식품부는 케이(K)-푸드 글로벌 진출 전략을 점검하는 간담회를 개최했다.",
+    "longSummary": "농림축산식품부는 케이(K)-푸드를 글로벌 시장에 진출시키기 위한 전략을 모색하기 위해 간담회를 개최했다. APEC 홍보 성과에 이어 이를 점검하고, 수출 기업들의 애로와 의견을 반영한 실질적인 대책을 마련한다는 계획이다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0037",
+        "orgName": "농림축산식품부",
+        "positiveRatio": 66.67,
+        "negativeRatio": 0.0,
+        "neutralRatio": 33.33,
+        "reason": "긍정과 부정 비율을 종합적으로 판단한 근거",
+        "positiveReason": "전체 기사 내용이 양호하고 긍정적인 메시지를 전달하며, 장관의 발언도 긍정적이고 적극적인 태도를 나타낸다.",
+        "negativeReason": "없음",
+        "positiveKeywords": [
+          "글로벌 K-푸드",
+          "수출 확대",
+          "2030년까지 차원 도약",
+          "현장의 실질적이고 생동감 있는 의견",
+          "범정부 협업",
+          "실효성 있는 수출 전략"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:26:46.666359+00:00",
+  "imageId": "6784a2911ccfd362485cda05",
+  "v1ContentsIdx": null
+}

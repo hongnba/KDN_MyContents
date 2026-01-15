@@ -1,0 +1,64 @@
+{
+  "_id": "691c4a3e3200c93926e130d8",
+  "title": "공무원연금공단, 퇴직공무원 사회공헌 포럼 개최",
+  "url": "https://weekly.hankooki.com/news/articleView.html?idxno=7137517",
+  "contentsOrgId": "A0041",
+  "contentsOrgName": "공무원연금공단",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://weekly.hankooki.com/news/articleView.html?idxno=7137517",
+  "link": "https://weekly.hankooki.com/news/articleView.html?idxno=7137517",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:28:51.423000+00:00",
+  "collectKeyword": "공무원연금공단",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "공무원연금공단, 퇴직공무원 사회공헌 포럼 개최",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:28:14.260314",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "퇴직공무원",
+      "사회공헌활동",
+      "공무원연금공단"
+    ],
+    "shortSummary": "공무원연금공단은 '2025 퇴직공무원 사회공헌 포럼'을 개최하여 퇴직 공무원의 사회적 가치를 강조하고, 향후 사회공헌 활동 방향을 모색했다.",
+    "longSummary": "공무원연금공단은 18일 '2025 퇴직공무원 사회공헌 포럼'을 개최하고, 퇴직 공무원의 사회적 가치와 향후 사회공헌 활동 방향에 대해 심도 있는 논의를 진행했다. 이 포럼에서는 허준수 숭실대 교수가 진행을 맡아 도현명 임팩트스퀘어 대표, 김경하 더나은미래 편집국장, 최인병 한국자원봉사협의회 부장이 참석해 '퇴직공무원 사회공헌활동의 가치 및 영향'에 대한 발제와 토론을 펼쳤다. 두번째 세션에서는 정희선 자원봉사임팩트연구소 소장, 백은경 서울시교육청 교육자원봉사지원센터 센터장, 김종일 KPO 명강사협회 고문, 김민기 공단 CS전략부장이 참석해 '퇴직공무원 사회공헌활동의 나아갈 방향'에 대한 발표와 토론을 이어갔다. 이번 포럼은 퇴직 공무원의 사회적 역할과 그들의 사회공헌 활동이 지역사회 발전에 기여하고 있음을 강조하며, 향후 지속적인 사회공헌 활동 방안을 모색하는 데 목적이 있다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0041",
+        "orgName": "공무원연금공단",
+        "positiveRatio": 85.71428571428572,
+        "negativeRatio": 0.0,
+        "neutralRatio": 14.285714285714286,
+        "reason": "기사 내용이 주로 퇴직공무원 사회공헌활동의 긍정적인 측면을 다루고 있으며, 공무원이 퇴직 후 지역사회를 위해 봉사하는 행위가 우리 사회에서 중요한 사례임을 강조하고 있습니다.",
+        "positiveReason": "기사 내용이 주로 퇴직공무원 사회공헌활동의 긍정적인 측면과 그 가치 등을 다루고 있어 기사의 전체적인 감정이 긍정적입니다.",
+        "negativeReason": "",
+        "positiveKeywords": [
+          "사회공헌",
+          "지역사회",
+          "봉사활동"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:28:29.947351+00:00",
+  "imageId": "6784a2911ccfd362485cd9e7",
+  "v1ContentsIdx": null
+}

@@ -1,0 +1,70 @@
+{
+  "_id": "691c494b3200c93926e130ce",
+  "title": "전남정보문화산업진흥원, 지역 애그테크 스타트업 해외 투자성과 창출....",
+  "url": "https://kr.aving.net/news/articleView.html?idxno=1806222",
+  "contentsOrgId": "A0028",
+  "contentsOrgName": "전남정보문화산업진흥원",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://kr.aving.net/news/articleView.html?idxno=1806222",
+  "link": "https://kr.aving.net/news/articleView.html?idxno=1806222",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:09:59.826000+00:00",
+  "collectKeyword": "전남정보문화산업진흥원",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "전남정보문화산업진흥원, 지역 애그테크 스타트업 해외 투자성과 창출....",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:24:11.607486",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "AI",
+      "농업",
+      "지능형 농업 생태계",
+      "글로벌 시장 진출"
+    ],
+    "shortSummary": "전남정보문화산업진흥원은 전라남도 농업기술원과 함께 AI융합 지능형 농업 생태계 구축사업을 추진하며, 3개 스타트업을 독일에 파견해 글로벌 시장 진출 성과를 거뒀다.",
+    "longSummary": "전남정보문화산업진흥원은 전라남도 농업기술원과 함께 AI융합 지능형 농업 생태계 구축사업을 추진하며, 3개 스타트업을 독일에 파견해 글로벌 시장 진출 성과를 거뒀다. 이 사업은 과학기술정보통신부의 지원을 받아 2024년부터 2028년까지 5년간 진행될 예정이다. 이번 파견은 국내에서 전문 기술 컨설팅 및 시장 진출 전략 수립을 지원하고, 해외에서는 글로벌 액셀러레이터 연계 및 투자 유치 활동을 추진하는 것을 목표로 했다. 특히, 3개 스타트업은 AI 기반 농업 자동화 및 지속가능 농업기술 보유 업체로서, 현지 글로벌 액셀러레이터와의 협력으로 기술 테스트베드 구축과 공동 연구개발(R&D), 오픈이노베이션 협력 방안을 논의했다. 또한, 유럽 투자사 및 액셀러레이터 관계자를 대상으로 기업 IR 피칭을 진행해 20건 이상의 비즈니스 미팅과 후속 투자 논의가 이어졌다.",
+    "predKeywords": {
+      "AI": 0.2955465018749237,
+      "정보보호": 0.034590426832437515,
+      "데이터": 0.02172892913222313
+    },
+    "sentiments": [
+      {
+        "orgId": "A0028",
+        "orgName": "전남정보문화산업진흥원",
+        "positiveRatio": 90.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 10.0,
+        "reason": "기사의 전반적인 내용이 기술 발전과 협력, 투자 유치 등을 중심으로 긍정적이며, 부정적인 표현은 거의 없음",
+        "positiveReason": "진흥원은 전남 애그테크 스타트업의 글로벌 경쟁력 강화와 시장 진출 지원을 위해 다양한 활동을 진행하고 있으며, 이를 통해 성공적인 성과를 거둔 것으로 보인다.",
+        "negativeReason": "부정적 표현이 거의 없어 유사한 긍정 비율을 가짐.",
+        "positiveKeywords": [
+          "기술 혁신",
+          "성과 향상",
+          "글로벌 경쟁력 강화",
+          "시장 진출 성공"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:24:33.381879+00:00",
+  "imageId": "6784a2911ccfd362485cd9a1",
+  "v1ContentsIdx": null
+}

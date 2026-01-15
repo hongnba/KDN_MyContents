@@ -1,0 +1,63 @@
+{
+  "_id": "691c471f3200c93926e130a2",
+  "title": "농식품부, 온라인 축산물 유통업체 대상 이력제 합동단속 실시",
+  "url": "http://www.youngnong.co.kr/news/articleView.html?idxno=55884",
+  "contentsOrgId": "A0037",
+  "contentsOrgName": "농림축산식품부",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "http://www.youngnong.co.kr/news/articleView.html?idxno=55884",
+  "link": "http://www.youngnong.co.kr/news/articleView.html?idxno=55884",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:26:37.133000+00:00",
+  "collectKeyword": "농식품부",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "농식품부, 온라인 축산물 유통업체 대상 이력제 합동단속 실시",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:14:55.887220",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "농림축산식품부",
+      "온라인 축산물 유통",
+      "소비자 보호"
+    ],
+    "shortSummary": "농림축산식품부가 2주간 합동단속을 실시하여 온라인 축산물 유통에서의 이력번호 허위표시 등 위반 의심 업체를 대상으로 단속한다.",
+    "longSummary": "농림축산식품부는 최근 온라인 축산물 거래 증가에 대응해, 11월 17일부터 28일까지 2주간 온라인 유통과 관련된 축산물 업체를 대상으로 합동단속을 실시한다. 단속은 이력번호 허위표시 등 위반이 의심되는 업체를 집중 점검하여 소비자 보호와 유통 투명성을 확보하기 위한 조치로, 식품의약품안전처, 지방자치단체, 국립농산물품질관리원, 축산물품질평가원, 농림축산검역본부 등 총 5개 기관이 참여한다. 특히 이력번호 허위표시가 의심되는 소고기의 경우 DNA 동일성 검사도 병행해 정밀한 검증을 진행할 계획이다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0037",
+        "orgName": "농림축산식품부",
+        "positiveRatio": 80.0,
+        "negativeRatio": 10.0,
+        "neutralRatio": 10.0,
+        "reason": "기사의 내용이 주로 축산물 관련 합동단속을 통한 소비자 보호와 유통 투명성을 강조하고 있으며, 이에 대해 긍정적인 기조를 보이며 이를 통해 안심할 수 있는 환경을 조성하겠다는 의지를 분명히 하고 있습니다. 반면 부정적 표현은 거의 없어 명확한 부정 감정을 찾아볼 수 없었다.",
+        "positiveReason": "농식품부가 소비자 보호와 유통 투명성을 위해 합동단속을 실시하고, 이를 통해 안심할 수 있는 환경을 조성하겠다는 의지를 분명히 하고 있습니다.",
+        "negativeReason": " 부정적 표현은 거의 없어 명확한 부정 감정을 찾아볼 수 없었다.",
+        "positiveKeywords": [
+          "소비자 보호",
+          "유통 투명성"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:15:10.365183+00:00",
+  "imageId": "6784a2911ccfd362485cda27",
+  "v1ContentsIdx": null
+}

@@ -1,0 +1,75 @@
+{
+  "_id": "691c45413200c93926e13089",
+  "title": "[단독]네이버, 中 판매자 입점 제한 완화…패션·뷰티 등 '조건부' 허용",
+  "url": "https://www.etnews.com/20251118000249",
+  "contentsOrgId": "A0026",
+  "contentsOrgName": "네이버 뉴스",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.etnews.com/20251118000249",
+  "link": "https://www.etnews.com/20251118000249",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:03:51.530000+00:00",
+  "collectKeyword": "네이버",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "[단독]네이버, 中 판매자 입점 제한 완화…패션·뷰티 등 '조건부' 허용",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:06:57.470622",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "네이버",
+      "중국·홍콩",
+      "스마트스토어",
+      "판매자",
+      "입점",
+      "제한",
+      "조건부 허용",
+      "위조상품",
+      "가품",
+      "민감 카테고리"
+    ],
+    "shortSummary": "네이버가 중국·홍콩 사업자 일부 카테고리 입점을 조건부로 허용한다.",
+    "longSummary": "네이버는 24일부터 스마트스토어에서 일정 조건을 갖춘 중국·홍콩 사업자의 일부 카테고리 입점을 조건부로 허용한다. 이전에는 패션잡화, 화장품, 육아 등 민감한 카테고에서는 신규 가입 자체를 차단했으나, 이번에 이러한 제한을 완화한다. 사업자 등록증, 타 플랫폼 판매 실적 증빙, 재고 보관 창고 사진 및 송장 등의 서류를 제출해야 하며, 이를 통과하지 못하면 사전 안내 없이 가입 거부나 이용 정지가 가능하다.",
+    "predKeywords": {
+      "디지털": 0.0373082309961319,
+      "플랫폼": -0.025879738852381706,
+      "데이터": -0.06422300636768341
+    },
+    "sentiments": [
+      {
+        "orgId": "A0026",
+        "orgName": "네이버",
+        "positiveRatio": 60.0,
+        "negativeRatio": 20.0,
+        "neutralRatio": 20.0,
+        "reason": "긍정적이며 부정적인 표현이 모두 포함된 기사 내용으로, 긍정적인 측면은 네이버가 중국·홍콩 사업자 입점 제한을 일부 완화하고, 소비자에게 선택 폭이 넓어질 수 있음을 강조하는 부분에서 주로 발생합니다. 반면, 부정적인 측면은 국내 중소 판매자들이 가격 경쟁에서 불리해질 수 있다는 지적이 포함되어 있어 전체적으로 긍정 비율이 높지만, 부정 비율도 존재하기 때문에 이와 같은 비율을 가집니다.",
+        "positiveReason": "네이버가 중국·홍콩 사업자 입점 제한을 완화하고, 소비자에게 선택 폭이 넓어질 수 있음을 강조하는 부분에서 긍정적인 감정을 유도합니다.",
+        "negativeReason": "국내 중소 판매자들이 가격 경쟁에서 불리해질 수 있다는 지적이 포함되어 있어 부정적인 감정을 유발합니다.",
+        "positiveKeywords": [
+          "검증된 판매자",
+          "경쟁력 있는 사업자",
+          "상호작용"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:07:17.200868+00:00",
+  "imageId": "6784a2911ccfd362485cd9d3",
+  "v1ContentsIdx": null
+}

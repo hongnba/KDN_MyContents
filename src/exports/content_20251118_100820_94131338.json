@@ -1,0 +1,71 @@
+{
+  "_id": "691c457a3200c93926e1308c",
+  "title": "창업자들의 스타트업 생태계 기대감 2년째 ‘쑥’…“네이버 지원 든든...",
+  "url": "https://www.mk.co.kr/article/11471015",
+  "contentsOrgId": "A0026",
+  "contentsOrgName": "네이버 뉴스",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.mk.co.kr/article/11471015",
+  "link": "https://www.mk.co.kr/article/11471015",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:03:51.530000+00:00",
+  "collectKeyword": "네이버",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "창업자들의 스타트업 생태계 기대감 2년째 ‘쑥’…“네이버 지원 든든...",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:07:54.920874",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "스타트업",
+      "오픈서베이",
+      "정부",
+      "정책",
+      "창업지원",
+      "벤처캐피털"
+    ],
+    "shortSummary": "스타트업얼라이언스와 오픈서베이가 발표한 '스타트업 트렌드리포트 2025'에 따르면, 창업자들의 근무 만족도가 최저 수준을 기록했다.",
+    "longSummary": "스타트업얼라이언스와 오픈서베이가 발표한 '스타트уп 트렌드리포트 2025'에 따르면, 국내 스타트업 생태계의 분위기가 2년 연속 상승세를 보이지만, 창업자들의 근무 만족도가 최저 수준을 기록했다. 정부와 민간 부문에서의 강력한 정책과 지원으로 인해 긍정적인 변화가 나타났으나, 여전히 많은 창업자가 부정적으로 평가하고 있다. 스타트업 지원에 가장 적극적인 기업은 네이버로 나타났다.",
+    "predKeywords": {
+      "정책": 0.07368142157793045,
+      "정부": 0.05399499833583832
+    },
+    "sentiments": [
+      {
+        "orgId": "A0026",
+        "orgName": "네이버",
+        "positiveRatio": 46.5,
+        "negativeRatio": 23.5,
+        "neutralRatio": 29.5,
+        "reason": "긍정과 부정 비율을 종합적으로 판단한 근거",
+        "positiveReason": "긍정 비율이 높은 네이버를 중심으로 정책, 투자, 지원 등 긍정적인 측면이 강조된 기사 내용",
+        "negativeReason": "부정 비율이 높은 대기업 재직자의 근무 만족도와 스타트업 생태계의 부정적인 요소들이 언급된 점",
+        "positiveKeywords": [
+          "네이버(46.5%)"
+        ],
+        "negativeKeywords": [
+          "벤처캐피털의 미온적인 투자 및 지원",
+          "신규 비즈니스 시장 진입 환경의 저하"
+        ]
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:08:16.260135+00:00",
+  "imageId": "6784a2911ccfd362485cd9e3",
+  "v1ContentsIdx": null
+}

@@ -1,0 +1,64 @@
+{
+  "_id": "691c485a3200c93926e130c0",
+  "title": "한국수력원자력, '여성공학인 지원 우수기관' 선정",
+  "url": "https://www.khnp.co.kr/main/selectBbsNttView.do;WCN_EXHP=RCaWMch_ojIsAGTkf8Y5q4REpzHAp5Z1pPmApXLrOih3-oPJMhRW!705886815?key=2289&bbsNo=71&nttNo=70633&searchCtgry=&searchCnd=all&searchKrwd=&integrDeptCode=&pageIndex=1",
+  "contentsOrgId": "A0011",
+  "contentsOrgName": "한국수력원자력(주)",
+  "categoryId": "B0001",
+  "categoryName": "보도자료",
+  "originallink": "https://www.khnp.co.kr/main/selectBbsNttView.do;WCN_EXHP=RCaWMch_ojIsAGTkf8Y5q4REpzHAp5Z1pPmApXLrOih3-oPJMhRW!705886815?key=2289&bbsNo=71&nttNo=70633&searchCtgry=&searchCnd=all&searchKrwd=&integrDeptCode=&pageIndex=1",
+  "link": "https://www.khnp.co.kr/main/selectBbsNttView.do;WCN_EXHP=RCaWMch_ojIsAGTkf8Y5q4REpzHAp5Z1pPmApXLrOih3-oPJMhRW!705886815?key=2289&bbsNo=71&nttNo=70633&searchCtgry=&searchCnd=all&searchKrwd=&integrDeptCode=&pageIndex=1",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:00:36.085000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한국수력원자력, '여성공학인 지원 우수기관' 선정",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:20:10.858609",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "한국수력원자력",
+      "여성공학인",
+      "양성평등채용목표제",
+      "원자력발전소"
+    ],
+    "shortSummary": "한국수력원자력은 '여성공학인 지원 우수기관'로 선정",
+    "longSummary": "한국수력원자력은 공공기관 부문에서 '여성공학인 지원 우수기관'으로 선정되며, 산업통상부 장관상을 수상했다. 여성 인재의 양적·질적 확대를 위한 균형 인사 정책을 지속해왔다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0011",
+        "orgName": "한국수력원자력(주)",
+        "positiveRatio": 80.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 15.0,
+        "reason": "기사 내용이 주로 한국수력원자력의 여성 공학인 지원 우수기관 선정 및 산업통상부 장관상을 수상한 사실을 다루고 있으며, 이에 대한 기사의 긍정적인 평가가 강조되고 있어.",
+        "positiveReason": "한국수력원자력이 여성공학인 지원 우수기관으로 선정되어 여성 인재 확대의 노력을 인정받은 것으로 보이며, 산업통상부 장관상을 수상하는 등 긍정적인 성과를 내고 있다.",
+        "negativeReason": "기사 내용에는 부정적인 요소나 문제점을 언급하지 않아 부정 비율이 낮다.",
+        "positiveKeywords": [
+          "우수기관",
+          "산업통상부 장관상"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:20:20.162093+00:00",
+  "imageId": "6784a2911ccfd362485cd99b",
+  "v1ContentsIdx": null
+}

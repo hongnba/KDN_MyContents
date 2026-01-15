@@ -1,0 +1,66 @@
+{
+  "_id": "691c44f23200c93926e13085",
+  "title": "한전KDN, 솔라시도에 분산형 전력망·AI 데이터센터 기반 구축",
+  "url": "https://www.joongangenews.com/news/articleView.html?idxno=466656",
+  "contentsOrgId": "A0018",
+  "contentsOrgName": "한전KDN(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.joongangenews.com/news/articleView.html?idxno=466656",
+  "link": "https://www.joongangenews.com/news/articleView.html?idxno=466656",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:03:09.365000+00:00",
+  "collectKeyword": "한전KDN",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한전KDN, 솔라시도에 분산형 전력망·AI 데이터센터 기반 구축",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:05:38.580112",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "데이터, AI, 에너지, 플랫폼, 전력"
+    ],
+    "shortSummary": "BS산업과 한전KDN이 솔라시도에 재생에너지 기반의 분산형 전력망과 AI 데이터센터를 구축하는 사업 협약을 체결했다.",
+    "longSummary": "BS산업과 한전KDN은 서울 송파구 BS한양타워에서 협약식을 개최하여, 솔라시도 해남군에 재생에너지 기반의 분산형 전력망과 AI 데이터센터를 구축하는 사업을 추진하기로 했다. 이 사업은 전남 해남군 솔라시도의 에너지 미래도시 성장에 기여할 것으로 기대된다. 양사는 협약을 통해 △AI 데이터센터 신규 구축 및 운영 △솔라시도 분산특구 내 분산에너지사업 공동 추진 △솔라시도 태양광 발전소 운영 데이터 활용 등의 분야에서 협력 체계를 마련했다.",
+    "predKeywords": {
+      "AI": 0.20938430726528168,
+      "플랫폼": 0.14140217006206512,
+      "에너지": 0.09281599521636963
+    },
+    "sentiments": [
+      {
+        "orgId": "A0018",
+        "orgName": "한전KDN(주)",
+        "positiveRatio": 75.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 25.0,
+        "reason": "기사 내용에서 양사의 협력을 통해 재생에너지 기반의 분산형 전력망과 AI 데이터센터 구축이 추진되는 것이 긍정적인 측면을 지니고 있으며, 협약식 참석자들의 발언에서도 긍정적 성격이 강하게 드러난다.",
+        "positiveReason": "양사의 협력을 통해 새로운 산업 생태계가 구현될 수 있는 가능성이 제시되고 있으며, 양사 대표의 발언에서 긍정적인 기대를 표현하고 있다.",
+        "negativeReason": "",
+        "positiveKeywords": [
+          "솔라시도 에너지 미래도시",
+          "기술력",
+          "협력"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:05:56.191762+00:00",
+  "imageId": "6784a2911ccfd362485cd993",
+  "v1ContentsIdx": null
+}

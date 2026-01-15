@@ -1,0 +1,70 @@
+{
+  "_id": "691c44393200c93926e1307b",
+  "title": "한국수력원자력, '여성공학인 지원 우수기관' 선정",
+  "url": "https://www.khnp.co.kr/main/selectBbsNttView.do;WCN_EXHP=3myV9x-67rloZyMSwPzjYKS4wixB3XKdXxvEWO6RHCoMp-oicBbP!705886815?key=2289&bbsNo=71&nttNo=70633&searchCtgry=&searchCnd=all&searchKrwd=&integrDeptCode=&pageIndex=1",
+  "contentsOrgId": "A0011",
+  "contentsOrgName": "한국수력원자력(주)",
+  "categoryId": "B0001",
+  "categoryName": "보도자료",
+  "originallink": "https://www.khnp.co.kr/main/selectBbsNttView.do;WCN_EXHP=3myV9x-67rloZyMSwPzjYKS4wixB3XKdXxvEWO6RHCoMp-oicBbP!705886815?key=2289&bbsNo=71&nttNo=70633&searchCtgry=&searchCnd=all&searchKrwd=&integrDeptCode=&pageIndex=1",
+  "link": "https://www.khnp.co.kr/main/selectBbsNttView.do;WCN_EXHP=3myV9x-67rloZyMSwPzjYKS4wixB3XKdXxvEWO6RHCoMp-oicBbP!705886815?key=2289&bbsNo=71&nttNo=70633&searchCtgry=&searchCnd=all&searchKrwd=&integrDeptCode=&pageIndex=1",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T07:56:31.585000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한국수력원자력, '여성공학인 지원 우수기관' 선정",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:02:33.384830",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "한국수력원자력",
+      "여성공학인 지원 우수기관",
+      "산업통상부 장관상",
+      "양성평등채용목표제",
+      "원자력 발전소"
+    ],
+    "shortSummary": "한국수력원자력은 '여성공학인 지원 우수기관'으로 선정",
+    "longSummary": "한국수력원자력(한수원)은 2025 산업현장 여성공학인대회에서 공공기관 부문 '여성공학인 지원 우수기관'으로 선정되며, 산업통상부 장관상을 수상했다. 한수원은 양성평등채용목표제를 시행하여 기술 분야 대졸 신입사원 중 30% 이상을 여성인재로 채용하고 있으며, 특히 원자력 분야에 100% 배치하여 전문가로 성장할 수 있는 기반을 제공하고 있다. 조직 내 여성 대표성을 높이기 위해 핵심 직위에 여성관리자 배치를 추진하며, 유연근무제와 출산·육아기 지원제도를 운영하고 있다.",
+    "predKeywords": {
+      "원자력": 0.44018200039863586,
+      "에너지": 0.19855977594852448
+    },
+    "sentiments": [
+      {
+        "orgId": "A0011",
+        "orgName": "한국수력원자력(주)",
+        "positiveRatio": 80.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 15.0,
+        "reason": "기사의 내용이 주로 양성평등, 여성 인재 지원, 다양한 교육과 제도의 운영 등 긍정적인 내용을 포함하고 있으며, 부정적인 언급은 거의 없다는 점에서 긍정적 감정이 지배적이라고 판단하였다.",
+        "positiveReason": "여성공학인 지원 우수기관으로 선정되어 산업통상부 장관상을 수상한 것, 여성 인재의 양적 및 질적 확대 노력과 성과, 다양한 교육과 제도의 운영 등",
+        "negativeReason": "주요 내용에서 부정적인 언급이 거의 없다는 점",
+        "positiveKeywords": [
+          "여성공학인 지원 우수기관",
+          "산업통상부 장관상",
+          "균형 인사 정책",
+          "원자력 전문가"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:02:51.207872+00:00",
+  "imageId": "6784a2911ccfd362485cda13",
+  "v1ContentsIdx": null
+}

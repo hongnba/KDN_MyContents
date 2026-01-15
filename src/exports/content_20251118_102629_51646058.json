@@ -1,0 +1,65 @@
+{
+  "_id": "691c49c03200c93926e130d2",
+  "title": "박정훈 식량정책실장, 익산통합RPC 방문신동진 쌀 생산 현황 점검 및 현장 의견수렴",
+  "url": "http://www.mafra.go.kr/bbs/home/792/575922/artclView.do",
+  "contentsOrgId": "A0037",
+  "contentsOrgName": "농림축산식품부",
+  "categoryId": "B0001",
+  "categoryName": "보도자료",
+  "originallink": "http://www.mafra.go.kr/bbs/home/792/575922/artclView.do",
+  "link": "http://www.mafra.go.kr/bbs/home/792/575922/artclView.do",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:27:47.598000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "박정훈 식량정책실장, 익산통합RPC 방문신동진 쌀 생산 현황 점검 및 현장 의견수렴",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:26:08.478110",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "박정훈",
+      "식량정책실장",
+      "익산통합RPC",
+      "신동진 쌀"
+    ],
+    "shortSummary": "박정훈 식량정책실장이 익산통합RPC를 방문하여 신동진 쌀 생산 현황 점검 및 현장 의견수렴.",
+    "longSummary": "농림축산식품부의 박정훈 식량정책실장은 2025년 11월 18일 오후 전북 익산시 함열읍에 위치한 농협양곡 익산통합미곡종합처리장(RPC)을 방문하여 신동진 쌀 생산 현황을 점검하고, 정부 보급종 공급 방향을 설명하며 현장 의견을 청취했다. 이날 현장에서 박정훈 실장은 2026년 신동진 보급종 공급량을 585톤으로 늘려 공급할 계획이라고 밝혔다. 농업인들은 신동진 1 품종의 안정적 정착을 위해 추가적인 공급을 요청했다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0037",
+        "orgName": "농림축산식품부",
+        "positiveRatio": 60.0,
+        "negativeRatio": 10.0,
+        "neutralRatio": 30.0,
+        "reason": "긍정과 부정 비율을 종합적으로 판단한 근거는 기사의 전체적인 분위기와 문맥을 분석한 결과다. 해당 기사는 농림축산식품부의 실장이 익산통합RPC를 방문하여 신동진 쌀 생산 현황을 점검하고, 농업인들의 의견을 청취하는 내용으로 구성되어 있다. 이는 주로 긍정적인 성격을 가지고 있으며, 공급량 확대와 안정적인 상품 정착에 대한 기사의 언급이 다수를 차지한다.",
+        "positiveReason": "긍정 비율 판단 근거는 다음과 같다: 2027년부터 본격적으로 공급될 예정인 신동진 보급종의 정부 보급 계획, 농업인의 신동진 보급종 수요에 대한 언급, 현장에서의 환영 반응과 지속적인 공급 요청 등이 다수 포함되어 있다.",
+        "negativeReason": "부정 비율 판단 근거는 다음과 같다: 기사의 내용 중 직접적인 부정적 표현이나 감정이 드러나는 부분은 찾기 어렵으며, 전체적으로 긍정적인 성격을 가지고 있기 때문에 부정 비율이 낮다.",
+        "positiveKeywords": [
+          "신동진 쌀",
+          "적정 공급",
+          "농업인 환영"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:26:24.381552+00:00",
+  "imageId": "6784a2911ccfd362485cd993",
+  "v1ContentsIdx": null
+}

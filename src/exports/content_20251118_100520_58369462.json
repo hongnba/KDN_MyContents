@@ -1,0 +1,68 @@
+{
+  "_id": "691c44cb3200c93926e13083",
+  "title": "[차질 없는 에너지전환] 서부발전, 석탄화력 빈자리 청정에너지로 채운...",
+  "url": "https://www.etnews.com/20251117000455",
+  "contentsOrgId": "A0016",
+  "contentsOrgName": "한국서부발전(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.etnews.com/20251117000455",
+  "link": "https://www.etnews.com/20251117000455",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:02:07.866000+00:00",
+  "collectKeyword": "서부발전",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "[차질 없는 에너지전환] 서부발전, 석탄화력 빈자리 청정에너지로 채운...",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:04:59.980631",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "에너지",
+      "해상풍력",
+      "태양광",
+      "재생에너지",
+      "서부발전"
+    ],
+    "shortSummary": "한국서부발전은 태안화력발전의 단계적 폐지와 유휴 인프라를 활용하여 해상풍력 및 태양광 발전 사업을 추진한다.",
+    "longSummary": "한국서부발전은 태안화력발전의 단계적 폐지로 발생하는 유휴 인프라를 해상풍력 및 태양광 발전에 활용하고자 한다. 태안권역에는 총 1.4GW 규모의 해상풍력단지가 개발될 예정이며, 서부발전은 해당 사업에 지분 참여를 검토하고 있다. 이 사업이 완공되면 약 140만 가구에 전력을 공급하고 연간 440만톤의 이산화탄소 배출 감축 효과가 예상된다. 또한, 염해농지와 저수지를 활용한 대규모 태양광 발전소도 운영 중이며, 지역사회와 발전회사가 수익을 공유하는 이익공유형 발전소로 평가받고 있다. 서부발전은 재생에너지 비중 40% 달성을 목표로 'RE4040' 전략을 추진하며 태안권역 해상풍력, 공공주도 해상풍력, 대규모 태양광 발전 등의 사업을 집중적으로 추진할 계획이다.",
+    "predKeywords": {
+      "에너지": 0.2724810242652893,
+      "반도체": 0.17571239173412323
+    },
+    "sentiments": [
+      {
+        "orgId": "A0016",
+        "orgName": "한국서부발전(주)",
+        "positiveRatio": 80.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 20.0,
+        "reason": "기사 내 모든 내용이 긍정적인 성과와 계획을 다루고 있어.",
+        "positiveReason": "서부발전이 재생에너지 사업을 추진하며 청정 에너지로의 전환이 예상된다. 태안 해상풍력, 서해 해상풍력 등 대규모 프로젝트가 진행되고 있다.",
+        "negativeReason": "없음",
+        "positiveKeywords": [
+          "재생에너지",
+          "청정에너지"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:05:20.577271+00:00",
+  "imageId": "6784a2911ccfd362485cda17",
+  "v1ContentsIdx": null
+}

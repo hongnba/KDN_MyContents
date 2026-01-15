@@ -1,0 +1,71 @@
+{
+  "_id": "691c46e83200c93926e1309f",
+  "title": "농식품부 돼지열병 청정화 기반구축…내년 마커백신 도입 핵심",
+  "url": "https://www.newsis.com/view/NISX20251118_0003406850",
+  "contentsOrgId": "A0037",
+  "contentsOrgName": "농림축산식품부",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.newsis.com/view/NISX20251118_0003406850",
+  "link": "https://www.newsis.com/view/NISX20251118_0003406850",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:26:37.133000+00:00",
+  "collectKeyword": "농식품부",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "농식품부 돼지열병 청정화 기반구축…내년 마커백신 도입 핵심",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:14:00.115880",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "농식품부",
+      "돼지열병",
+      "청정화",
+      "기반구축",
+      "마커백신",
+      "소모성질병",
+      "방역대책"
+    ],
+    "shortSummary": "농식품부가 돼지열병과 아프리카돼지열병 확산 방지를 위해 대규모 방역대책을 시행한다.",
+    "longSummary": "",
+    "predKeywords": {
+      "정보보호": 0.2136354148387909,
+      "보안": 0.17431460320949554
+    },
+    "sentiments": [
+      {
+        "orgId": "A0037",
+        "orgName": "농림축산식품부",
+        "positiveRatio": 80.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 15.0,
+        "reason": "정부의 돼지열병 및 아프리카돼지열병 대응 방안이 제시되고 있으며, 농림축산식품부가 이를 지원하고 있는 상황에서 긍정적인 기사라는 점과 부정적 요소는 거의 없는 것으로 판단",
+        "positiveReason": "정부가 돼지열병 및 아프리카돼지열병 확산을 막기 위한 다양한 방역대책을 시행하고 있으며, 이를 통해 농업 생산성을 높이고 공공의 안전을 증진시키고 있다는 점에서 긍정적 요소가 크다.",
+        "negativeReason": "부정적 요소는 거의 없으나, 일부 보조사나 부정적인 언급이 없어 해당 항목은 '부정'으로 할당하지 않았다.",
+        "positiveKeywords": [
+          "청정화",
+          "마커백신",
+          "자율 차단방역"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:14:17.962261+00:00",
+  "imageId": "6784a2911ccfd362485cda4b",
+  "v1ContentsIdx": null
+}

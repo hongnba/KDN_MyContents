@@ -1,0 +1,67 @@
+{
+  "_id": "691c4a663200c93926e130da",
+  "title": "[산림항공본부]\n\n\n\t\t\t                \n\t\t\t                \t\n\t\t\t                \t익산산림항공관리소 기간제근로자(시설관리원) 채용 공고",
+  "url": "https://www.forest.go.kr/kfsweb/cop/bbs/selectBoardArticle.do?nttId=3213220&bbsId=BBSMSTR_1034&pageIndex=1&pageUnit=10&searchtitle=title&searchcont=&searchkey=&searchwriter=&searchdept=&searchWrd=&ctgryLrcls=&ctgryMdcls=&ctgrySmcls=&ntcStartDt=&ntcEndDt=&orgId=&mn=NKFS_04_01_03&component=",
+  "contentsOrgId": "A0042",
+  "contentsOrgName": "산림청",
+  "categoryId": "B0015",
+  "categoryName": "채용공고",
+  "originallink": "https://www.forest.go.kr/kfsweb/cop/bbs/selectBoardArticle.do?nttId=3213220&bbsId=BBSMSTR_1034&pageIndex=1&pageUnit=10&searchtitle=title&searchcont=&searchkey=&searchwriter=&searchdept=&searchWrd=&ctgryLrcls=&ctgryMdcls=&ctgrySmcls=&ntcStartDt=&ntcEndDt=&orgId=&mn=NKFS_04_01_03&component=",
+  "link": "https://www.forest.go.kr/kfsweb/cop/bbs/selectBoardArticle.do?nttId=3213220&bbsId=BBSMSTR_1034&pageIndex=1&pageUnit=10&searchtitle=title&searchcont=&searchkey=&searchwriter=&searchdept=&searchWrd=&ctgryLrcls=&ctgryMdcls=&ctgrySmcls=&ntcStartDt=&ntcEndDt=&orgId=&mn=NKFS_04_01_03&component=",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:28:58.079000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "[산림항공본부]\n\n\n\t\t\t                \n\t\t\t                \t\n\t\t\t                \t익산산림항공관리소 기간제근로자(시설관리원) 채용 공고",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:28:54.078601",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "산림",
+      "환경",
+      "과학",
+      "정보",
+      "기술",
+      "산림청"
+    ],
+    "shortSummary": "산림청이 임업인력 양성을 위한 교육 및 훈련을 강화하고 있다.",
+    "longSummary": "산림청은 임업 분야의 인적 자원을 체계적으로 육성하기 위해 다양한 교육 및 훈련 프로그램을 운영하고 있다. 이를 통해 임업 관련 지식과 기술을 습득할 수 있도록 지원한다. 또한, 산업현장에서의 실무 경험이 풍부한 전문가를 대상으로 연수를 실시하여 실제 적용 가능성을 높이고 있다.",
+    "predKeywords": {
+      "AI": 0.14624343812465668,
+      "데이터": 0.037417348474264145,
+      "정보보호": -0.005508538335561752
+    },
+    "sentiments": [
+      {
+        "orgId": "A0042",
+        "orgName": "산림청",
+        "positiveRatio": 0.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 1.0,
+        "reason": "기사 내용이 일상적인 정보를 전달하는 양상임을 감지하여, 긍정적 요소나 부정적 요소를 직접적으로 파악하기 어렵다고 판단했으며, 전체적인 기사의 성격에서 알 수 없는 중립적인 비율을 추정하였다.",
+        "positiveReason": "",
+        "negativeReason": "",
+        "positiveKeywords": [],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:29:14.196727+00:00",
+  "imageId": "6784a2911ccfd362485cd991",
+  "v1ContentsIdx": null
+}

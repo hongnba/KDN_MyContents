@@ -1,0 +1,71 @@
+{
+  "_id": "691c49613200c93926e130cf",
+  "title": "여수광양항만공사, 화재대피훈련 실시",
+  "url": "http://www.newsmaker.or.kr/news/articleView.html?idxno=171184",
+  "contentsOrgId": "A0034",
+  "contentsOrgName": "여수광양항만공사",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "http://www.newsmaker.or.kr/news/articleView.html?idxno=171184",
+  "link": "http://www.newsmaker.or.kr/news/articleView.html?idxno=171184",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:22:14.417000+00:00",
+  "collectKeyword": "여수광양항만공사",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "여수광양항만공사, 화재대피훈련 실시",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:24:33.410142",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "여수광양항만공사",
+      "화재대피훈련",
+      "자위소방대",
+      "소방설비",
+      "임직원"
+    ],
+    "shortSummary": "여수광양항만공사는 2025년 하반기 자체 화재대피훈련을 실시했다.",
+    "longSummary": "여수광양항만공사(사장 직무대행 황학범)는 13일 공사 사옥에서 2025년 하반기 자체 화재대피훈련을 실시했다. 대피훈련은 실제 화재상황을 가정해 진행되었으며, 각 5개팀별 역할 및 배정에 대해 사전 교육을 받았다. 훈련에서는 119 신고 방법, 대피 시 행동요령, 소화기 사용 방법 등을 교육받았다.",
+    "predKeywords": {
+      "AI": 0.06503219157457352,
+      "정보보호": 0.05394693464040756,
+      "데이터": -0.006835939362645149
+    },
+    "sentiments": [
+      {
+        "orgId": "A0034",
+        "orgName": "여수광양항만공사",
+        "positiveRatio": 90.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 10.0,
+        "reason": "기사의 내용이 주로 항만공사가 화재 대피 훈련을 실시하고, 이를 통해 안전한 대응 능력을 갖추려는 의지를 드러내고 있다는 점에서 긍정적인 감성이 우세합니다.",
+        "positiveReason": "기사가 다루고 있는 항만공사의 화재 대피 훈련과 이를 통해 임직원들이 스스로의 생명을 지킬 수 있는 대응 능력을 갖추길 바라는 사장 직무대행의 의지",
+        "negativeReason": "",
+        "positiveKeywords": [
+          "화재대피훈련",
+          "역할 배정",
+          "소방 훈련",
+          "임직원 안전"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:24:49.761637+00:00",
+  "imageId": "6784a2911ccfd362485cd997",
+  "v1ContentsIdx": null
+}

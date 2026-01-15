@@ -1,0 +1,73 @@
+{
+  "_id": "691c45553200c93926e1308a",
+  "title": "로보락, 네이버 ‘넾다세일’ 디지털·가전 분야 매출 1위 달성",
+  "url": "https://www.sedaily.com/NewsView/2H0I3UGO5C",
+  "contentsOrgId": "A0026",
+  "contentsOrgName": "네이버 뉴스",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.sedaily.com/NewsView/2H0I3UGO5C",
+  "link": "https://www.sedaily.com/NewsView/2H0I3UGO5C",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:03:51.530000+00:00",
+  "collectKeyword": "네이버",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "로보락, 네이버 ‘넾다세일’ 디지털·가전 분야 매출 1위 달성",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:07:17.219808",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "로보락",
+      "2025년",
+      "플래그십 로봇청소기",
+      "S9 MaxV Ultra",
+      "널다세일",
+      "네이버",
+      "디지털·가전 카테고리"
+    ],
+    "shortSummary": "로보락 S9 MaxV Ultra가 네이버 '넌다세일'에서 디지털·가전 카테고리 1위를 차지했다.",
+    "longSummary": "네이버 쇼핑 프로모션 '넠다세일'에서 로보락 S9 MaxV Ultra 일반형이 단일 모델 기준으로 매출 1위에 올랐다. 이 제품은 7.98㎝ 초슬림 디자인과 강력한 흡입력을 갖추고 있어 가구 밑 사각지대까지 완벽한 청소가 가능하다. 또한 리트랙트센스 내비게이션 시스템, AI 기반의 장애물 인식 기능 등 혁신적인 기술을 탑재하고 있다.",
+    "predKeywords": {
+      "디지털": 0.34983429312705994,
+      "가전": 0.005397181957960129,
+      "네이버": 0.001003599027171731
+    },
+    "sentiments": [
+      {
+        "orgId": "A0026",
+        "orgName": "네이버",
+        "positiveRatio": 85.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 10.0,
+        "reason": "기사 내의 긍정적인 언급과 부정적인 언급을 종합적으로 판단한 근거",
+        "positiveReason": "로보락 S9 MaxV Ultra가 디지털·가전 카테고리에서 단일모델(SKU) 기준 매출 1위를 기록했고, 소비자들이 로보락의 기술력과 실제 사용 경험을 기준으로 제품을 선택한다는 긍정적인 언급이 많다는 점",
+        "negativeReason": "부정적인 언급은 거의 없으며, 기사는 대부분 긍정적이고 부동산인 내용을 포함하고 있다는 점",
+        "positiveKeywords": [
+          "역대 최고 성과",
+          " 역대 로보락 제품 중 가장 얇은",
+          "강력한 흡입력",
+          "혁신 기능"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:07:34.790038+00:00",
+  "imageId": "6784a2911ccfd362485cd9d3",
+  "v1ContentsIdx": null
+}

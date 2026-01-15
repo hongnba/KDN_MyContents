@@ -1,0 +1,70 @@
+{
+  "_id": "691c48ff3200c93926e130c9",
+  "title": "한국에너지공단, 한국안전공공기관 감사협의회와 아동복지시설 안전점검 등 실시",
+  "url": "https://www.energy.or.kr/front/board/View2.do?boardMngNo=2&10024932",
+  "contentsOrgId": "A0023",
+  "contentsOrgName": "한국에너지공단",
+  "categoryId": "B0001",
+  "categoryName": "보도자료",
+  "originallink": "https://www.energy.or.kr/front/board/View2.do?boardMngNo=2&10024932",
+  "link": "https://www.energy.or.kr/front/board/View2.do?boardMngNo=2&10024932",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:07:47.711000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한국에너지공단, 한국안전공공기관 감사협의회와 아동복지시설 안전점검 등 실시",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:22:55.991349",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "에너지공단",
+      "한국에너지공단",
+      "전자정부 누리집"
+    ],
+    "shortSummary": "한국에너지공단은 대한민국 공식 전자정부 누리집입니다.",
+    "longSummary": "한국에너지공단은 대한민국 공식 전자정부 누리집입니다. 국민들의 알권리를 최대한 보장하고 편리하게 이용할 수 있도록 공공기관이 이용자에게 공공데이터를 활용할 수 있는 형태로 제공합니다. 한국에너지공단은 온실가스 저감을 유도하고 국민의 삶의 질을 제고하며, 합리적ㆍ효율적 에너지이용 증진과 신재생 에너지 보급 촉진 및 산업 활성화를 목표로 합니다.",
+    "predKeywords": {
+      "정보보호": 0.2474520057439804,
+      "에너지": 0.20517754554748535,
+      "원자력": 0.20319940149784088
+    },
+    "sentiments": [
+      {
+        "orgId": "A0023",
+        "orgName": "한국에너지공단",
+        "positiveRatio": 85.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 10.0,
+        "reason": "기사 내용의 전체적인 분위기가 긍정적이고, 사용자에게 신뢰할 수 있는 정보를 제공하고자 하는 태도가 강하게 드러남.",
+        "positiveReason": "한국에너지공단이 국민들의 알권리를 최대한 보장하고 편리하게 이용할 수 있다고 밝히며, 온실가스 저감과 삶의 질 제고를 목표로 하고 있다는 내용.",
+        "negativeReason": "부정적인 내용은 찾아볼 수 없었음.",
+        "positiveKeywords": [
+          "투명한 경영",
+          "공익 우선",
+          "전문가 양성",
+          "사회적 가치 실현",
+          "자율과 책임"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:23:12.629950+00:00",
+  "imageId": "6784a2911ccfd362485cda55",
+  "v1ContentsIdx": null
+}

@@ -1,0 +1,67 @@
+{
+  "_id": "691c447c3200c93926e1307f",
+  "title": "남동발전 여수발전본부, 재난대비 상시훈련",
+  "url": "http://www.jndn.com/article.php?aid=1763451835421632107",
+  "contentsOrgId": "A0014",
+  "contentsOrgName": "한국남동발전(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "http://www.jndn.com/article.php?aid=1763451835421632107",
+  "link": "http://www.jndn.com/article.php?aid=1763451835421632107",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:00:16.977000+00:00",
+  "collectKeyword": "남동발전",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "남동발전 여수발전본부, 재난대비 상시훈련",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:03:40.471336",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "한국남동발전",
+      "여수발전본부",
+      "재난상황",
+      "대응 역량",
+      "지역주민",
+      "훈련"
+    ],
+    "shortSummary": "남동발전 여수본부가 재난 대응 역량 강화 위해 훈련을 진행했다.",
+    "longSummary": "남동발전 여수본부는 12개 유관기관과 지역주민이 참여한 가운데 재난상황 시 발전설비 화재 및 폭발, 유해가스 확산 상황에서 초기 대응 역량을 강화하기 위해 훈련을 진행했다. 훈련은 협업기관의 임무와 역할을 정확히 숙달하는 데 중점을 뒀으며, 지역주민이 훈련평가를 포함한 다양한 임무를 수행하며 재난 예방 활동에 대한 인식을 높였다. 이로 인해 남동발전의 재난 대응 체계가 확인되고, 지역사회의 안전의식 향상에도 기여했다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0014",
+        "orgName": "한국남동발전(주)",
+        "positiveRatio": 83.3,
+        "negativeRatio": 0.0,
+        "neutralRatio": 16.7,
+        "reason": "기사 내용에서 다수의 문장이 재난 대응 훈련에 대한 긍정적인 인식을 전달하고 있으며, 훈련에 참여한 지역주민들이 임무를 적극적으로 수행했다는 사실이 강조되고 있다. 또한 기관 관계자는 '내실 있는 훈련을 기획해 재난 대응 역량을 강화하고, 지역사회의 안전의식 향상을 위해 최선을 다할 것'이라는 긍정적인 발언이 포함되어 있다.",
+        "positiveReason": "기사에 언급된 훈련의 목적과 참여자들의 적극적인 임무 수행",
+        "negativeReason": "",
+        "positiveKeywords": [
+          "내실 있는 훈련",
+          "역량 강화",
+          "안전의식 향상"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:03:54.081198+00:00",
+  "imageId": "6784a2911ccfd362485cd9b7",
+  "v1ContentsIdx": null
+}

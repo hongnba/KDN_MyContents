@@ -1,0 +1,71 @@
+{
+  "_id": "691c4a7a3200c93926e130db",
+  "title": "[국립산림과학원]\n\n\n\t\t\t                \n\t\t\t                \t국립산림과학원 목재공학연구과 기간제근로자(석사급 보조원)...",
+  "url": "https://www.forest.go.kr/kfsweb/cop/bbs/selectBoardArticle.do?nttId=3213217&bbsId=BBSMSTR_1034&pageIndex=1&pageUnit=10&searchtitle=title&searchcont=&searchkey=&searchwriter=&searchdept=&searchWrd=&ctgryLrcls=&ctgryMdcls=&ctgrySmcls=&ntcStartDt=&ntcEndDt=&orgId=&mn=NKFS_04_01_03&component=",
+  "contentsOrgId": "A0042",
+  "contentsOrgName": "산림청",
+  "categoryId": "B0015",
+  "categoryName": "채용공고",
+  "originallink": "https://www.forest.go.kr/kfsweb/cop/bbs/selectBoardArticle.do?nttId=3213217&bbsId=BBSMSTR_1034&pageIndex=1&pageUnit=10&searchtitle=title&searchcont=&searchkey=&searchwriter=&searchdept=&searchWrd=&ctgryLrcls=&ctgryMdcls=&ctgrySmcls=&ntcStartDt=&ntcEndDt=&orgId=&mn=NKFS_04_01_03&component=",
+  "link": "https://www.forest.go.kr/kfsweb/cop/bbs/selectBoardArticle.do?nttId=3213217&bbsId=BBSMSTR_1034&pageIndex=1&pageUnit=10&searchtitle=title&searchcont=&searchkey=&searchwriter=&searchdept=&searchWrd=&ctgryLrcls=&ctgryMdcls=&ctgrySmcls=&ntcStartDt=&ntcEndDt=&orgId=&mn=NKFS_04_01_03&component=",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:28:58.079000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "[국립산림과학원]\n\n\n\t\t\t                \n\t\t\t                \t국립산림과학원 목재공학연구과 기간제근로자(석사급 보조원)...",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:29:14.214720",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "산림",
+      "산림청",
+      "산림과학원",
+      "국립수목원"
+    ],
+    "shortSummary": "",
+    "longSummary": "",
+    "predKeywords": {
+      "AI": 0.5146437287330627,
+      "데이터": 0.5144445300102234,
+      "디지털": 0.4941857159137726
+    },
+    "sentiments": [
+      {
+        "orgId": "A0042",
+        "orgName": "산림청",
+        "positiveRatio": 70.0,
+        "negativeRatio": 10.0,
+        "neutralRatio": 20.0,
+        "reason": "긍정과 부정 비율을 종합적으로 판단한 근거 (한 문단)",
+        "positiveReason": "기사 내에서 사용된 키워드들이 주로 긍정적인 내용에 주로 사용되었으며, 특히 '중앙행정기관', '산림교육원', '국립수목원' 등 정부 기관과 관련된 단어들이 많아 긍정적이라는 평가를 받았습니다.",
+        "negativeReason": "기사 내에서 사용된 부정적인 키워드들이 주로 미약지 또는 문맥상 부정적인 영향을 미치지 않는 단어들이 주로 출현했으며, 전체적으로는 매우 낮은 수준의 부정적 내용이 포함되어 있어 부정 비율이 낮다고 판단했습니다.",
+        "positiveKeywords": [
+          "기술 혁신",
+          "성과 향상"
+        ],
+        "negativeKeywords": [
+          "비리 의혹",
+          "경영 악화"
+        ]
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:29:35.577274+00:00",
+  "imageId": "6784a2911ccfd362485cd993",
+  "v1ContentsIdx": null
+}

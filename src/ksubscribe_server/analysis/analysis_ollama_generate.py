@@ -1,0 +1,1188 @@
+#from langchain_community.chat_models import ChatOllama
+import requests
+from openai import OpenAI
+import traceback
+import pandas as pd 
+from datetime import datetime, timezone
+import logging 
+from langchain_ollama import ChatOllama
+from langchain_core.prompts import ChatPromptTemplate
+#from langchain_ollama.chat_models import ChatOllama 
+from langchain_core.messages import (
+    AIMessage,
+    AnyMessage,
+    BaseMessage,
+    BaseMessageChunk,
+    HumanMessage,
+    convert_to_messages,
+    message_chunk_to_message,
+) 
+import json
+from typing import Tuple, Dict,List
+from ollama import GenerateResponse
+import time
+import re
+import tiktoken 
+
+from ksubscribe_share.logger import Logger
+from ksubscribe_server.models.contentsMetaResult import ContentsMetaResult
+from ksubscribe_share.db.dbmodelV2.contentsVO import ContentsMeta, SentimentInfo
+from ksubscribe_share.db.dbmodelV2.llmAnalysisMeta import LLMAnalysisMeta
+from ksubscribe_share.db.dbmodelV2.contentsVO import ContentsMeta
+from ksubscribe_share.db.service.commCodeService import CommCodeService
+from ksubscribe_share.db.service.contentsOrgService import ContentsOrgService
+from ksubscribe_share.db.service.contentsQueueService import ContentsQueueService
+
+from ksubscribe_share.db.service.commCodeService import CommCodeService
+from ksubscribe_share.db.service.predefineKeywordService import PredefineKeywordService
+from ksubscribe_share.db.service.contentsService import ContentsService
+from ksubscribe_server.similarity.simularity_check import SimularityChecker
+from ksubscribe_server.analysis.analysis_ollama_base import AnalysisOllamaBase
+import ksubscribe_share.config as CONF
+from pydantic import BaseModel, PrivateAttr, model_validator
+
+# 20251013 liza: import 추가
+from ksubscribe_share.db.dbmodelV2.contentsQueueVO import ContentsQueueVO
+from ksubscribe_share.db.service.articleKeywordsService import ArticleKeywordsService
+from ksubscribe_share.db.mariadb_model.articleKeywordsVO import ArticleKeywordsVO
+from ksubscribe_share.db.service.articleSummaryService import ArticlesSummaryService
+from ksubscribe_share.db.mariadb_model.articleSummaryVO import ArticlesSummaryVO
+
+
+def count_tokens(text: str, model: str = "llama3"):
+    enc = tiktoken.encoding_for_model(model)
+    return len(enc.encode(text))
+ 
+class AnalysisOllamaGenerateCall(AnalysisOllamaBase):
+
+    def __init__(self):
+        self.chat_ollama =  ChatOllama(model = CONF.OLLAMA_MODEL,
+                                       base_url= CONF.OLLAMA_URL, 
+                                       format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json")) 
+        #self.chat_ollama._client = PrivateAttr(default=None)  # type: ignore
+        
+        self.keywords = PredefineKeywordService().getKeywordList()
+        # 202504101 임형준 : ollama client timeout 조건 추가
+        self.chat_ollama.client_kwargs["timeout"] = 180
+        self.chat_ollama._set_clients()
+        
+    #25.03.13 당문간 _test함수 유지     
+    def analysis_main_test(self, title,content, pred_keyword_list, org_name_list, mycontents_logger:logging.Logger): #-> tuple[bool, ContentsMetaResult]:
+        """Ollama 연계하여 분석 ( 요약분석, 평판분석 )
+        """        
+        try: 
+            contentsMetaResult = ContentsMetaResult()
+            contentsMetaResult.contentsMeta.method = "ollama"
+            summary_start = time.time()
+            
+            #pred_keyword_list = [item + " 기술"  for item in pred_keyword_list]
+            
+            new_question_summary = self.question_summary.replace("pred_keywords_from_db", pred_keyword_list).replace("[contents]",content)
+            result_summary = self.chat_ollama._client.generate(
+                                    model=CONF.OLLAMA_MODEL,
+                                    prompt=new_question_summary,
+                                    format="json")
+            
+            summary_end = time.time()
+            _,data = self.json_load(result_summary, mycontents_logger) 
+            SimularityChecker().best_keyword_of_summary(data["short_summary"],self.keywords)
+            SimularityChecker().best_keyword_of_summary(data["long_summary"],self.keywords)
+            
+            #print(result_summary.response) 
+            return True, contentsMetaResult,result_summary,None  ,None  
+
+        except Exception as e: 
+            #trackback logging
+            tb_str = ''.join(traceback.format_exception(None, e, e.__traceback__))
+            mycontents_logger.error(f"Exception occurred: {e}, Args: {e.args}, Traceback: {tb_str}")
+
+            error_ollamaMetaResult :ContentsMetaResult = self.to_error_ollamaModel() 
+            return False, None, None, None, error_ollamaMetaResult
+
+    # 20251013 리자: queueContent 파라미터 추가
+    def analysis_main(self, content, pred_keyword_list, org_name_list, mycontents_logger:logging.Logger, queueContent:ContentsQueueVO): #-> tuple[bool, ContentsMetaResult]:
+        """Ollama 연계하여 분석 ( 요약분석, 평판분석 )
+        """        
+        try: 
+            contentsMetaResult = ContentsMetaResult()
+            contentsMetaResult.contentsMeta.method = "ollama"
+            
+            # orgId로 기관 이름 + 약어 등 조회
+            orgId = queueContent.contentOrgId
+            orgName, combined_keywords = ContentsOrgService().getOrgNameAndKeywords(queueContent.contentOrgId)
+            
+            # 사전질의(주어진 db 키워드와 ai추출 키워드를 추출 및 비교)를 통한 키워드 검증로직 추가 20250429 mcst
+            verify_start = time.time()
+            pre_question_verify = self.question_verify.replace("pred_keywords_from_db", pred_keyword_list).replace("[contents]",content)
+            result_verify = self.chat_ollama._client.generate(
+                                    model=CONF.OLLAMA_MODEL,
+                                    prompt=pre_question_verify,
+                                    format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
+            is_success_keywords, result_verify_json = self.json_load(result_verify, mycontents_logger)  
+            related = result_verify_json['related']  # True : 관련성 있음, False : 관련성 없음
+            
+            # 20251013 리자: 프롬프트 2)에서 키워드 삭제에 따른 변경:
+            ai_keywords = result_verify_json["ai_keyword"]
+                        
+            verify_end = time.time()
+            mycontents_logger.info(f"분석대상 사전검증 소요시간 : {verify_end-verify_start} 초 소요")
+                        
+            summary_start = time.time()
+            #pred_keyword_list = [item + " 기술"  for item in pred_keyword_list]
+            # 
+            new_question_summary = self.question_summary.replace("pred_keywords_from_db", pred_keyword_list).replace("[contents]",content)
+            result_summary = self.chat_ollama._client.generate(
+                                    model=CONF.OLLAMA_MODEL,
+                                    prompt=new_question_summary,
+                                    format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
+            
+            summary_end = time.time()
+            is_success, result_summary_json = self.json_load(result_summary, mycontents_logger)  
+            
+            # pred_keywords = SimularityChecker().best_keyword_of_summary(result_summary_json["short_summary"],self.keywords)
+            # db키워드와 관련성이 없으면 키워드 추출하지 않음
+            if related:
+                keywords_verify = result_verify_json['reason']  # db_keyword_list 중 관련 키워드 최대 3개
+                if isinstance(keywords_verify, list) and len(keywords_verify) > 0:
+                    pred_keywords = SimularityChecker().best_keyword_of_summary(result_summary_json["short_summary"],keywords_verify) # 전체 키워드가 아닌 검증된 키워들 통해 유사도 검증 20250429 mcst
+                else :
+                    pred_keywords = None
+                    mycontents_logger.info(f"키워드 추출대상 아님")        
+            else:
+                pred_keywords = None
+                mycontents_logger.info(f"키워드 추출대상 아님")
+                
+            
+            ###################################################
+            #LIZA: add article keywords (25.10.02) ###################
+            try:
+                article_keywords = result_verify_json["ai_keyword"]
+            except Exception as e:
+                article_keywords = None
+                mycontents_logger.info(f"ai_keyword 없음")
+
+            
+            # article = ArticleKeywordsVO(
+            #     orgId=queueContent.contentOrgId,
+            #     keywords=pred_keywords,
+            #     ai_keywords=article_keywords,
+            #     success=is_success_keywords,
+            #     url=queueContent.url
+            # )
+
+            # try:
+            #     inserted_id = ArticleKeywordsService.insert_one(article)
+            #     mycontents_logger.info(f"ArticleKeywords inserted successfully - row id: {inserted_id}")
+            # except Exception as e:
+            #     mycontents_logger.error(f"Failed to insert ArticleKeywords to MariaDB: {e}")
+            #     mycontents_logger.info("Continuing analysis despite MariaDB error...")
+ 
+            summary_success = self.summary_to_ollamaModel_v2(
+                result_summary, 
+                result_summary_json, 
+                contentsMetaResult, 
+                pred_keywords, 
+                ai_keywords,
+                mycontents_logger
+                )
+            
+            contentsMetaResult.summarySucYN = "Y" if summary_success else "N"
+            mycontents_logger.info(f"요약분석 소요시간 : {summary_end-summary_start} 초 소요")
+            
+            # 유헌수 2026-01-09 추가: [상세 요약] (detail summary)
+            # Consolidated detail summary (replaces previous 5 variants)
+            try:
+                # compute approximate sentence count
+                sentences = [s for s in re.split(r'[。.!?！？\n]+', content) if s and s.strip()]
+                sentence_count = len(sentences)
+                mycontents_logger.info(f"[Debug] article sentence_count: {sentence_count}")
+
+                # Use detail prompt only for sufficiently long articles (>=10 sentences)
+                if sentence_count >= 10:
+                    # Prefer the new question_detail_summary prompt; fallback to detail_summary for compatibility
+                    prompt_template = getattr(self, 'question_detail_summary', '')
+
+                    # compute min/max sentence constraints per user formula
+                    min_sent = 10
+                    if sentence_count < 30:
+                        min_sent = int(max(5, (sentence_count / 3)))
+                    
+                    max_sent = 11
+                    if sentence_count < 30:
+                        max_sent = int(min(10, (sentence_count / 3)))
+                    
+                    if max_sent < min_sent:
+                        max_sent = min_sent
+                    
+                    mycontents_logger.info(f" [Detail Summary] Start: {sentence_count} sents -> Target: {min_sent}~{max_sent} sents")
+
+                    new_question_detail = prompt_template.replace("[organization]", str(orgName) if orgName else "").replace("[contents]", content).replace("[min_sentences]", str(min_sent)).replace("[max_sentences]", str(max_sent))
+                    
+                    detail_start = time.time()
+                    result_detail = self.chat_ollama._client.generate(
+                                        model=CONF.OLLAMA_MODEL,
+                                        prompt=new_question_detail,
+                                        format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
+                    detail_end = time.time()
+                    duration = detail_end - detail_start
+                    
+                    _, result_detail_json = self.json_load(result_detail, mycontents_logger)
+                    # prefer explicit detail_summary key then fallbacks
+                    detail_text = result_detail_json.get("detail_summary") or result_detail_json.get("long_summary")
+                    contentsMetaResult.contentsMeta.detailSummary = detail_text
+                    
+                    mycontents_logger.info(f" [Detail Summary] Completed in {duration: .2f}s")
+                    
+                else:
+                    mycontents_logger.info(f" [Detail Summary] Fallback (Short article: {sentence_count} sents)")
+                    # fallback to using long_summary when article is short
+                    contentsMetaResult.contentsMeta.detailSummary = result_summary_json.get("long_summary", "")
+            except Exception as e:
+                mycontents_logger.warning(f"Detail Summary Error: {e}")
+            
+            
+            # #LIZA: add article summary (25.10.02) 
+            # article_sum = ArticlesSummaryVO(
+            #     orgId=queueContent.contentOrgId,
+            #     long_summary=result_summary_json["long_summary"],
+            #     short_summary=result_summary_json["short_summary"],
+            #     success=summary_success,
+            #     url=queueContent.url
+            # )
+            
+            # try:
+            #     inserted_id = ArticlesSummaryService.insert_one(article_sum)
+            #     mycontents_logger.info(f"ArticlesSummary inserted successfully - row id: {inserted_id}")
+            # except Exception as e:
+            #     mycontents_logger.error(f"Failed to insert ArticlesSummary to MariaDB: {e}")
+            #     mycontents_logger.info("Continuing analysis despite MariaDB error...")
+
+
+            ### sentiment part!
+            # 20251013 리자: 프롬프트 3)분리 --> 반복 x 3
+            # new_question_sentiment_ratio = self.question_sentiment_ratio.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
+            # if combined_keywords and isinstance(combined_keywords, list):
+            #     synonyms_str = ", ".join(str(item) for item in combined_keywords)
+            #     new_question_sentiment_ratio = new_question_sentiment_ratio.replace("[synonyms]", synonyms_str)
+            # else:
+            #     new_question_sentiment_ratio = new_question_sentiment_ratio.replace("[synonyms]", str(orgName) if orgName else "") #if synonyms is empty, use orgName
+            
+            ### Log each time separately???
+            sentiment_start = time.time()
+            
+            # #3-1) ratio 추출
+            # result_sentiment_ratio = self.chat_ollama._client.generate(
+            #                         model=CONF.OLLAMA_MODEL,
+            #                         prompt=new_question_sentiment_ratio,
+            #                         format="json")
+            # # sentiment_end = time.time()
+            # is_success, result_sentiment_ratio_json = self.json_load(result_sentiment_ratio, mycontents_logger) 
+            # positiveRatio = self.str_to_double(result_sentiment_ratio_json.get("positiveRatio", "0"))
+            # negativeRatio = self.str_to_double(result_sentiment_ratio_json.get("negativeRatio", "0"))
+
+            # #3-2) reason 추출
+            # new_question_sentiment_reason = self.sentiment_reason.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
+            # if combined_keywords and isinstance(combined_keywords, list):
+            #     synonyms_str = ", ".join(str(item) for item in combined_keywords)
+            #     new_question_sentiment_reason = new_question_sentiment_reason.replace("[synonyms]", synonyms_str)
+            # else:
+            #     new_question_sentiment_reason = new_question_sentiment_reason.replace("[synonyms]", str(orgName) if orgName else "") #if synonyms is empty, use orgName
+            # new_question_sentiment_reason = new_question_sentiment_reason.replace("[positiveRatio]", str(positiveRatio)).replace("[negativeRatio]", str(negativeRatio))
+            
+            # result_sentiment_reason = self.chat_ollama._client.generate(
+            #                         model=CONF.OLLAMA_MODEL,
+            #                         prompt=new_question_sentiment_reason,
+            #                         format="json")
+            # is_success, result_sentiment_reason_json = self.json_load(result_sentiment_reason, mycontents_logger)
+
+            # [New Integrated Logic - Active]
+            new_question_sentiment_integrated = self.question_sentiment_integrated.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
+            if combined_keywords and isinstance(combined_keywords, list):
+                synonyms_str = ", ".join(str(item) for item in combined_keywords)
+                new_question_sentiment_integrated = new_question_sentiment_integrated.replace("[synonyms]", synonyms_str)
+            else:
+                new_question_sentiment_integrated = new_question_sentiment_integrated.replace("[synonyms]", str(orgName) if orgName else "")
+            
+            result_sentiment_integrated = self.chat_ollama._client.generate(
+                                    model=CONF.OLLAMA_MODEL,
+                                    prompt=new_question_sentiment_integrated,
+                                    format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
+            
+            is_success, result_sentiment_integrated_json = self.json_load(result_sentiment_integrated, mycontents_logger)
+            
+            # 변수 매핑 (기존 로직 호환성 유지)
+            result_sentiment_ratio = result_sentiment_integrated
+            result_sentiment_ratio_json = result_sentiment_integrated_json
+            result_sentiment_reason = result_sentiment_integrated
+            result_sentiment_reason_json = result_sentiment_integrated_json
+
+            positiveRatio = self.str_to_double(result_sentiment_integrated_json.get("positiveRatio", "0"))
+            negativeRatio = self.str_to_double(result_sentiment_integrated_json.get("negativeRatio", "0"))
+            neutralRatio = self.str_to_double(result_sentiment_integrated_json.get("neutralRatio", "0"))
+
+            #3-3) keywords 추출
+            new_question_sentiment_keywords = self.sentiment_keywords.replace("[organization]", str(orgName) if orgName else "").replace("[contents]",content)
+            if combined_keywords and isinstance(combined_keywords, list):
+                synonyms_str = ", ".join(str(item) for item in combined_keywords)
+                new_question_sentiment_keywords = new_question_sentiment_keywords.replace("[synonyms]", synonyms_str)
+            else:
+                new_question_sentiment_keywords = new_question_sentiment_keywords.replace("[synonyms]", str(orgName) if orgName else "") #if synonyms is empty, use orgName
+            # new_question_sentiment_keywords = new_question_sentiment_keywords.replace("[positiveRatio]", str(positiveRatio)).replace("[negativeRatio]", str(negativeRatio))
+            
+            result_sentiment_keywords = self.chat_ollama._client.generate(
+                                    model=CONF.OLLAMA_MODEL,
+                                    prompt=new_question_sentiment_keywords,
+                                    format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
+            is_success, result_sentiment_keywords_json = self.json_load(result_sentiment_keywords, mycontents_logger) 
+            
+            
+            # 유헌수 2026-01-08 추가: [Keyword Refinement Step] 
+            # [Keyword Refinement Step] 워드클라우드용 키워드 정제 
+            # 문장형 키워드를 간결한 키워드로 정제하여 빈도수 통합 가능하도록 처리
+            try:
+                mycontents_logger.info("워드클라우드용 키워드 정제 시작...")
+                
+                # sentiment_keywords 프롬프트 결과물에서 실제로 존재하는 키만 가져오기
+                # 하드코딩 대신 동적으로 처리
+                sentiment_types = [key for key in ['positiveKeywords', 'negativeKeywords', 'neutralKeywords'] 
+                                   if key in result_sentiment_keywords_json and result_sentiment_keywords_json.get(key)]
+                
+                for sentiment_type in sentiment_types:
+                    original_keywords = result_sentiment_keywords_json.get(sentiment_type, [])
+                    
+                    # 빈 리스트이거나 None이면 스킵
+                    if not original_keywords or not isinstance(original_keywords, list) or len(original_keywords) == 0:
+                        continue
+                    
+                    # 정제 수행
+                    refined_keywords = self.refine_keywords_for_wordcloud(
+                        original_keywords=original_keywords,
+                        org_name=orgName,
+                        combined_keywords=combined_keywords,
+                        article_content=content,
+                        sentiment_type=sentiment_type,
+                        mycontents_logger=mycontents_logger
+                    )
+                    
+                    # 정제된 키워드로 업데이트
+                    if refined_keywords:
+                        result_sentiment_keywords_json[sentiment_type] = refined_keywords
+                        mycontents_logger.info(f"{sentiment_type} 정제 완료: {len(original_keywords)}개 → {len(refined_keywords)}개")
+                    else:
+                        mycontents_logger.warning(f"{sentiment_type} 정제 실패, 원본 유지")
+                
+                mycontents_logger.info("워드클라우드용 키워드 정제 완료")
+                
+            except Exception as e:
+                mycontents_logger.error(f"키워드 정제 중 오류 발생 (무시하고 진행): {e}")
+                mycontents_logger.error(traceback.format_exc())
+            
+            
+            # [Translation Step] 모든 결과가 나온 후 한국어 검증 및 번역 수행 (2025.12.12 추가)
+            # 2025.12.19: Context length optimization - validate fields individually
+            try:
+                # Fields to translate individually
+                # User requested: keyword, short summary, long summary, positiveReason, negativeReason
+                # We also include 'reason' and keyword lists.
+                # Format: (key, source_json_dict, default_value)
+                fields_to_check = [
+                    ("ai_keyword", result_verify_json, []),
+                    ("short_summary", result_summary_json, ""),
+                    ("long_summary", result_summary_json, ""),
+                    ("reason", result_sentiment_reason_json, ""),
+                    ("positiveReason", result_sentiment_reason_json, ""),
+                    ("negativeReason", result_sentiment_reason_json, ""),
+                    ("neutralReason", result_sentiment_reason_json, ""),
+                    ("positiveKeywords", result_sentiment_keywords_json, []),
+                    ("negativeKeywords", result_sentiment_keywords_json, []),
+                    ("neutralKeywords", result_sentiment_keywords_json, [])
+                ]
+                
+                #########################################################################################################
+                #########################################################################################################
+                # 유헌수 2026-01-12 로직 추가: 불필요한 API 호출 방지를 위한 언어 비율 검증 및 최적화 로직 추가
+            
+                translation_total_time = 0.0
+                
+                for key, source_json, default_val in fields_to_check:
+                    val = source_json.get(key, default_val)
+                    
+                    # Skip empty values or empty lists
+                    if not val:
+                        mycontents_logger.info(f"[{key}] 스킵: 빈 값")
+                        continue
+                    
+                    # ##################################################################
+                    # # 언어 비율 검증 (정규표현식 활용)
+                    # if isinstance(val, (str, list)):
+                    #     items = [val] if isinstance(val, str) else val
+                    #     total_text_chars = 0
+                    #     total_hangul = 0
+                    #     total_english = 0
+                        
+                    #     for item in items:
+                    #         if isinstance(item, str):
+                    #             # 공백/숫자/기호 제거 후 순수 텍스트만 추출
+                    #             text_only = re.sub(r'[\s\d.,!?()·、。，！？（）\-/]', '', item)
+                    #             total_text_chars += len(text_only)
+                    #             total_hangul += len(re.findall(r'[\uac00-\ud7a3]', text_only))
+                    #             total_english += len(re.finall(r'[a-zA-Z]', text_only))
+                                
+                    #     if total_text_chars > 0:
+                    #         korean_ratio = total_hangul / total_text_chars
+                    #         english_ratio = total_english / total_text_chars
+                            
+                    #         # 한글 80% 이상 OR 영문 50% 미만이면 스킵
+                    #         if korean_ratio >= 0.8 or english_ratio < 0.5:
+                    #             mycontents_logger.info(f" [{key}] 스킵: 한글 {korean_ratio:.2%}, 영문 {english_ratio:.2%} (번역 불필요)")
+                    #             continue
+                    #     else:
+                    #         continue # 의미 있는 문자가 없으면 스킵
+                    
+                    # ##################################################################
+                    
+                    
+                    # 빠른 한국어 검증: 정규표현식으로 한글/영문 비율 체크
+                    if isinstance(val, str):
+                        # 공백/숫자/구두점을 제외한 실제 문자만 추출
+                        text_only = re.sub(r'[\s\d.,!?()·、。，！？（）\-/]', '', val)
+                        if len(text_only) == 0:
+                            mycontents_logger.info(f" [{key}] 스킵: 문자 없음 (공백/숫자/구두점만)")
+                            continue
+                        
+                        # 한글 및 영문 문자 수 체크
+                        hangul_chars = re.findall(r'[\uac00-\ud7a3]', text_only)
+                        english_chars = re.findall(r'[a-zA-Z]', text_only)
+                        korean_ratio = len(hangul_chars) / len(text_only)
+                        english_ratio = len(english_chars) / len(text_only)
+                        
+                        # 한글 80% 이상 OR 영문 50% 미만이면 스킵
+                        if korean_ratio >= 0.8 or english_ratio < 0.5:
+                            mycontents_logger.info(f" [{key}] 스킵: 한글 {korean_ratio:.2%}, 영문 {english_ratio:.2%} (번역 불필요)")
+                            continue
+                        else:
+                            mycontents_logger.info(f" [{key}] 번역 필요: 한글 {korean_ratio:.2%}, 영문 {english_ratio:.2%}")
+                            mycontents_logger.info(f" [{key}] 번역 전 원문:\n{val}")
+                    elif isinstance(val, list):
+                        # 리스트인 경우 각 요소별 체크
+                        total_text_chars = 0
+                        total_hangul = 0
+                        total_english = 0
+                        for item in val:
+                            if isinstance(item, str):
+                                # 공백/숫자/구두점을 제외한 실제 문자만 추출
+                                text_only = re.sub(r'[\s\d.,!?()·、。，！？（）\-/]', '', item)
+                                total_text_chars += len(text_only)
+                                total_hangul += len(re.findall(r'[\uac00-\ud7a3]', text_only))
+                                total_english += len(re.findall(r'[a-zA-Z]', text_only))
+                        
+                        if total_text_chars > 0:
+                            korean_ratio = total_hangul / total_text_chars
+                            english_ratio = total_english / total_text_chars
+                            
+                            # 한글 80% 이상 OR 영문 50% 미만이면 스킵
+                            if korean_ratio >= 0.8 or english_ratio < 0.5:
+                                mycontents_logger.info(f" [{key}] 스킵: 한글 {korean_ratio:.2%}, 영문 {english_ratio:.2%} (요소 수: {len(val)}, 번역 불필요)")
+                                continue
+                            else:
+                                needs_translation = True
+                                mycontents_logger.info(f" [{key}] 번역 필요: 한글 {korean_ratio:.2%}, 영문 {english_ratio:.2%} (요소 수: {len(val)})")
+                                mycontents_logger.info(f" [{key}] 번역 전 원문 ({len(val)}개):\n{val}")
+                        else:
+                            mycontents_logger.info(f" [{key}] 스킵: 문자 없음 (공백/숫자/구두점만)")
+                            continue
+                    else:
+                        mycontents_logger.info(f" [{key}] 스킵: 문자열/리스트가 아님 (타입: {type(val).__name__})")
+                        continue
+                    
+                    # 실제 번역 수행 (여기 도달했다는 것은 번역이 필요하다는 의미)
+                    mycontents_logger.info(f" [{key}] 번역 시작 (영문 비중 높음)")
+                    target_json = {key: val}
+                    
+                    new_question_translate = self.question_translate_to_korean.replace("[json_data]", json.dumps(target_json, ensure_ascii=False)).replace("[contents]", content)
+                    
+                    trans_start = time.time()
+                    result_translate = self.chat_ollama._client.generate(
+                                            model=CONF.OLLAMA_MODEL,
+                                            prompt=new_question_translate,
+                                            format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json"))
+                    trans_end = time.time()
+                    translation_total_time += (trans_end - trans_start)
+                    
+                    # 결과 반영 및 동기화
+                    is_success_trans, result_translate_json = self.json_load(result_translate, mycontents_logger)
+                    if is_success_trans and key in result_translate_json:
+                        # Update the source json with translated value
+                        translated_value = result_translate_json[key]
+                        source_json[key] = translated_value # 원본 json 업데이트
+                        mycontents_logger.info(f" [{key}] 번역 완료")
+                        mycontents_logger.info(f" [{key}] 번역 후 결과:\n{translated_value}")
+                        
+                        # Special handling for ai_keyword/keywords sync
+                        if key == "ai_keyword":
+                            source_json["keywords"] = result_translate_json[key]
+                            ai_keywords = result_translate_json[key]
+                    else:
+                        mycontents_logger.warning(f" [{key}] 번역 실패: 응답에 키가 없거나 JSON 파싱 실패")
+
+                mycontents_logger.info("한국어 검증 및 번역 완료 (개별 필드)")
+                mycontents_logger.info(f"번역 소요 시간: {translation_total_time:.3f}초")
+                #########################################################################################################
+                #########################################################################################################
+
+                # [Summary & Keywords] 모델 재업데이트
+                # 이 필드들은 번역 로직 이전에 이미 contentsMetaResult에 할당되었으므로, 번역된 값으로 갱신해야 합니다.
+                contentsMetaResult.contentsMeta.summary = result_summary_json.get("short_summary")
+                contentsMetaResult.contentsMeta.longSummary = result_summary_json.get("long_summary")
+                contentsMetaResult.contentsMeta.keywords = result_verify_json.get("ai_keyword", [])
+
+                # [Sentiment] 관련 필드 (Reason, Sentiment Keywords 등)
+                # 이 필드들은 이 블록 이후에 호출되는 'assemble_sentiment_to_ollamaModel_v2' 함수에서 
+                # contentsMetaResult에 담기므로, 위 루프에서 JSON 객체(source_json)만 수정해 두면 자동으로 반영됩니다.
+
+            
+            except Exception as e:
+                mycontents_logger.error(f"한국어 번역 중 오류 발생 (무시하고 진행): {e}")
+            
+            
+            #sentiment_success = self.sentiment_to_ollamaModel_v2(result_sentiment_ratio, result_sentiment_ratio_json, contentsMetaResult,  mycontents_logger)
+
+            #20251013 리자: assemble from separate prompts
+            sentiment_separated_success = self.assemble_sentiment_to_ollamaModel_v2(
+                queueContent, 
+                orgName, 
+                result_sentiment_ratio, 
+                result_sentiment_ratio_json, 
+                result_sentiment_reason, 
+                result_sentiment_reason_json, 
+                result_sentiment_keywords, 
+                result_sentiment_keywords_json, 
+                contentsMetaResult,  
+                mycontents_logger
+                )
+            contentsMetaResult.sentimentSucYN = "Y" if sentiment_separated_success else "N"
+            sentiment_end = time.time()
+            mycontents_logger.info(f"평판분석 소요시간 : {sentiment_end-sentiment_start} 초 소요")
+            
+            # Note: Sentiment persistence to RDBMS is temporarily disabled due to schema/API changes
+            
+            #요약만 성공해도 성공으로 처리                        
+            contentsMetaResult.metaSucYN = "Y" if summary_success else "N"
+            contentsMetaResult.metaAnalyzeDt = datetime.now(timezone.utc)  
+
+            return True, contentsMetaResult, result_summary, None, None
+            
+            ###################################################    
+
+
+        except Exception as e: 
+            #trackback logging
+            tb_str = ''.join(traceback.format_exception(None, e, e.__traceback__))
+            mycontents_logger.error(f"Exception occurred: {e}, Args: {e.args}, Traceback: {tb_str}")
+
+            error_ollamaMetaResult :ContentsMetaResult = self.to_error_ollamaModel() 
+            return False, None, None, None, error_ollamaMetaResult
+
+
+
+    # def json_load(self, result, mycontents_logger:logging.Logger): 
+    #     """Ollama 분석 결과의 json 로드 
+    #     """          
+    #     try:
+    #         result_analysis_resp = result.response.replace("`","")
+    #         result_analysis_resp = result_analysis_resp.replace("json","")
+    #         result_analysis_resp = result_analysis_resp.replace("\n","")
+    #         result_analysis_resp = json.loads(result_analysis_resp) 
+    #         return True, result_analysis_resp
+    #     except Exception as e :
+    #         # json 으로 던져도 안오는 경우 있음 .
+    #         mycontents_logger.error(str(e))
+    #         return False, None
+
+    def json_load(self, result, mycontents_logger:logging.Logger): 
+        """Ollama 분석 결과의 json 로드 (Robust Version)"""          
+        try:
+            text = result.response
+            # 1. Try direct JSON parse
+            try:
+                return True, json.loads(text)
+            except json.JSONDecodeError:
+                pass
+            
+            # 2. Regex extraction (Markdown code blocks or raw JSON)
+            cleaned_text = text.strip()
+            # ```json ... ``` or ``` ... ```
+            match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", cleaned_text, re.DOTALL)
+            if match:
+                cleaned_text = match.group(1)
+            else:
+                # Just { ... }
+                match = re.search(r"(\{.*\})", cleaned_text, re.DOTALL)
+                if match:
+                    cleaned_text = match.group(1)
+            
+            try:
+                return True, json.loads(cleaned_text)
+            except json.JSONDecodeError:
+                pass
+                
+            # 3. ast.literal_eval (for Python dict syntax)
+            try:
+                val = ast.literal_eval(cleaned_text)
+                if isinstance(val, dict):
+                    return True, val
+            except:
+                pass
+                
+            raise Exception(f"Failed to parse JSON: {text[:200]}...")
+
+        except Exception as e :
+            mycontents_logger.error(f"json_load error: {e}")
+            return False, None
+    
+    
+    # 유헌수 2026-01-08 추가: [워드클라우드용 키워드 정제 메서드]
+    def refine_keywords_for_wordcloud(self, original_keywords: list, org_name: str, 
+                                      combined_keywords: list, article_content: str, 
+                                      sentiment_type: str, mycontents_logger: logging.Logger) -> list:
+        """
+        워드클라우드용 키워드 정제 메서드
+        문장형 키워드를 간결한 키워드로 정제하여 빈도수 통합 가능하도록 처리
+        
+        Context 길이 최적화:
+        - 기사 내용은 최대 1500자로 제한
+        - 키워드 리스트가 20개 이상이면 배치로 나누어 처리
+        """
+        try:
+            if not original_keywords or len(original_keywords) == 0:
+                return []
+            
+            # 기사 내용은 전체 사용 (잘리지 않음)
+            full_content = article_content if article_content else ""
+            
+            # 1. 키워드를 길이 순으로 정렬 (긴 것부터)
+            sorted_keywords = sorted(original_keywords, key=lambda x: len(str(x)), reverse=True)
+            
+            # 2. 모든 키워드를 정제 대상에 포함 (2단어 이하도 정제 대상)
+            # "한국전력" 같은 표현이 많이 들어가 있어서 2단어 이하도 정제 필요
+            keywords_to_refine = []
+            
+            for keyword in sorted_keywords:
+                keyword_str = str(keyword).strip()
+                if not keyword_str:
+                    continue
+                
+                keywords_to_refine.append(keyword_str)
+            
+            mycontents_logger.info(f"{sentiment_type} 키워드 정제 대상: {len(keywords_to_refine)}개")
+            
+            # 3. 정제 대상 키워드가 없으면 빈 리스트 반환
+            if not keywords_to_refine:
+                return []
+            
+            # 4. 정제 대상 키워드 배치 처리: 5개 단위로 나누기
+            MAX_KEYWORDS_PER_BATCH = 5
+            refined_keywords = []
+            
+            if len(keywords_to_refine) > MAX_KEYWORDS_PER_BATCH:
+                mycontents_logger.info(f"키워드 배치 처리: {len(keywords_to_refine)}개 → {MAX_KEYWORDS_PER_BATCH}개씩 배치")
+                
+                # 배치로 나누어 처리
+                for i in range(0, len(keywords_to_refine), MAX_KEYWORDS_PER_BATCH):
+                    batch_keywords = keywords_to_refine[i:i + MAX_KEYWORDS_PER_BATCH]
+                    batch_refined = self._refine_keywords_batch(
+                        batch_keywords=batch_keywords,
+                        org_name=org_name,
+                        combined_keywords=combined_keywords,
+                        article_content=full_content,
+                        sentiment_type=sentiment_type,
+                        batch_num=i // MAX_KEYWORDS_PER_BATCH + 1,
+                        mycontents_logger=mycontents_logger
+                    )
+                    if batch_refined:
+                        refined_keywords.extend(batch_refined)
+            else:
+                # 키워드가 적으면 한 번에 처리
+                refined_keywords = self._refine_keywords_batch(
+                    batch_keywords=keywords_to_refine,
+                    org_name=org_name,
+                    combined_keywords=combined_keywords,
+                    article_content=full_content,
+                    sentiment_type=sentiment_type,
+                    batch_num=1,
+                    mycontents_logger=mycontents_logger
+                )
+                if not refined_keywords:
+                    refined_keywords = []
+            
+            # 5. 정제된 키워드 반환
+            return refined_keywords
+                
+        except Exception as e:
+            mycontents_logger.error(f"{sentiment_type} 키워드 정제 중 예외 발생: {e}")
+            mycontents_logger.error(traceback.format_exc())
+            return original_keywords  # 실패 시 원본 반환
+
+
+    # 유헌수 2026-01-08 추가: [키워드 배치 정제 헬퍼 메서드]
+    def _refine_keywords_batch(self, batch_keywords: list, org_name: str, 
+                               combined_keywords: list, article_content: str,
+                               sentiment_type: str, batch_num: int,
+                               mycontents_logger: logging.Logger) -> list:
+        """
+        키워드 배치 정제 헬퍼 메서드
+        """
+        try:
+            # 프롬프트 준비
+            new_question_refine = self.question_refine_keywords_for_wordcloud.replace(
+                "[organization]", str(org_name) if org_name else ""
+            ).replace(
+                "[contents]", str(article_content) if article_content else ""
+            ).replace(
+                "[keywords_list]", json.dumps(batch_keywords, ensure_ascii=False)
+            )
+            
+            # 동의어 처리
+            if combined_keywords and isinstance(combined_keywords, list):
+                synonyms_str = ", ".join(str(item) for item in combined_keywords)
+                new_question_refine = new_question_refine.replace("[synonyms]", synonyms_str)
+            else:
+                new_question_refine = new_question_refine.replace("[synonyms]", str(org_name) if org_name else "")
+            
+            # LLM 호출
+            result_refine = self.chat_ollama._client.generate(
+                model=CONF.OLLAMA_MODEL,
+                prompt=new_question_refine,
+                format=(None if "gpt-oss" in CONF.OLLAMA_MODEL else "json")
+            )
+            
+            is_success, result_refine_json = self.json_load(result_refine, mycontents_logger)
+            
+            if is_success and "refinedKeywords" in result_refine_json:
+                refined_keywords = result_refine_json["refinedKeywords"]
+                
+                # 리스트 타입 검증
+                if isinstance(refined_keywords, list):
+                    # 빈 문자열 제거 및 중복 제거
+                    refined_keywords = [kw.strip() for kw in refined_keywords if kw and kw.strip()]
+                    # 중복 제거 (순서 유지)
+                    seen = set()
+                    unique_refined = []
+                    for kw in refined_keywords:
+                        if kw not in seen:
+                            seen.add(kw)
+                            unique_refined.append(kw)
+                    
+                    return unique_refined
+                else:
+                    mycontents_logger.warning(f"{sentiment_type} 배치 {batch_num} 정제 결과가 리스트가 아님: {type(refined_keywords)}")
+                    return batch_keywords
+            else:
+                mycontents_logger.warning(f"{sentiment_type} 배치 {batch_num} 정제 실패, 원본 키워드 반환")
+                return batch_keywords
+                
+        except Exception as e:
+            mycontents_logger.error(f"{sentiment_type} 배치 {batch_num} 키워드 정제 중 예외 발생: {e}")
+            mycontents_logger.error(traceback.format_exc())
+            return batch_keywords  # 실패 시 원본 반환
+
+
+    def summary_to_ollamaModel_v2(
+        self,result_summary:GenerateResponse, 
+        result_summary_json, 
+        contentsMetaResult:ContentsMetaResult, 
+        pred_kewords:dict,
+        ai_keywords:list,
+        mycontents_logger:logging.Logger
+        ) -> bool:
+        """Ollama 분석 결과의 json --> summary 모델 변환 
+        """          
+        try:
+            # 20251013 리자: 프롬프트 2)에서 키워드 삭제에 따른 변경:
+            # keyword = result_summary_json["keyword"]
+            # if keyword is not None and isinstance(keyword,list): 
+            #     contentsMetaResult.contentsMeta.keywords = keyword
+            keyword = ai_keywords
+            if keyword is not None and isinstance(keyword, list):
+                contentsMetaResult.contentsMeta.keywords = keyword
+                    
+            predkeywords = pred_kewords
+            if predkeywords is not None and isinstance(predkeywords,dict):
+                contentsMetaResult.contentsMeta.predKeywords = self.nomalize_keywords(predkeywords)
+
+            short_summary = result_summary_json["short_summary"]
+            if short_summary is not None and isinstance(short_summary,str):
+                contentsMetaResult.contentsMeta.shortSummary = short_summary
+                    
+            long_summary = result_summary_json["long_summary"]
+            if long_summary is not None:
+                if isinstance(long_summary,str):
+                    contentsMetaResult.contentsMeta.longSummary = long_summary
+
+            contentsMetaResult.contentsMeta.llmSummaryMeta = None
+            
+            return True
+        
+        except Exception as e :
+            mycontents_logger.error(str(e))
+            return False 
+
+    def summary_to_ollamaModel(self,result_summary:GenerateResponse, result_summary_json, contentsMetaResult:ContentsMetaResult, mycontents_logger:logging.Logger) -> bool:
+        """Ollama 분석 결과의 json --> summary 모델 변환 
+        """          
+        
+        try:
+            
+            keyword = result_summary_json["keyword"]
+            if keyword is not None and isinstance(keyword,list): 
+                contentsMetaResult.contentsMeta.keywords = keyword
+                    
+            predkeywords = result_summary_json["predkeywords"]
+            if predkeywords is not None and isinstance(predkeywords,dict):
+                contentsMetaResult.contentsMeta.predKeywords = self.nomalize_keywords(predkeywords)
+
+            short_summary = result_summary_json["short_summary"]
+            if short_summary is not None and isinstance(short_summary,str):
+                contentsMetaResult.contentsMeta.shortSummary = short_summary
+                    
+            long_summary = result_summary_json["long_summary"]
+            if long_summary is not None:
+                if isinstance(long_summary,str):
+                    contentsMetaResult.contentsMeta.longSummary = long_summary
+
+            llmAnalysisMeta = LLMAnalysisMeta()        
+            #total_tokens = prompt_tokens + response_tokens
+
+            try:
+                # llmAnalysisMeta.contents_id = contentsId
+                llmAnalysisMeta.analyze_type = "ollama"
+                llmAnalysisMeta.response_metadata_model = result_summary.model if result_summary.model is not None else ""
+                # llmAnalysisMeta.response_metadata_createdDt = result_summary.created_at if result_summary.created_at is not None else ""
+                # llmAnalysisMeta.response_metadata_done = result_summary.done if result_summary.done is not None else False
+                # llmAnalysisMeta.response_metadata_doneReason = result_summary.done_reason if result_summary.done_reason is not None else ""
+                # llmAnalysisMeta.response_metadata_totalDuration = result_summary.total_duration if result_summary.total_duration is not None else ""
+                # llmAnalysisMeta.response_metadata_loadDuration = result_summary.load_duration if result_summary.load_duration is not None else ""
+                # llmAnalysisMeta.response_metadata_promptEvalCount = result_summary.prompt_eval_count if result_summary.prompt_eval_count is not None else ""
+                # llmAnalysisMeta.response_metadata_promptEvalDuration = result_summary.prompt_eval_duration if result_summary.prompt_eval_duration is not None else ""
+                # llmAnalysisMeta.response_metadata_evalCount = result_summary.eval_count if result_summary.eval_count is not None else ""
+                # llmAnalysisMeta.response_metadata_evalDuration = result_summary.eval_duration if result_summary.eval_duration is not None else ""
+                #llmAnalysisMeta.usage_metadata_inputToken = prompt_tokens if prompt_tokens is not None else 0
+                #llmAnalysisMeta.usage_metadata_outputToken = response_tokens if response_tokens is not None else 0
+                #llmAnalysisMeta.usage_metadata_totalToken = total_tokens if total_tokens is not None else 0
+                #llmAnalysisMeta.regDt = datetime.now(timezone.utc)                
+            except Exception as e: 
+                pass        
+            contentsMetaResult.contentsMeta.llmSummaryMeta = llmAnalysisMeta
+            
+            return True
+        
+        except Exception as e :
+            mycontents_logger.error(str(e))
+            return False 
+
+
+    def extract_double(s):
+        match = re.search(r"-?\d+\.\d+|-?\d+", s)  # 소수점 포함 숫자 찾기
+        try:
+            return float(match.group()) if match else None
+        except Exception as e :
+            return 0.0
+
+    def extract_int(s):
+        match = re.search(r"-?\d+\.\d+|-?\d+", s)  # 소수점 포함 숫자 찾기
+        try:
+            return int(match.group()) if match else None
+        except Exception as e :
+            return 0
+
+    def str_to_double(self, strvalue): 
+        try:
+            return float(strvalue)
+        except Exception as e :
+            return self.extract_double(strvalue)  # 실패 시 extract_double 호출
+    def str_to_int(self, strvalue): 
+        try:
+            return int(strvalue)
+        except Exception as e :
+            return self.extract_int(strvalue)  # 실패 시 extract_double 호출
+
+    def nomalize_sentiment(self, positiveRatio, negativeRatio,neutralRatio): 
+        sum = positiveRatio + negativeRatio + neutralRatio 
+        if not (sum== 100):
+            positiveRatio = positiveRatio/sum * 100
+            negativeRatio = negativeRatio/sum * 100
+            neutralRatio = neutralRatio/sum * 100
+            positiveRatio = round(positiveRatio)
+            negativeRatio = round(negativeRatio)
+            neutralRatio  = round(neutralRatio)
+
+        return  positiveRatio, negativeRatio, neutralRatio
+        
+    
+    def nomalize_keywords(self,keyword_list:dict):
+        sum = 0
+        result_dict = {}
+        for keyword,value in keyword_list.items():
+            value = self.str_to_double(value)
+            result_dict[keyword] = value
+            sum += value 
+        
+        return  result_dict
+    
+
+    # 20251013 liza: 기능 추가
+    def assemble_sentiment_to_ollamaModel_v2(
+        self, 
+        queueContent:ContentsQueueVO, 
+        orgName:str, 
+        result_sentiment_ratio:GenerateResponse, 
+        result_sentiment_ratio_json, 
+        result_sentiment_reason:GenerateResponse, 
+        result_sentiment_reason_json,
+        result_sentiment_keywords:GenerateResponse, 
+        result_sentiment_keywords_json, 
+        contentsMetaResult:ContentsMetaResult, 
+        mycontents_logger:logging.Logger
+        ) -> bool:
+        """Ollama 분석 3개의 결과의 json을 통합하여 --> sentiment 모델 변환"""           
+        try:
+            contentsMetaResult.contentsMeta.sentiments = []
+            singleSentimentInfo = SentimentInfo()
+            singleSentimentInfo.orgName = orgName
+            singleSentimentInfo.orgId = queueContent.contentOrgId
+            singleSentimentInfo.positiveRatio = self.str_to_double(result_sentiment_ratio_json.get("positiveRatio", "0"))
+            singleSentimentInfo.negativeRatio = self.str_to_double(result_sentiment_ratio_json.get("negativeRatio", "0"))
+            singleSentimentInfo.neutralRatio = self.str_to_double(result_sentiment_ratio_json.get("neutralRatio", "0"))
+            # Safe handling for list fields
+            positiveKeywords = result_sentiment_keywords_json.get("positiveKeywords", [])
+            singleSentimentInfo.positiveKeywords = positiveKeywords if isinstance(positiveKeywords, list) else []
+            
+            negativeKeywords = result_sentiment_keywords_json.get("negativeKeywords", [])
+            singleSentimentInfo.negativeKeywords = negativeKeywords if isinstance(negativeKeywords, list) else []
+
+            neutralKeywords = result_sentiment_keywords_json.get("neutralKeywords", [])
+            singleSentimentInfo.neutralKeywords = neutralKeywords if isinstance(neutralKeywords, list) else []
+            
+            # Safe handling for string fields
+            singleSentimentInfo.positiveReason = str(result_sentiment_reason_json.get("positiveReason", ""))
+            singleSentimentInfo.negativeReason = str(result_sentiment_reason_json.get("negativeReason", ""))
+            singleSentimentInfo.neutralReason = str(result_sentiment_reason_json.get("neutralReason", ""))
+            singleSentimentInfo.reason = str(result_sentiment_reason_json.get("reason", ""))
+            contentsMetaResult.contentsMeta.sentiments.append(singleSentimentInfo) 
+            return True
+        except Exception as e :
+            mycontents_logger.error(str(e))
+            return False
+    
+
+    def sentiment_to_ollamaModel_v2(self,result_sentiment:GenerateResponse, result_sentiment_json, contentsMetaResult:ContentsMetaResult, mycontents_logger:logging.Logger) -> bool:
+        """Ollama 분석 결과의 json --> sentiment 모델 변환"""           
+        try:            
+            sentiments = result_sentiment_json["sentiments"]
+            contentsMetaResult.contentsMeta.sentiments = []        
+            
+            if sentiments is not None and isinstance(sentiments, list):
+                #organization = sentiments["organization"]
+                for sentiment in sentiments:
+                    sentiment_info = SentimentInfo()
+                    #sentiment = self.validation_check_sentiment(sentiment)
+                    if sentiment["organization"] == None:
+                        sentiment_info.orgName = ""
+                    elif isinstance(sentiment["organization"],list):
+                        if len(sentiment["organization"]) == 1:
+                            if isinstance(sentiment["organization"][0],str):
+                                sentiment_info.orgName= sentiment["organization"][0]        
+                            else: 
+                                sentiment_info.orgName = ""   
+                        else: 
+                            sentiment_info.orgName = ""
+                    elif isinstance(sentiment["organization"],str):
+                        sentiment_info.orgName= sentiment["organization"]
+                    else:
+                        raise Exception(f"올라마의 답변이 잘못되었습니다. (orgName : {sentiment['organization']})")
+                    
+                    if sentiment_info.orgName:
+                        sentiment_info.orgId = ContentsOrgService().get_orgId_by_synonym(sentiment_info.orgName)
+                    else :
+                        sentiment_info.orgId = ""
+                    sentiment_info.reason= sentiment.get("reason", "") 
+
+                    positiveRatioStr = self.str_to_double(sentiment.get("positiveRatio", "")) 
+                    negativeRatioStr = self.str_to_double(sentiment.get("negativeRatio", "") )
+                    neutralRatioStr = self.str_to_double(sentiment.get("neutralRatio", "") )
+
+                    positiveRatio, negativeRatio, neutralRatio = self.nomalize_sentiment(positiveRatioStr, negativeRatioStr, neutralRatioStr)
+
+                    sentiment_info.positiveRatio = positiveRatio
+                    sentiment_info.negativeRatio = negativeRatio  
+                    sentiment_info.neutralRatio = neutralRatio 
+                     
+                    sentiment_info.positiveKeywords = sentiment.get("positiveKeywords", "") 
+                    if not isinstance(sentiment_info.positiveKeywords,list):                        
+                        sentiment_info.positiveKeywords = [""]
+                    sentiment_info.negativeKeywords = sentiment.get("negativeKeywords", "") 
+                    if not isinstance(sentiment_info.negativeKeywords,list):                        
+                        sentiment_info.negativeKeywords = [""] 
+
+                    sentiment_info.positiveReason= sentiment.get("positiveReason", "")     
+                    if not isinstance(sentiment_info.positiveReason,str):
+                        sentiment_info.positiveReason = ""
+                    
+                    sentiment_info.negativeReason = sentiment.get("negativeReason", "") 
+                    if not isinstance(sentiment_info.negativeReason,str):
+                        sentiment_info.negativeReason = ""
+                    
+                    contentsMetaResult.contentsMeta.sentiments.append(sentiment_info)                     
+                
+            contentsMetaResult.contentsMeta.llmSentimentMeta = None
+            
+            return True
+        
+        except Exception as e :
+            mycontents_logger.error(str(e))
+            return False 
+    
+
+    def sentiment_to_ollamaModel(self,result_sentiment:GenerateResponse, result_sentiment_json, contentsMetaResult:ContentsMetaResult, mycontents_logger:logging.Logger) -> bool:
+        """Ollama 분석 결과의 json --> sentiment 모델 변환"""           
+        try:            
+            sentiments = result_sentiment_json["sentiments"]
+            contentsMetaResult.contentsMeta.sentiments = []        
+            
+            if sentiments is not None and isinstance(sentiments, list):
+                #organization = sentiments["organization"]
+                for sentiment in sentiments:
+                    sentiment_info = SentimentInfo()
+                    #sentiment = self.validation_check_sentiment(sentiment)
+                    if sentiment["organization"] == None:
+                        sentiment_info.orgName = ""
+                    elif isinstance(sentiment["organization"],list):
+                        if len(sentiment["organization"]) == 1:
+                            if isinstance(sentiment["organization"][0],str):
+                                sentiment_info.orgName= sentiment["organization"][0]        
+                            else: 
+                                sentiment_info.orgName = ""   
+                        else: 
+                            sentiment_info.orgName = ""
+                    elif isinstance(sentiment["organization"],str):
+                        sentiment_info.orgName= sentiment["organization"]
+                    else:
+                        raise Exception(f"올라마의 답변이 잘못되었습니다. (orgName : {sentiment['organization']})")
+                    
+                    if sentiment_info.orgName:
+                        sentiment_info.orgId = ContentsOrgService().get_orgId_by_synonym(sentiment_info.orgName)
+                    else :
+                        sentiment_info.orgId = ""
+                    sentiment_info.reason= sentiment.get("reason", "") 
+
+                    positiveRatioStr = self.str_to_double(sentiment.get("positiveRatio", "")) 
+                    negativeRatioStr = self.str_to_double(sentiment.get("negativeRatio", "") )
+                    neutralRatioStr = self.str_to_double(sentiment.get("neutralRatio", "") )
+
+                    positiveRatio, negativeRatio, neutralRatio = self.nomalize_sentiment(positiveRatioStr, negativeRatioStr, neutralRatioStr)
+
+                    sentiment_info.positiveRatio = positiveRatio
+                    sentiment_info.negativeRatio = negativeRatio  
+                    sentiment_info.neutralRatio = neutralRatio 
+                     
+                    sentiment_info.positiveKeywords = sentiment.get("positiveKeywords", "") 
+                    if not isinstance(sentiment_info.positiveKeywords,list):                        
+                        sentiment_info.positiveKeywords = [""]
+                    sentiment_info.negativeKeywords = sentiment.get("negativeKeywords", "") 
+                    if not isinstance(sentiment_info.negativeKeywords,list):                        
+                        sentiment_info.negativeKeywords = [""] 
+
+                    sentiment_info.positiveReason= sentiment.get("positiveReason", "")     
+                    if not isinstance(sentiment_info.positiveReason,str):
+                        sentiment_info.positiveReason = ""
+                    
+                    sentiment_info.negativeReason = sentiment.get("negativeReason", "") 
+                    if not isinstance(sentiment_info.negativeReason,str):
+                        sentiment_info.negativeReason = ""
+                    
+                    contentsMetaResult.contentsMeta.sentiments.append(sentiment_info)                     
+
+            llmAnalysisMeta = LLMAnalysisMeta()     
+            #total_tokens = prompt_tokens + response_tokens
+               
+            try:
+                # llmAnalysisVO.contents_id = contentsId
+                llmAnalysisMeta.analyze_type = "ollama"
+                llmAnalysisMeta.response_metadata_model = result_sentiment.model if result_sentiment.model is not None else ""
+                # llmAnalysisMeta.response_metadata_createdDt = result_sentiment.created_at if result_sentiment.created_at is not None else ""
+                # llmAnalysisMeta.response_metadata_done = result_sentiment.done if result_sentiment.done is not None else False
+                # llmAnalysisMeta.response_metadata_doneReason = result_sentiment.done_reason if result_sentiment.done_reason is not None else ""
+                # llmAnalysisMeta.response_metadata_totalDuration = result_sentiment.total_duration if result_sentiment.total_duration is not None else ""
+                # llmAnalysisMeta.response_metadata_loadDuration = result_sentiment.load_duration if result_sentiment.load_duration is not None else ""
+                # llmAnalysisMeta.response_metadata_promptEvalCount = result_sentiment.prompt_eval_count if result_sentiment.prompt_eval_count is not None else ""
+                # llmAnalysisMeta.response_metadata_promptEvalDuration = result_sentiment.prompt_eval_duration if result_sentiment.prompt_eval_duration is not None else ""
+                # llmAnalysisMeta.response_metadata_evalCount = result_sentiment.eval_count if result_sentiment.eval_count is not None else ""
+                # llmAnalysisMeta.response_metadata_evalDuration = result_sentiment.eval_duration if result_sentiment.eval_duration is not None else ""
+                #llmAnalysisMeta.usage_metadata_inputToken = prompt_tokens if prompt_tokens is not None else 0
+                #llmAnalysisMeta.usage_metadata_outputToken = response_tokens if response_tokens is not None else 0
+                #llmAnalysisMeta.usage_metadata_totalToken = total_tokens if total_tokens is not None else 0
+                llmAnalysisMeta.regDt = datetime.now(timezone.utc)                
+            except Exception as e: 
+                pass    
+                
+            contentsMetaResult.contentsMeta.llmSentimentMeta = llmAnalysisMeta
+            
+            return True
+        
+        except Exception as e :
+            mycontents_logger.error(str(e))
+            return False 
+    
+    
+        
+    def validation_check_sentiment(self,sentiment):
+        reason = sentiment.get("reason", "") 
+        if not isinstance(reason,str):
+            reason = "" 
+        # positiveRatio = sentiment.get("positiveRatio", "") 
+        # if not isinstance(positiveRatio,str):
+        #     if isinstance(positiveRatio,str):
+        # 1. typecheck
+        # 2.  0 ~ 9 in str
+        negativeRatio = sentiment.get("negativeRatio", "") 
+        if not isinstance(reason,str):
+            reason = ""
+        neutralRatio = sentiment.get("neutralRatio", "") 
+        if not isinstance(reason,str):
+            reason = ""
+        positiveKeywords = sentiment.get("positiveKeywords", "") 
+        if not isinstance(reason,str):
+            reason = ""
+        negativeKeywords = sentiment.get("negativeKeywords", "") 
+        if not isinstance(reason,str):
+            reason = ""
+        positiveReason = sentiment.get("positiveReason", "") 
+        if not isinstance(reason,str):
+            reason = ""
+        negativeReason = sentiment.get("negativeReason", "") 
+        if not isinstance(reason,str):
+            reason = ""
+        pass 
+    
+    def to_error_ollamaModel(self) -> ContentsMetaResult:
+        
+        ollamaModel = ContentsMetaResult()
+        ollamaModel.contentsMeta = None
+        ollamaModel.metaSucYN = "N" 
+        ollamaModel.metaAnalyzeDt = datetime.now(timezone.utc)
+        return ollamaModel
+  
+if __name__ =="__main__":
+    
+    analysisOllamaGenerateCall = AnalysisOllamaGenerateCall()
+    analysisOllamaGenerateCall.analysis_main()
+    
+    pass 
+
+
+
+
+
+
+
+

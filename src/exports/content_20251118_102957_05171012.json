@@ -1,0 +1,67 @@
+{
+  "_id": "691c4a8f3200c93926e130dc",
+  "title": "농림축산검역본부장, 고병원성 조류인플루엔자 차단방역을 위해 방역 현장 방문",
+  "url": "https://www.qia.go.kr/viewwebQiaCom.do?id=66230&type=6_18_1bdsm",
+  "contentsOrgId": "A0051",
+  "contentsOrgName": "농림축산검역본부",
+  "categoryId": "B0001",
+  "categoryName": "보도자료",
+  "originallink": "https://www.qia.go.kr/viewwebQiaCom.do?id=66230&type=6_18_1bdsm",
+  "link": "https://www.qia.go.kr/viewwebQiaCom.do?id=66230&type=6_18_1bdsm",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:56:58.528000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "농림축산검역본부장, 고병원성 조류인플루엔자 차단방역을 위해 방역 현장 방문",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:29:35.602229",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "농림축산식품부",
+      "고병원성 조류인플루엔자",
+      "방역",
+      "검역",
+      "농림축산검역본부"
+    ],
+    "shortSummary": "농림축산검역본부 본부장이 ㈜하림 방문해 고병원성 조류인플루엔자 방역 현황 점검.",
+    "longSummary": "농림축산검역본부 최정록 본부장은 11월 17일 ㈜하림을 방문하여 계열농장의 방역 현황을 점검했다. 가금 농장에서의 조류인플루엔자 발생을 막기 위해 차단방역에 최선을 다하고 있다고 설명하였다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0051",
+        "orgName": "농림축산검역본부",
+        "positiveRatio": 100.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 0.0,
+        "reason": "기사 내용이 농림축산검역본부장의 방역 현지 방문과 방역 관리 강화에 중점을 둔 긍정적인 측면에서 분석되었으며, 부정적인 언급은 발견되지 않았음",
+        "positiveReason": "농림축산검역본부장이 방역 현장을 방문하여 계열농장의 방역 실태와 자체 방역 프로그램을 점검하고 강화하는 내용",
+        "negativeReason": "부정적 내용 없음",
+        "positiveKeywords": [
+          "고병원성 조류인플루엔자",
+          "방역 현장 방문",
+          "방역 프로그램",
+          "계열 농장"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:29:52.409460+00:00",
+  "imageId": "6784a2911ccfd362485cd9dd",
+  "v1ContentsIdx": null
+}

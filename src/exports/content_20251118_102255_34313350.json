@@ -1,0 +1,77 @@
+{
+  "_id": "691c48ec3200c93926e130c8",
+  "title": "2025년도 3차 전력정보화 및 정책지원사업(신재생에너지분야) 신규지원 대상과제 공고",
+  "url": "https://www.energy.or.kr/front/board/View2.do?boardMngNo=3&24478",
+  "contentsOrgId": "A0023",
+  "contentsOrgName": "한국에너지공단",
+  "categoryId": "B0003",
+  "categoryName": "공지사항",
+  "originallink": "https://www.energy.or.kr/front/board/View2.do?boardMngNo=3&24478",
+  "link": "https://www.energy.or.kr/front/board/View2.do?boardMngNo=3&24478",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:07:41.477000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "2025년도 3차 전력정보화 및 정책지원사업(신재생에너지분야) 신규지원 대상과제 공고",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:22:36.552366",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "에너지공단",
+      "한국에너지공단",
+      "전자정부 누리집",
+      "알권리",
+      "신재생 에너지",
+      "에너지 리더"
+    ],
+    "shortSummary": "한국에너지공단은 대한민국 공식 전자정부 누리집입니다.",
+    "longSummary": "한국에너지공단은 대한민국 공식 전자정부 누리집입니다. 한국에너지공단은 온실가스 저감을 유도하고 국민의 삶의 질을 제고합니다. 합리적ㆍ효율적 에너지이용 증진과 신재생 에너지 보급 촉진 및 산업 활성화를 목표로 하고 있습니다.",
+    "predKeywords": {
+      "정보보호": 0.2474520355463028,
+      "에너지": 0.20517753064632416,
+      "전력": 0.124351367354393
+    },
+    "sentiments": [
+      {
+        "orgId": "A0023",
+        "orgName": "한국에너지공단",
+        "positiveRatio": 80.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 15.0,
+        "reason": "기사 내용을 종합적으로 분석했을 때, 긍정적인 표현과 목표가 많아 기관에 대한 긍정적 인식을 주는 경향이 강했다. 부정적인 표현은 거의 nonexistent.",
+        "positiveReason": "한국에너지공단의 목적은 '국민들의 알권리를 최대한 보장하고 편리하게 이용할 수 있습니다.'이고, '온실가스 저감을 유도하고 국민의 삶의 질을 제고합니다.' 등 긍정적인 내용이 많습니다.",
+        "negativeReason": "부정적인 표현은 거의 존재하지 않으며, 긍정적인 표현에 비해 적다.",
+        "positiveKeywords": [
+          "알권리 보장",
+          "편리한 이용",
+          "공공데이터 활용",
+          "온실가스 저감",
+          "국민 삶의 질 제고",
+          "미래 에너지 리더",
+          "합리적 에너지이용",
+          "신재생 에너지 보급",
+          "산업 활성화"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:22:55.970663+00:00",
+  "imageId": "6784a2911ccfd362485cda49",
+  "v1ContentsIdx": null
+}

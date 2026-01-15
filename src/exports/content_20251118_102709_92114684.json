@@ -1,0 +1,64 @@
+{
+  "_id": "691c49ea3200c93926e130d4",
+  "title": "U.S. Desk는 한-미 식물검역당국 간 소통창구로 생명공학제품(LMO) 승인과는 관련이 없습니다.",
+  "url": "http://www.mafra.go.kr/bbs/home/793/575920/artclView.do",
+  "contentsOrgId": "A0037",
+  "contentsOrgName": "농림축산식품부",
+  "categoryId": "B0017",
+  "categoryName": "해명/설명",
+  "originallink": "http://www.mafra.go.kr/bbs/home/793/575920/artclView.do",
+  "link": "http://www.mafra.go.kr/bbs/home/793/575920/artclView.do",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T09:27:48.482000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "U.S. Desk는 한-미 식물검역당국 간 소통창구로 생명공학제품(LMO) 승인과는 관련이 없습니다.",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:26:50.840876",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "U.S. Desk",
+      "생명공학제품(LMO)",
+      "식물검역",
+      "미국 과일 수입"
+    ],
+    "shortSummary": "U.S. Desk는 한-미 식물검역당국 간 소통창구로 생명공학제품(LMO) 승인과는 관련이 없습니다.",
+    "longSummary": "농림축산식품부는 미국 원예제품에 대한 검역업무를 담당하는 'U.S. Desk'를 설치할 계획입니다. 이 U.S. Desk는 한-미 식물검역당국 간 소통창구로, 생명공학제품(LMO) 승인과 관련이 없습니다. 주요 업무로는 미국산 원예제품에 대한 검역업무가 포함됩니다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0037",
+        "orgName": "농림축산식품부",
+        "positiveRatio": 30.0,
+        "negativeRatio": 20.0,
+        "neutralRatio": 50.0,
+        "reason": "기사 내용의 중립적이고 사실적인 표현과 소통창구 설치에 대한 설명이 긍정적으로 받아들여질 가능성이 크지만, 일부 부정적 표현도 포함되어 있어 전체적인 감정 비율은 양극화된 측면이 있는 것으로 판단.",
+        "positiveReason": "소통창구 설치가 한-미 식물검역당국의 협력을 강화하는 데 기여할 수 있다는 설명.",
+        "negativeReason": "생명공학제품(LMO) 승인과 관련성이 없다는 점에 대해 일부 비관적으로 받아들일 수 있는 부분이 포함되어 있어.",
+        "positiveKeywords": [],
+        "negativeKeywords": [
+          "비관세 문제",
+          "미 압력"
+        ]
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:27:04.777852+00:00",
+  "imageId": "6784a2881ccfd362485cd98f",
+  "v1ContentsIdx": null
+}

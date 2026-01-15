@@ -1,0 +1,72 @@
+{
+  "_id": "691c446b3200c93926e1307e",
+  "title": "한국남동발전, ISO 반부패·준법경영 통합인증 5년 연속 유지",
+  "url": "https://www.pressman.kr/news/articleView.html?idxno=96339",
+  "contentsOrgId": "A0014",
+  "contentsOrgName": "한국남동발전(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.pressman.kr/news/articleView.html?idxno=96339",
+  "link": "https://www.pressman.kr/news/articleView.html?idxno=96339",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:00:16.977000+00:00",
+  "collectKeyword": "한국남동발전",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한국남동발전, ISO 반부패·준법경영 통합인증 5년 연속 유지",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:03:23.118716",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "국제인증기관",
+      "부패방지경영시스템",
+      "준법경영시스템",
+      "ISO 37001",
+      "ISO 37301",
+      "에너지 공기업"
+    ],
+    "shortSummary": "한국남동발전이 ISO 37001과 ISO 37301 통합인증 유지",
+    "longSummary": "한국남东发电(CEO 강기윤)가 국제 인증기관 한국준법진흥원으로부터 ISO 37001 부패방지경영시스템 및 ISO 37301 준법경영시스템 사후 심사를 통과하며 5년 연속 통합인증을 유지했다. 이를 통해 조직의 윤리·준법 경영 문화가 더욱 내재화되었다.",
+    "predKeywords": {
+      "보안": 0.2856147289276123,
+      "정보보호": 0.22784928977489471,
+      "전력": 0.16621659696102142
+    },
+    "sentiments": [
+      {
+        "orgId": "A0014",
+        "orgName": "한국남동발전(주)",
+        "positiveRatio": 90.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 5.0,
+        "reason": "남동발전의 부패방지 및 준법경영 시스템이 국제인증을 5년 연속으로 통과하며, 회사의 윤리·준법 경영 문화가 내재화된다는 긍정적인 내용이 주를 이룹니다.",
+        "positiveReason": "남동발전은 ISO 37001과 ISO 37301의 통합인증을 5년 연속 유지했고, 사전진단부터 사후평가를 포함하는 체계적인 리스크 관리를 강화했으며, 내부통제 실무위원회를 운영하여 현장 실행력을 높였다.",
+        "negativeReason": "아무런 부정적인 내용이 발견되지 않았습니다.",
+        "positiveKeywords": [
+          "부패방지경영시스템",
+          "준법경영시스템",
+          "5년 연속 통합인증",
+          "윤리·준법경영 문화"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:03:40.446193+00:00",
+  "imageId": "6784a2911ccfd362485cda49",
+  "v1ContentsIdx": null
+}

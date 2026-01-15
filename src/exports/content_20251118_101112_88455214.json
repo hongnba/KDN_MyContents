@@ -1,0 +1,67 @@
+{
+  "_id": "691c462a3200c93926e13095",
+  "title": "제안설명하는 강희업 국토교통부 2차관",
+  "url": "https://www.newsis.com/view/NISI20251118_0021064577",
+  "contentsOrgId": "A0033",
+  "contentsOrgName": "국토교통부",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.newsis.com/view/NISI20251118_0021064577",
+  "link": "https://www.newsis.com/view/NISI20251118_0021064577",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:20:45.943000+00:00",
+  "collectKeyword": "국토교통부",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "제안설명하는 강희업 국토교통부 2차관",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:10:50.419936",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "강희업 국토교통부 2차관",
+      "제안설명",
+      "국토교통위원회 전체회의"
+    ],
+    "shortSummary": "강희업 국토교통부 2차관이 국회에서 제안설명을 하고 있다.",
+    "longSummary": "강희업 국토교통부 2차관은 서울 여의도의 국회에서 열린 국토교통위원회 전체회의에서 제안설명을 하고 있다. 그는 국토교통 분야에 대한 발전 방향과 정책을 설명하며, 기존 문제점을 해결하고 미래를 위해 나아가려는 지속적인 노력을 강조했다.",
+    "predKeywords": {
+      "원자력": 0.21487116813659668,
+      "통신": 0.168046236038208,
+      "클라우드": 0.16178558766841888
+    },
+    "sentiments": [
+      {
+        "orgId": "A0033",
+        "orgName": "국토교통부",
+        "positiveRatio": 80.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 20.0,
+        "reason": "기사 제목과 본문을 종합적으로 분석했을 때, 모든 내용이 매우 긍정적인 분위기를 자아내며, 국토교통부 2차관의 제안설명이 원활하게 진행되는 것으로 보임",
+        "positiveReason": "제안설명이 잘 이루어졌으며, 이는 긍정적이라는 점에서, 전체적인 기사 내용을 분석한 결과, 긍정적인 감정을 지울 수 없음.",
+        "negativeReason": "없음",
+        "positiveKeywords": [
+          "강희업 국토교통부 2차관",
+          "제안설명"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:11:08.268133+00:00",
+  "imageId": "6784a2911ccfd362485cd9b7",
+  "v1ContentsIdx": null
+}

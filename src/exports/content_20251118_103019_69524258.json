@@ -1,0 +1,70 @@
+{
+  "_id": "691c4aa53200c93926e130dd",
+  "title": "[2025.11.18.] 중동 사태 및 글로벌 해상 물류 관련 현지 동향",
+  "url": "https://dream.kotra.or.kr/kotranews/cms/news/actionKotraBoardDetail.do?pageNo=1&pagePerCnt=10&SITE_NO=3&MENU_ID=290&CONTENTS_NO=1&bbsGbn=464&bbsSn=464&pNttSn=236729&recordCountPerPage=10&viewType=&pStartDt=&pEndDt=&sSearchVal=&pRegnCd=&pNatCd=&pKbcCd=&pIndustCd=&pNttCtgrySn=&LCLSF_CD=&CLSF_CD=&sSearchVal=",
+  "contentsOrgId": "A0060",
+  "contentsOrgName": "KOTRA 해외시장뉴스",
+  "categoryId": "B0022",
+  "categoryName": "글로벌 이슈 모니터링",
+  "originallink": "https://dream.kotra.or.kr/kotranews/cms/news/actionKotraBoardDetail.do?pageNo=1&pagePerCnt=10&SITE_NO=3&MENU_ID=290&CONTENTS_NO=1&bbsGbn=464&bbsSn=464&pNttSn=236729&recordCountPerPage=10&viewType=&pStartDt=&pEndDt=&sSearchVal=&pRegnCd=&pNatCd=&pKbcCd=&pIndustCd=&pNttCtgrySn=&LCLSF_CD=&CLSF_CD=&sSearchVal=",
+  "link": "https://dream.kotra.or.kr/kotranews/cms/news/actionKotraBoardDetail.do?pageNo=1&pagePerCnt=10&SITE_NO=3&MENU_ID=290&CONTENTS_NO=1&bbsGbn=464&bbsSn=464&pNttSn=236729&recordCountPerPage=10&viewType=&pStartDt=&pEndDt=&sSearchVal=&pRegnCd=&pNatCd=&pKbcCd=&pIndustCd=&pNttCtgrySn=&LCLSF_CD=&CLSF_CD=&sSearchVal=",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T10:00:30.799000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "[2025.11.18.] 중동 사태 및 글로벌 해상 물류 관련 현지 동향",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:29:57.506992",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "중동 사태",
+      "UN 안보리",
+      "가자지구 평화구상",
+      "국제안정화군",
+      "트럼프 대통령"
+    ],
+    "shortSummary": "UN 안보리, 가자지구 평화구상을 지지하는 결의안 채택",
+    "longSummary": "2025년 11월 18일, UN 안전보장이사회는 가자지구 평화구상을 지지하는 결의안을 채택했습니다. 이 결의안에는 국제안정화군(ISF)과 임시 통치기구 '평화위원회'의 창설이 포함되어 있습니다. 또한, 팔레스타인의 독립국가 건설 가능성도 언급되었습니다. 상하이컨테이너운임지수(SCFI)는 하락 추세이며, 두바이유 브렌트유는 러시아 원유 수출 재개와 공급 과잉 가능성으로 하락했습니다.",
+    "predKeywords": {
+      "AI": 0.08135750889778137,
+      "플랫폼": 0.07674341648817062,
+      "디지털": 0.054635822772979736
+    },
+    "sentiments": [
+      {
+        "orgId": "A0060",
+        "orgName": "KOTRA 해외시장뉴스",
+        "positiveRatio": 30.0,
+        "negativeRatio": 30.0,
+        "neutralRatio": 40.0,
+        "reason": "기사의 전반적인 내용이 중동 사태와 관련된 다양한 국제적 결의와 유가의 변동, 물류 동향 등을 다루며, 이는 대체로 중립적이고 사실을 보고하는 성격임에도 불구하고, 일부 부정적 요소들(중동 긴장, 유가 하락 등)가 포함되어 있어 전체적으로 긍정과 부정 비율이 동일한 30.0%를 나타냄",
+        "positiveReason": "기사의 전반적인 내용에서 중립적이고 사실을 보고하는 성격으로, 다양한 국제적 결의와 물류 동향 등을 다루고 있어.",
+        "negativeReason": "중동 긴장과 유가 하락 등 일부 부정적 요소들이 포함되어 있어.",
+        "positiveKeywords": [
+          "UN 안보리",
+          "평화구상",
+          "국제안정화군"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:30:19.170484+00:00",
+  "imageId": "6784a2911ccfd362485cd991",
+  "v1ContentsIdx": null
+}

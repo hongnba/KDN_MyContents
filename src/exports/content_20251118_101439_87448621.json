@@ -1,0 +1,65 @@
+{
+  "_id": "691c46f93200c93926e130a0",
+  "title": "농식품부·농정원, 5년 공들인 K-스마트농업 기술 인도네시아에 이양",
+  "url": "https://www.newsis.com/view/NISX20251118_0003407858",
+  "contentsOrgId": "A0037",
+  "contentsOrgName": "농림축산식품부",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.newsis.com/view/NISX20251118_0003407858",
+  "link": "https://www.newsis.com/view/NISX20251118_0003407858",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:26:37.133000+00:00",
+  "collectKeyword": "농식품부",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "농식품부·농정원, 5년 공들인 K-스마트농업 기술 인도네시아에 이양",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:14:17.986632",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "스마트농업",
+      "K-스마트팜",
+      "인도네시아",
+      "청년농업인",
+      "소득향상",
+      "밀레니얼 농업인"
+    ],
+    "shortSummary": "농림축산식품부와 농정원은 5년간의 스마트농업 협력사업을 인도네시아 정부에 공식 이양했다.",
+    "longSummary": "농림축산식품부와 농정원이 지난 5년간 추진해온 K-스마트농업 기술을 인도네시아에 공식 이양했다. 이 사업은 인도네시아 청년농업인 소득 향상과 밀레니얼 농업 발전을 목표로, 한국의 스마트팜 기술을 인도네시아에 전수하는 데 그쳤다. 인도네시아 농업부와 공동으로 진행된 이 사업은 토마토, 파프리카, 멜론 등의 고부가가치 품목 생산 안정화를 위한 모델을 제시하며 현지 소비자들로부터 호응을 얻었다. 또한, 알리 자밀 인도네리아 농업부 사무총장은 이 사업이 인도네시아 농업 인적자원 교육 강화와 디지털 전환에 큰 혜택을 가져왔다고 평가했다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0037",
+        "orgName": "농림축산식품부",
+        "positiveRatio": 80.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 15.0,
+        "reason": "기사 내용이 주로 스마트농업 기술 전수와 농업소득 향상, 협력성 등 긍정적인 요소를 다루며, 부정적 요인은 찾지 못했다.",
+        "positiveReason": "긍정 비율 판단 근거 (문장 형식): 기사에서 K-스마트팜 구축과 운영 결과가 긍정적으로 언급되었으며, 인도네시아 농업인들의 역량 강화와 소득 향상이 주요 내용으로 다루어짐.",
+        "negativeReason": "부정 비율 판단 근거 (문장 형식): 부정적인 요소는 찾지 못했으므로 기사 전체적으로 긍정적인 요소를 강조한 결과로 판단됨.",
+        "positiveKeywords": [
+          "K-스마트팜"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:14:35.360338+00:00",
+  "imageId": "6784a2911ccfd362485cda23",
+  "v1ContentsIdx": null
+}

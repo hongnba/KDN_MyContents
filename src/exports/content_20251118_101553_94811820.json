@@ -1,0 +1,72 @@
+{
+  "_id": "691c47423200c93926e130a4",
+  "title": "한국농어촌공사 청주지사, 공사 현장 안전관리 강화",
+  "url": "https://www.inews365.com/news/article.html?no=894887",
+  "contentsOrgId": "A0038",
+  "contentsOrgName": "한국농어촌공사",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://www.inews365.com/news/article.html?no=894887",
+  "link": "https://www.inews365.com/news/article.html?no=894887",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:26:47.373000+00:00",
+  "collectKeyword": "한국농어촌공사",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "한국농어촌공사 청주지사, 공사 현장 안전관리 강화",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:15:30.808644",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "데이터",
+      "AI",
+      "플랫폼",
+      "디지털",
+      "반도체",
+      "에너지"
+    ],
+    "shortSummary": "김준기 한국농어촌공사 청주지사장이 현장점검을 실시했다. 충북도는 국립노화연구소를 오송에 재추진한다. 배 가격이 상승하고 있다.",
+    "longSummary": "김준기 한국농어촌공사 청주지사장은 18일 오전 7시 강내지구 수리시설개보수사업 현장을 방문해 현장점검을 실시했다. 이에 따라 지속적인 시설 관리와 유지에 대한 주의가 필요하다. 충북도는 국립노화연구소를 오송에 재추진한다. 이 연구소는 AI 및 바이오 산업 거점 조성 목표로, 국내 바이오산업 중심지인 오송을 글로벌 클러스터로 도약시키기 위한 핵심 인프라가 될 예정이다. 현재 국회가 심사에 돌입한 내년도 정부예산안에 예비타당성조사 사전기획 연구용역비 3억 원이 반영되지 않았으나, 충북도는 이를 해결하기 위해 기획하고 있다. 오송에 바이오 관련 연구기관 및 기업 등이 집적되어 있는 만큼, 국립노화연구소의 설립이 이곳이 '노화 특화 바이오 도시'로 성장하는 데 중요한 역할을 할 것으로 예상된다. 한편, 배 가격이 상승하고 있다. 이는 농업 생산성 향상을 위한 다양한 노력이 이어지고 있는 결과 중 하나로, 지속적인 연구와 기술 발전이 필요하다.",
+    "predKeywords": {
+      "데이터": 0.1495818942785263,
+      "디지털": 0.07715119421482086,
+      "AI": 0.0245576910674572
+    },
+    "sentiments": [
+      {
+        "orgId": "A0038",
+        "orgName": "한국농어촌공사",
+        "positiveRatio": 70.0,
+        "negativeRatio": 10.0,
+        "neutralRatio": 20.0,
+        "reason": "기사 내용에서 농어촌공사의 청주지사장이 현장을 방문해 점검하는 부분과 국립노화연구소의 재추진을 위한 정부예산 확보 시도가 긍정적인 요소를 강조하고 있으며, 기사 전체적으로 밝은 분위기를 지니고 있어 긍정 비율이 높음을 판단하였다.",
+        "positiveReason": "기사 내용에서 농어촌공사의 청주지사장이 현장을 방문해 점검하는 부분과 국립노화연구소의 재추진을 위한 정부예산 확보 시도가 긍정적인 요소를 강조하고 있어.",
+        "negativeReason": "",
+        "positiveKeywords": [
+          "성과 향상",
+          "혁신"
+        ],
+        "negativeKeywords": [
+          "비리 의혹"
+        ]
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:15:53.928045+00:00",
+  "imageId": "6784a2911ccfd362485cd9b7",
+  "v1ContentsIdx": null
+}

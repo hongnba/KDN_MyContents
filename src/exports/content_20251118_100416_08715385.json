@@ -1,0 +1,67 @@
+{
+  "_id": "691c448e3200c93926e13080",
+  "title": "제논, 한국중부발전 2차 AI 프로젝트 수주",
+  "url": "http://www.inews24.com/view/1908121",
+  "contentsOrgId": "A0015",
+  "contentsOrgName": "한국중부발전(주)",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "http://www.inews24.com/view/1908121",
+  "link": "http://www.inews24.com/view/1908121",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:00:23.244000+00:00",
+  "collectKeyword": "한국중부발전",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "제논, 한국중부발전 2차 AI 프로젝트 수주",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:03:58.478021",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "AI",
+      "플랫폼",
+      "디지털 전환"
+    ],
+    "shortSummary": "제논이 한국중부발전에 AI 에이전트 플랫폼 및 업무 자동화 개발 사업을 수주했다.",
+    "longSummary": "제논은 한국중부발전에 AI 에이전트 플랫폼 및 업무 자동화를 개발하기 위해 2차 사업을 수주했다. 기존의 하이코미(Hi-KOMI) 서비스를 기반으로 한 이번 사업은 한국중부발전의 특화 AI 에이전트 플랫폼, 업무 자동화 시스템, 모바일 AI 서비스 연동 등 3개 영역에서 진행된다. 특히, '액션블 AI' 기반의 원에이전트(OneAgent)와 같은 제논의 최신 AI 기술이 포함되어 발전 업무 전반의 디지털 전환을 가속화하고 생산성을 높이는 데 기여할 것으로 기대된다.",
+    "predKeywords": {
+      "AI": 0.4763233959674835,
+      "플랫폼": 0.1794554740190506,
+      "데이터": 0.026328667998313904
+    },
+    "sentiments": [
+      {
+        "orgId": "A0015",
+        "orgName": "한국중부발전(주)",
+        "positiveRatio": 67.5,
+        "negativeRatio": 1.25,
+        "neutralRatio": 31.25,
+        "reason": "기사 내용에서 긍정적인 언급과 부정적인 언급의 비율을 분석하여 판단했습니다.",
+        "positiveReason": "긍정적인 표현이 많이 나옵니다. 예를 들어, '한국중부발전에 구축된 기존 플랫폼의 기능과 품질 고도화' 등은 긍정적인 내용입니다.",
+        "negativeReason": "부정적인 언급은 거의 없으며, 전체적으로 긍정적인 조짐을 보입니다.",
+        "positiveKeywords": [
+          "기술 혁신",
+          "성과 향상"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:04:16.727478+00:00",
+  "imageId": "6784a2911ccfd362485cd9a1",
+  "v1ContentsIdx": null
+}

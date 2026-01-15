@@ -1,0 +1,70 @@
+{
+  "_id": "691c461b3200c93926e13094",
+  "title": "전남정보문화산업진흥원, AgTech 스타트업 해외 투자 성과 창출",
+  "url": "https://platum.kr/archives/275072",
+  "contentsOrgId": "A0028",
+  "contentsOrgName": "전남정보문화산업진흥원",
+  "categoryId": "B0010",
+  "categoryName": "네이버 뉴스",
+  "originallink": "https://platum.kr/archives/275072",
+  "link": "https://platum.kr/archives/275072",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:20:41.976000+00:00",
+  "collectKeyword": "전남정보문화산업진흥원",
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "전남정보문화산업진흥원, AgTech 스타트업 해외 투자 성과 창출",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:10:35.529210",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "AI",
+      "농업",
+      "기술",
+      "자동화",
+      "지능형 농업",
+      "글로벌 시장 진출"
+    ],
+    "shortSummary": "",
+    "longSummary": "",
+    "predKeywords": {
+      "AI": 0.514643669128418,
+      "데이터": 0.5144445896148682,
+      "정보보호": 0.35348308086395264
+    },
+    "sentiments": [
+      {
+        "orgId": "A0028",
+        "orgName": "전남정보문화산업진흥원",
+        "positiveRatio": 80.0,
+        "negativeRatio": 5.0,
+        "neutralRatio": 15.0,
+        "reason": "전남정보문화산업진흥원과 관련된 기사가 긍정적인 감정을 반영하고 있으며, 부정적 내용은 거의 없어 전체적으로 긍정적인 감정이 강하게 나타난다.",
+        "positiveReason": "기사에 언급된 전남 AgTech 스타트업들의 성과와 관련된 긍정적인 내용, 그리고 기관의 주요 업무와 그 결과가 긍정적인 것으로 묘사되고 있어",
+        "negativeReason": "부정적인 단락이나 문장이 거의 없는 점",
+        "positiveKeywords": [
+          "성과 향상",
+          "글로벌 경쟁력 강화"
+        ],
+        "negativeKeywords": []
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:10:50.391702+00:00",
+  "imageId": "6784a2911ccfd362485cd997",
+  "v1ContentsIdx": null
+}

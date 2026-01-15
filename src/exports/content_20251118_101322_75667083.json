@@ -1,0 +1,68 @@
+{
+  "_id": "691c46ad3200c93926e1309c",
+  "title": "농식품부, 양돈질병 방역관리 강화에 박차... 대구·경상 권역 현장설명회 참석 및 야생멧돼지 포획트랩 운영실태 점검",
+  "url": "http://www.mafra.go.kr/bbs/home/792/575916/artclView.do",
+  "contentsOrgId": "A0037",
+  "contentsOrgName": "농림축산식품부",
+  "categoryId": "B0001",
+  "categoryName": "보도자료",
+  "originallink": "http://www.mafra.go.kr/bbs/home/792/575916/artclView.do",
+  "link": "http://www.mafra.go.kr/bbs/home/792/575916/artclView.do",
+  "pubDt": "2025-11-18T00:00:00+00:00",
+  "collectDt": "2025-11-18T08:26:35.380000+00:00",
+  "collectKeyword": null,
+  "lookCount": 0,
+  "likeCount": 0,
+  "disLikeCount": 0,
+  "lookIds": [],
+  "likeIds": [],
+  "disLikeIds": [],
+  "rawCollectSucYN": "Y",
+  "contentsRaw": {
+    "title": "농식품부, 양돈질병 방역관리 강화에 박차... 대구·경상 권역 현장설명회 참석 및 야생멧돼지 포획트랩 운영실태 점검",
+    "contents": "",
+    "image": "",
+    "errorInfo": null
+  },
+  "rawCollectDt": "2025-11-18T10:13:01.231117",
+  "metaSucYN": "Y",
+  "contentsMeta": {
+    "keywords": [
+      "양돈질병",
+      "방역관리",
+      "대구·경상 권역"
+    ],
+    "shortSummary": "농식품부가 양돼지 질병 방역 관리 강화를 위해 현장 설명회를 개최하고, 야생 멧돼지 포획 트랩 운영 실태 점검을 실시했다.",
+    "longSummary": "농식품부는 양돼지 질병 방역 관리 강화에 박차를 가하기 위해 대구·경상 권역에서 현장 설명회를 개최하고, 야생 멧돼지 포획 트랩 운영 실태 점검을 실시했다. 이번 설명회는 기존 백신의 전면 도입과 농가 단위 자율 차단 방역 실천을 강조하며, 3색 방역 캠페인에 참여해 달라고 당부했다.",
+    "predKeywords": {},
+    "sentiments": [
+      {
+        "orgId": "A0037",
+        "orgName": "농림축산식품부",
+        "positiveRatio": 75.0,
+        "negativeRatio": 0.0,
+        "neutralRatio": 25.0,
+        "reason": "이 기사에서는 농림축산식품부의 양돼지 질병 방역 관리 강화에 관한 내용이 다루어져 있으며, 긍정적인 언급들이 주를 이룬다.",
+        "positiveReason": "농식품부가 양돼지질병 방역을 위해 현장설명회와 포획 트랩 운영 실태 점검을 실시하고 있다는 사실은 긍정적이다. 또한, 부패 방지를 위한 마커 백신 전면 도입과 농가 단위 자율 차단 방역 실천이 강조되어 있다.",
+        "negativeReason": "없음",
+        "positiveKeywords": [
+          "기사",
+          "농식품부",
+          "양돼지",
+          "방역",
+          "관리"
+        ],
+        "negativeKeywords": [
+          ""
+        ]
+      }
+    ],
+    "errorInfo": null,
+    "llmSummaryMeta": null,
+    "llmSentimentMeta": null,
+    "method": "ollama"
+  },
+  "metaAnalyzeDt": "2025-11-18T10:13:17.407328+00:00",
+  "imageId": "6784a2911ccfd362485cda29",
+  "v1ContentsIdx": null
+}
