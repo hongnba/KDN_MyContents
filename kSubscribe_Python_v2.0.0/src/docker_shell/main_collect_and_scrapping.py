@@ -3,6 +3,7 @@
 from datetime import datetime,timedelta
 import sys
 import os
+import pytz
 
 # huggingface/tokenizers 경고 제거
 os.environ['TOKENIZERS_PARALLELISM'] = 'false'
@@ -103,6 +104,11 @@ if __name__ == "__main__":
             calendar_service = CalendarService()
             contents_org_service = ContentsOrgService()
             
+            # 20260115: 0~6시 첫 크론잡 실행 시 전날과 당일 stats 생성
+            kst = pytz.timezone('Asia/Seoul')
+            now_kst = datetime.now(kst)
+            is_early_morning = now_kst.hour < 6
+            
             # Get all organizations
             orgs = contents_org_service.find_all()
             logger.info(f"Found {len(orgs)} organizations")
@@ -115,9 +121,37 @@ if __name__ == "__main__":
                     # Calculate statistics for each period
                     for period in ['day', 'week', 'month']:
                         try:
-                            # Calculate main statistics
-                            stats = stats_service.count_for_period(org_id, period)
-                            logger.info(f"  - {period}: {stats._id}")
+                            if is_early_morning:
+                                curr_start, curr_end = stats_service._get_period_dates(period)
+
+                                # 전날 stats 생성
+                                if period == 'day':
+                                    # 하루 전: 전날 00:00 ~ 23:59
+                                    prev_start = curr_start - timedelta(days=1)
+                                    prev_end = curr_end - timedelta(days=1)
+                                    
+                                elif period == 'week':
+                                    # 일주일 전: 7일 전 00:00 ~ 전날 23:59
+                                    prev_start = curr_start - timedelta(days=7)
+                                    prev_end = curr_end - timedelta(days=7)
+                                
+                                else:  # month
+                                    # 한 달 전: 30일 전 00:00 ~ 전날 23:59
+                                    prev_start = curr_start - timedelta(days=30)
+                                    prev_end = curr_end - timedelta(days=30)
+                                
+                                # ✅ 전날 stats 생성 (타임존 정보 포함된 datetime 전달)
+                                stats_prev = stats_service.count_for_period(org_id, period, prev_start, prev_end)
+                                logger.info(f"  - {period} (prev): {stats_prev._id}")
+                                
+                                # ✅ 당일 stats 생성 (_get_period_dates()가 자동 계산)
+                                stats_curr = stats_service.count_for_period(org_id, period)
+                                logger.info(f"  - {period} (curr): {stats_curr._id}")
+
+                            else:
+                                # 일반 시간대: 당일 stats만 생성
+                                stats = stats_service.count_for_period(org_id, period)
+                                logger.info(f"  - {period}: {stats._id}")
                             
                             # Calculate calendar results
                             calendar_results = calendar_service.get_calendar_results(org_id)

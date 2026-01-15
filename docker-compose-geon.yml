@@ -1,0 +1,40 @@
+services:
+  geon_python_unified:
+    image: ksubscribe_python_unified:latest
+    container_name: geon_python_unified
+    volumes:
+      # Mount the Geon project directory
+      - /home/themiraclesoft/mycontents/Geon_KDN_MyContents/kSubscribe_Python_v2.0.0/src:/app:rw
+      - /home/themiraclesoft/mycontents/Geon_KDN_MyContents/kSubscribe_Python_v2.0.0/src/ksubscribe_share:/app/ksubscribe_share:rw
+      - /home/themiraclesoft/mycontents/Geon_KDN_MyContents/kSubscribe_Python_v2.0.0/src/docker_shell:/app/docker_shell:rw
+      - /home/themiraclesoft/mycontents/Geon_KDN_MyContents/kSubscribe_Python_v2.0.0/src/ksubscribe_server:/app/ksubscribe_server:rw
+      - /home/themiraclesoft/mycontents/Geon_KDN_MyContents/kSubscribe_Python_v2.0.0/src/docker_collect:/app/docker_collect:rw
+      - /home/themiraclesoft/mycontents/Geon_KDN_MyContents/kSubscribe_Python_v2.0.0/src/docker_scraping:/app/docker_scraping:rw
+      - /home/themiraclesoft/mycontents/logs:/app/logs:rw
+      - /home/themiraclesoft/mycontents/data:/data:rw
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - MONGODB_HOST=ksubscribe_mongodb
+      - MONGODB_PORT=27017
+      - MONGODB_DB=mycontents
+      - MARIADB_HOST=ksubscribe_mariadb
+      - MARIADB_PORT=3306
+      - MARIADB_DB=cds
+      - MARIADB_USER=cds
+      - MARIADB_PASSWORD=Kmycontents1!
+      - REDIS_HOST=ksubscribe_redis
+      - REDIS_PORT=6379
+      - OLLAMA_URL=http://ksubscribe_ollama:11434
+      - OLLAMA_MODEL=gpt-oss:20b
+    ports:
+      - "8002:8000"  # Different port to avoid conflicts (8001 is in use)
+    working_dir: /app
+    command: ["python3", "-m", "uvicorn", "ksubscribe_server.fastApi.fastApi:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    restart: unless-stopped
+    networks:
+      - mycontents_ksubscribe_network
+
+networks:
+  mycontents_ksubscribe_network:
+    external: true

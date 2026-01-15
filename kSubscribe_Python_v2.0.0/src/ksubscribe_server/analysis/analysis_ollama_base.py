@@ -92,6 +92,7 @@ class AnalysisOllamaBase:
     3. **엄격한 선택 규칙**:
        - `reason` 필드에는 **반드시 [DB 키워드 리스트]에 포함된 단어만** 기재해야 한다.
        - 기사 본문에 있는 단어라도 [DB 키워드 리스트]에 없다면 `reason`에 넣지 마라.
+       - `ai_keyword`에는 **기관명([organization]) 및 동의어([synonyms])를 포함하지 마라.**
     4. **결과 판정**:
        - 연관된 키워드가 1개 이상이면 `related`를 `true`로 설정해라.
        - 연관된 키워드가 전혀 없으면 `related`를 `false`로 설정해라.
@@ -105,8 +106,8 @@ class AnalysisOllamaBase:
     ### [출력 형식]
     반드시 아래 JSON 포맷으로만 응답해라. 주석, 설명은 절대 포함하지 마라.
 
-    {{
-        "ai_keyword": ["기사에서 추출한 핵심 주제 키워드 리스트"],
+   {{
+      "ai_keyword": ["기사에서 추출한 핵심 주제 키워드 리스트 (기관명/동의어 제외)"],
         "db_keyword_list": ["입력받은 DB 키워드 리스트 그대로 반환"],
         "related": true 또는 false,
         "reason": ["DB 키워드 리스트 중 기사와 연관된 단어들 (최대 10개)"]

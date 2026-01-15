@@ -1,0 +1,156 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # Ollama 컨테이너 4개 (각 GPU 1장씩 전용 할당)
+  # ============================================================================
+  
+  ollama0:
+    image: ollama/ollama:latest
+    container_name: ksubscribe_ollama0
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+    environment:
+      - OLLAMA_NUM_PARALLEL=4
+      - OLLAMA_MAX_QUEUE=512
+    ports:
+      - "11434:11434"
+    volumes:
+      - /var/ollama/data0:/root/.ollama:rw
+    networks:
+      - mycontents_ksubscribe_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pgrep", "ollama"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  ollama1:
+    image: ollama/ollama:latest
+    container_name: ksubscribe_ollama1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['1']
+              capabilities: [gpu]
+    environment:
+      - OLLAMA_NUM_PARALLEL=4
+      - OLLAMA_MAX_QUEUE=512
+    ports:
+      - "11435:11434"
+    volumes:
+      - /var/ollama/data1:/root/.ollama:rw
+    networks:
+      - mycontents_ksubscribe_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pgrep", "ollama"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  ollama2:
+    image: ollama/ollama:latest
+    container_name: ksubscribe_ollama2
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['2']
+              capabilities: [gpu]
+    environment:
+      - OLLAMA_NUM_PARALLEL=4
+      - OLLAMA_MAX_QUEUE=512
+    ports:
+      - "11436:11434"
+    volumes:
+      - /var/ollama/data2:/root/.ollama:rw
+    networks:
+      - mycontents_ksubscribe_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pgrep", "ollama"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  ollama3:
+    image: ollama/ollama:latest
+    container_name: ksubscribe_ollama3
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['3']
+              capabilities: [gpu]
+    environment:
+      - OLLAMA_NUM_PARALLEL=4
+      - OLLAMA_MAX_QUEUE=512
+    ports:
+      - "11437:11434"
+    volumes:
+      - /var/ollama/data3:/root/.ollama:rw
+    networks:
+      - mycontents_ksubscribe_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pgrep", "ollama"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  # ============================================================================
+  # Python 통합 컨테이너 (4개 Ollama와 통신)
+  # ============================================================================
+  
+  geon_python_unified:
+    image: ksubscribe_python_unified:latest
+    container_name: geon_python_unified
+    depends_on:
+      - ollama0
+      - ollama1
+      - ollama2
+      - ollama3
+    volumes:
+      - /home/themiraclesoft/mycontents/Geon_KDN_MyContents/kSubscribe_Python_v2.0.0/src:/app:rw
+      - /home/themiraclesoft/mycontents/Geon_KDN_MyContents/kSubscribe_Python_v2.0.0/src/ksubscribe_share:/app/ksubscribe_share:rw
+      - /home/themiraclesoft/mycontents/Geon_KDN_MyContents/kSubscribe_Python_v2.0.0/src/ksubscribe_server:/app/ksubscribe_server:rw
+      - /home/themiraclesoft/mycontents/data:/data:rw
+    environment:
+      - MONGODB_HOST=ksubscribe_mongodb
+      - MONGODB_PORT=27017
+      - MONGODB_DB=mycontents
+      - REDIS_HOST=ksubscribe_redis
+      - REDIS_PORT=6379
+      - MARIADB_HOST=ksubscribe_mariadb
+      - MARIADB_PORT=3306
+      - MARIADB_DB=mycontents
+      - OLLAMA_HOST=ksubscribe_ollama0  # 기본값 (스크립트에서 오버라이드)
+      - OLLAMA_PORT=11434
+      - OLLAMA_MODEL=gpt-oss:20b
+    ports:
+      - "8002:8000"
+    working_dir: /app
+    networks:
+      - mycontents_ksubscribe_network
+    restart: unless-stopped
+    command: >
+      bash -c "python3 -m uvicorn ksubscribe_server.main:app --host 0.0.0.0 --port 8000 --reload"
+
+networks:
+  mycontents_ksubscribe_network:
+    external: true

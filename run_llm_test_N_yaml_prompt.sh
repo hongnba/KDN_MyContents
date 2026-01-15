@@ -29,7 +29,7 @@ ITERATIONS=1
 OLLAMA_MODEL="gpt-oss:20b"
 
 # 테스트할 문서 ID 파일 (컨테이너 내부 경로)
-TEST_IDS_FILE="test_ids_green_energy.txt"
+TEST_IDS_FILE="test_ids_weekly_article_test_title_only.txt"
 
 # ============================================================================
 # 스크립트 설정 (일반적으로 수정 불필요)
