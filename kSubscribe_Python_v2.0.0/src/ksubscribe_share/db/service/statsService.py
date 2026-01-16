@@ -32,22 +32,34 @@ class StatsService(BaseQueryService):
     def __init__(self):
         super().__init__()
 
-    def count_for_period(self, orgId: str, period: str, start_date: datetime = None, end_date: datetime = None) -> Union[DailyStatsVO, WeeklyStatsVO, MonthlyStatsVO]:
+    def count_for_period(self, orgId: str, period: str, present_day: datetime = None) -> Union[DailyStatsVO, WeeklyStatsVO, MonthlyStatsVO]:
         """
         일정 기간 내에 해당 기관 관련 데이터 집계 계산
         
         Args:
             orgId: 기관 ID
             period: 기간 타입 ('day', 'week', 'month')
-            start_date: 시작 날짜 (선택사항)
-            end_date: 종료 날짜 (선택사항)
+            present_day: 현재 날짜 (선택사항)
             
         Returns:
             계산된 통계 객체
         """
         # 날짜 범위 설정
-        if not start_date or not end_date:
+
+        end_date = present_day.replace(hour=23, minute=59, second=59, microsecond=999999)
+        
+        if present_day:
+            if period == 'day':
+                start_date = present_day.replace(hour=0, minute=0, second=0, microsecond=0)
+            elif period == 'week':
+                start_date = (present_day - timedelta(days=6)).replace(hour=0, minute=0, second=0, microsecond=0)
+            elif period == 'month':
+                start_date = (present_day - timedelta(days=29)).replace(hour=0, minute=0, second=0, microsecond=0)
+            else:
+                raise ValueError(f"Invalid period: {period}. Must be 'day', 'week', or 'month'")
+        else:
             start_date, end_date = self._get_period_dates(period)
+
         
         # Contents 컬렉션에서 해당 기관의 데이터 조회 -> List[ContentsVO]
         contents_data = self._get_contents_for_period(orgId, start_date, end_date)
@@ -133,11 +145,11 @@ class StatsService(BaseQueryService):
             end_date = now.replace(hour=23, minute=59, second=59, microsecond=999999)
         elif period == 'week':
             # 7일 전 00:00:00 ~ 오늘 23:59:59
-            start_date = (now - timedelta(days=7)).replace(hour=0, minute=0, second=0, microsecond=0)
+            start_date = (now - timedelta(days=6)).replace(hour=0, minute=0, second=0, microsecond=0)
             end_date = now.replace(hour=23, minute=59, second=59, microsecond=999999)
         elif period == 'month':
             # 30일 전 00:00:00 ~ 오늘 23:59:59
-            start_date = (now - timedelta(days=30)).replace(hour=0, minute=0, second=0, microsecond=0)
+            start_date = (now - timedelta(days=29)).replace(hour=0, minute=0, second=0, microsecond=0)
             end_date = now.replace(hour=23, minute=59, second=59, microsecond=999999)
         else:
             raise ValueError(f"Invalid period: {period}")
