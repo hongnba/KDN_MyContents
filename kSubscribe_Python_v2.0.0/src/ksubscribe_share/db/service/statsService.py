@@ -45,10 +45,8 @@ class StatsService(BaseQueryService):
             계산된 통계 객체
         """
         # 날짜 범위 설정
-
-        end_date = present_day.replace(hour=23, minute=59, second=59, microsecond=999999)
-        
         if present_day:
+            end_date = present_day.replace(hour=23, minute=59, second=59, microsecond=999999)
             if period == 'day':
                 start_date = present_day.replace(hour=0, minute=0, second=0, microsecond=0)
             elif period == 'week':
