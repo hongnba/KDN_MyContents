@@ -10,6 +10,7 @@ from ksubscribe_share.db.dbmodelV2.baseDocument import BaseMongoDocument
 from ksubscribe_share.db.dbmodelV2.contentsVO import ContentsVO, SentimentInfo
 from ksubscribe_share.db.service.baseQueryService import BaseQueryService
 from ksubscribe_share.db.mongoManager import MongoManager
+from ksubscribe_share.db.service.contentsOrgService import ContentsOrgService
 from ksubscribe_share.db.dbmodelV2.dailyStatsVO import DailyStatsVO
 from ksubscribe_share.db.dbmodelV2.weeklyStatsVO import WeeklyStatsVO
 from ksubscribe_share.db.dbmodelV2.monthlyStatsVO import MonthlyStatsVO
@@ -233,41 +234,45 @@ class StatsService(BaseQueryService):
                 if past_daily_stats:
                     return {
                         'totalContentsCounts': past_daily_stats.totalContentsCounts,
-                        'averagePositiveRatio': past_daily_stats.averagePositiveRatio
+                        'averagePositiveRatio': past_daily_stats.averagePositiveRatio,
+                        'averageNegativeRatio': past_daily_stats.averageNegativeRatio,
                     }
             
             elif period == 'week':
                 # 주별: 이전 주의 일별 통계들을 집계
-                week_duration = end_date - start_date
-                past_week_start = start_date - week_duration
-                past_week_end = start_date - timedelta(seconds=1)
+                past_week_start = start_date - timedelta(days=7)
+                past_week_end = end_date - timedelta(days=7)
                 
                 past_daily_stats_list = self._get_daily_stats_for_period(orgId, past_week_start, past_week_end)
                 if past_daily_stats_list:
                     total_contents = sum(stats.totalContentsCounts for stats in past_daily_stats_list)
                     total_positive = sum(stats.totalPositiveContentsCount for stats in past_daily_stats_list)
+                    total_negative = sum(stats.totalNegativeContentsCount for stats in past_daily_stats_list)
                     avg_positive_ratio = (total_positive / total_contents * 100) if total_contents > 0 else 0.0
-                    
+                    avg_negative_ratio = (total_negative / total_contents * 100) if total_contents > 0 else 0.0
                     return {
                         'totalContentsCounts': total_contents,
-                        'averagePositiveRatio': avg_positive_ratio
+                        'averagePositiveRatio': avg_positive_ratio,
+                        'averageNegativeRatio': avg_negative_ratio
                     }
             
             elif period == 'month':
-                # 월별: 이전 월의 일별 통계들을 집계
-                month_duration = end_date - start_date
-                past_month_start = start_date - month_duration
-                past_month_end = start_date - timedelta(seconds=1)
+                # 월별(30일 기준): 이전 월의 일별 통계들을 집계
+                past_month_start = start_date - timedelta(days=30)
+                past_month_end = end_date - timedelta(days=30)
                 
                 past_daily_stats_list = self._get_daily_stats_for_period(orgId, past_month_start, past_month_end)
                 if past_daily_stats_list:
                     total_contents = sum(stats.totalContentsCounts for stats in past_daily_stats_list)
                     total_positive = sum(stats.totalPositiveContentsCount for stats in past_daily_stats_list)
+                    total_negative = sum(stats.totalNegativeContentsCount for stats in past_daily_stats_list)
                     avg_positive_ratio = (total_positive / total_contents * 100) if total_contents > 0 else 0.0
+                    avg_negative_ratio = (total_negative / total_contents * 100) if total_contents > 0 else 0.0
                     
                     return {
                         'totalContentsCounts': total_contents,
-                        'averagePositiveRatio': avg_positive_ratio
+                        'averagePositiveRatio': avg_positive_ratio,
+                        'averageNegativeRatio': avg_negative_ratio
                     }
         
         except Exception as e:
@@ -276,7 +281,8 @@ class StatsService(BaseQueryService):
         # 기본값 반환 (이전 기간 데이터가 없는 경우)
         return {
             'totalContentsCounts': 0,
-            'averagePositiveRatio': 0.0
+            'averagePositiveRatio': 0.0,
+            'averageNegativeRatio': 0.0
         }
 
     def get_stats_summary(self, orgId: str, period: str, start_date: datetime = None, end_date: datetime = None) -> Dict:
@@ -359,6 +365,17 @@ class StatsService(BaseQueryService):
 
     def _call_ollama_for_analysis(self, stats_data: Dict) -> str:
         """Ollama를 호출하여 평판 분석 리포트 생성"""
+        
+        orgName = ContentsOrgService().findOrg(stats_data.get('orgId')).orgName
+        
+        # 날짜 포맷팅 (이미 KST datetime 객체)
+        start_date = stats_data.get('start_date')
+        end_date = stats_data.get('end_date')
+        start_date_str = start_date.strftime("%Y-%m-%d %H:%M:%S") if isinstance(start_date, datetime) else 'N/A'
+        end_date_str = end_date.strftime("%Y-%m-%d %H:%M:%S") if isinstance(end_date, datetime) else 'N/A'
+        
+        if stats_data.get('totalContentsCounts', 0) == 0:
+            return f"{start_date_str} ~ {end_date_str} 기간에 {orgName} 관련 기사가 수집되지 않아 분석할 수 없습니다."
         try:
             # Ollama API 설정 - config.py의 설정값 사용
             # ollama_url = "http://10.99.2.71:11434/api/generate"
@@ -369,8 +386,12 @@ class StatsService(BaseQueryService):
             다음은 기관 평판 분석 데이터입니다. 이 데이터를 바탕으로 종합적인 평판 분석 리포트를 작성해주세요.
             
             기관 ID: {stats_data.get('orgId', 'N/A')}
-            분석 기간: {stats_data.get('start_date', 'N/A')} ~ {stats_data.get('end_date', 'N/A')}
+            기관 이름: {orgName}
+            분석 기간: {start_date_str} ~ {end_date_str}
             총 기사 수: {stats_data.get('totalContentsCounts', 0)}
+            긍정 기사 수 : {stats_data.get('totalPositiveContentsCount', 0)}
+            부정 기사 수 : {stats_data.get('totalNegativeContentsCount', 0)}
+            중립 기사 수 : {stats_data.get('totalNeutralContentsCount', 0)}
             긍정 비율: {stats_data.get('averagePositiveRatio', 0.0):.2f}%
             부정 비율: {stats_data.get('averageNegativeRatio', 0.0):.2f}%
             중립 비율: {stats_data.get('averageNeutralRatio', 0.0):.2f}%
@@ -389,7 +410,7 @@ class StatsService(BaseQueryService):
                 "num_predict": 200
             }
             
-            response = requests.post(ollama_url, json=payload, timeout=30)
+            response = requests.post(ollama_url, json=payload, timeout=120)
             
             if response.status_code == 200:
                 result = response.json()
@@ -451,6 +472,7 @@ class StatsService(BaseQueryService):
         past_stats = self._calculate_past_period_stats(orgId, 'day', start_date, end_date)
         enhanced_stats['pastTotalContentsCounts'] = past_stats['totalContentsCounts']
         enhanced_stats['pastAveragePositiveRatio'] = past_stats['averagePositiveRatio']
+        enhanced_stats['pastAverageNegativeRatio'] = past_stats['averageNegativeRatio']
         
         # Sentiment sorted maps
         sentiment_maps = self._generate_sentiment_sorted_maps(contents_list, orgId)
@@ -540,6 +562,9 @@ class StatsService(BaseQueryService):
             'start_date': start_date,
             'end_date': end_date,
             'totalContentsCounts': total_contents,
+            'totalPositiveContentsCount': total_positive,
+            'totalNegativeContentsCount': total_negative,
+            'totalNeutralContentsCount': total_neutral,
             'averagePositiveRatio': avg_positive_ratio,
             'averageNegativeRatio': avg_negative_ratio,
             'averageNeutralRatio': avg_neutral_ratio,
@@ -644,6 +669,9 @@ class StatsService(BaseQueryService):
             'start_date': start_date,
             'end_date': end_date,
             'totalContentsCounts': total_contents,
+            'totalPositiveContentsCount': total_positive,
+            'totalNegativeContentsCount': total_negative,
+            'totalNeutralContentsCount': total_neutral,
             'averagePositiveRatio': avg_positive_ratio,
             'averageNegativeRatio': avg_negative_ratio,
             'averageNeutralRatio': avg_neutral_ratio,
