@@ -31,7 +31,8 @@ class WeeklyStatsVO(BaseMongoDocument):
         averageNeutralRatio: float = 0.0,
         averagePositiveRatio: float = 0.0,
         pastAveragePositiveRatio: float = 0.0,
-
+        pastAverageNegativeRatio: float = 0.0,
+        
         totalPositiveContentsCount: int = 0,
         totalNegativeContentsCount: int = 0,
         totalNeutralContentsCount: int = 0,
@@ -71,6 +72,7 @@ class WeeklyStatsVO(BaseMongoDocument):
         self.averageNeutralRatio = averageNeutralRatio
         self.averagePositiveRatio = averagePositiveRatio
         self.pastAveragePositiveRatio = pastAveragePositiveRatio
+        self.pastAverageNegativeRatio = pastAverageNegativeRatio
         self.totalPositiveContentsCount = totalPositiveContentsCount
         self.totalNegativeContentsCount = totalNegativeContentsCount
         self.totalNeutralContentsCount = totalNeutralContentsCount

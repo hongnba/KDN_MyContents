@@ -5,6 +5,7 @@ from pymongo import DESCENDING
 import pytz
 import requests
 import json
+import re
 
 from ksubscribe_share.db.dbmodelV2.baseDocument import BaseMongoDocument
 from ksubscribe_share.db.dbmodelV2.contentsVO import ContentsVO, SentimentInfo
@@ -361,8 +362,6 @@ class StatsService(BaseQueryService):
             'negativeKeywordMap': negative_keyword_map
         }
 
-
-
     def _call_ollama_for_analysis(self, stats_data: Dict) -> str:
         """Ollama를 호출하여 평판 분석 리포트 생성"""
         
@@ -410,13 +409,54 @@ class StatsService(BaseQueryService):
                 "num_predict": 200
             }
             
-            response = requests.post(ollama_url, json=payload, timeout=120)
+            # 영어 답변 재시도 로직 (최대 3회 재시도, 그 후 번역 시도)
+            retry_count = 0
+            max_retries = 3
             
-            if response.status_code == 200:
-                result = response.json()
-                return result.get('response', 'Ollama 분석을 완료할 수 없습니다.')
-            else:
-                return f"Ollama API 오류: {response.status_code}"
+            while retry_count <= max_retries:
+                response = requests.post(ollama_url, json=payload, timeout=120)
+                
+                if response.status_code == 200:
+                    result = response.json()
+                    answer = result.get('response', 'Ollama 분석을 완료할 수 없습니다.')
+                    
+                    # 영어 판단: 숫자, 공백, 특수문자 제거 후 알파벳 비율이 50% 이상이면 영어로 판단
+                    alpha_chars = re.findall(r'[a-zA-Z]', answer)
+                    korean_chars = re.findall(r'[가-힣]', answer)
+                    total_chars = len(alpha_chars) + len(korean_chars)
+                    
+                    is_english = False
+                    if total_chars > 0:
+                        is_english = len(alpha_chars) / total_chars >= 0.5
+                    
+                    # 한국어 응답이면 바로 반환 (마크다운 문자 제거)
+                    if not is_english:
+                        answer = answer.replace('*', '').replace('#', '')
+                        return answer
+                    
+                    # 영어 응답인 경우
+                    if retry_count < max_retries:
+                        # 1~3회: 동일한 프롬프트로 재시도
+                        retry_count += 1
+                        continue
+                    else:
+                        # 3회 연속 영어 답변 후: 번역 프롬프트로 최종 시도
+                        payload['prompt'] = f"다음 텍스트를 한국어로 번역하세요:\n\n{answer}"
+                        final_response = requests.post(ollama_url, json=payload, timeout=120)
+                        
+                        if final_response.status_code == 200:
+                            final_result = final_response.json()
+                            translated = final_result.get('response', answer)
+                            translated = translated.replace('*', '').replace('#', '')
+                            return translated
+                        else:
+                            # 번역도 실패하면 영어 답변이라도 반환 (마크다운 문자 제거)
+                            answer = answer.replace('*', '').replace('#', '')
+                            return answer
+                else:
+                    return f"Ollama API 오류: {response.status_code}"
+            
+            return "Ollama 분석을 완료할 수 없습니다."
                 
         except Exception as e:
             return f"Ollama 분석 중 오류 발생: {str(e)}"
@@ -593,6 +633,7 @@ class StatsService(BaseQueryService):
             'averageNegativeRatio': avg_negative_ratio,
             'averageNeutralRatio': avg_neutral_ratio,
             'pastAveragePositiveRatio': past_stats['averagePositiveRatio'],
+            'pastAverageNegativeRatio': past_stats['averageNegativeRatio'],
             'totalPositiveContentsCount': total_positive,
             'totalNegativeContentsCount': total_negative,
             'totalNeutralContentsCount': total_neutral,
@@ -700,6 +741,7 @@ class StatsService(BaseQueryService):
             'averageNegativeRatio': avg_negative_ratio,
             'averageNeutralRatio': avg_neutral_ratio,
             'pastAveragePositiveRatio': past_stats['averagePositiveRatio'],
+            'pastAverageNegativeRatio': past_stats['averageNegativeRatio'],
             'totalPositiveContentsCount': total_positive,
             'totalNegativeContentsCount': total_negative,
             'totalNeutralContentsCount': total_neutral,
